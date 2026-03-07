@@ -144,7 +144,8 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form action="#" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="{{ route('company.package.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            @csrf
                             <div class="tab-content" id="packageTabContent">
                                 <!-- Basic Info Tab -->
                                 <div class="tab-pane fade show active" id="basic" role="tabpanel">
@@ -318,8 +319,10 @@
                                         <label for="subdestination" class="form-label fw-semibold">
                                             <i class="ti ti-location text-primary me-2"></i>Subdestination
                                         </label>
-                                        <input type="text" class="form-control border-2" id="subdestination" name="subdestination"
-                                               placeholder="e.g., Saint Martin, Sylhet">
+                                        <select class="form-control border-2  select2"  data-toggle="select2" id="destination" multiple name="destination"
+                                                    required>
+                                               
+                                            </select>
                                         <div class="form-text text-muted">
                                             <i class="ti ti-info-circle me-1"></i>Optional: Add specific locations within the package
                                         </div>
@@ -360,6 +363,7 @@
 @endsection
 @push('js')
     <script>
+
         // Live preview functionality
         document.addEventListener('DOMContentLoaded', function() {
             const titleInput = document.getElementById('title');
@@ -410,4 +414,27 @@
             }
         });
     </script>
+    <script>
+$(document).ready(function(){
+
+        $.ajax({
+            url: "{{ route('company.package.getstate') }}",
+            type: "GET",
+            success: function(data){
+
+                $('#destination').html('<option value="">Select State</option>');
+
+                $.each(data, function(key, value){
+                    $('#destination').append(
+                        '<option value="'+value.iso2+'">'+value.name+'</option>'
+                    );
+                });
+
+            }
+        });
+
+    
+
+});
+</script>
 @endpush

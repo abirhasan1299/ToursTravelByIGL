@@ -30,12 +30,22 @@ class PackageController extends Controller
         return view('admin.package.create_company_package',compact('data'));
     }
 
+    public function getState()
+    {
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => 'fd6394ac8fc2d21c0a473ee0be18f033fefa1ea0c07b92e598c7cebe983d1c51'
+        ])->get('https://api.countrystatecity.in/v1/states');
+
+        return  $response->json();
+       
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

@@ -10,7 +10,18 @@ Route::get('dashboard',function (){
 
 Route::get('subscription',[SubscriptionController::class,'index'])->name('subscription.index');
 
+
+/*
+========================================================================
+                            Package Route
+========================================================================
+*/
+
 Route::get('package',[PackageController::class,'index'])->name('package.index');
 
 
 Route::get('package/create',[PackageController::class,'create'])->name('package.create');
+
+Route::get('package/getState',[PackageController::class,'getState'])->name('package.getstate');
+
+Route::post('package/store',[PackageController::class,'store'])->name('package.store');
