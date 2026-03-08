@@ -3,13 +3,9 @@
 @section('title','Package')
 
 @section('content')
-    @php
-        function getDaysFromRange($range) { [$start, $end] = explode(' to ', $range); $startDate = Carbon::parse($start); $endDate = Carbon::parse($end); return $startDate->diffInDays($endDate) + 1; }
-
-    @endphp
 
     <div class="row mt-3">
-        <div class="col-12" style="margin: auto;width: 80%;">
+        <div class="col-12" >
 
             <a href="{{route('company.package.create')}}"  role="button" class="btn btn-primary mb-2"><i class="ti ti-plus"></i>  Add Package</a>
 
@@ -19,16 +15,54 @@
                         <thead class="thead-sm text-uppercase fs-xxs">
                         <tr>
                             <th>SL</th>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Days</th>
                             <th>Price</th>
-                            <th>Limit</th>
+                            <th>Location</th>
+                            <th>Subdestination</th>
+                            <th>Max People</th>
+                            <th>Tour Type</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
+                        @foreach($data as $d)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$d->title}}</td>
+                                <td>{{$d->day." Day ".$d->night." Night"}}</td>
+                                <td>{{ config('app.currency')." ".$d->amount}}</td>
+                                <td>{{$d->start_location." to ".$d->end_location}}</td>
+                                <td>
+                                    @foreach(json_decode($d->subdestination, true) as $des)
+                                        {{ $des }}
+                                        @if (! $loop->last)
+                                            <i class="ti ti-arrow-right"></i>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>
+                                    {{$d->max_people}}
+                                </td>
+                                <td> {{strtoupper($d->tour_type)}}</td>
+                                <td>
+                                    <span class="badge bg-{{ $d->status == 'active' ? 'success' : 'danger' }}">
+    {{ strtoupper($d->status) }}
+</span>
+                                </td>
+                                <td>
+                                  <div class="d-flex justify-content-between">
+                                      <a href="#" class="btn btn-sm btn-info" role="button"><i class="ti ti-calendar"></i> </a>
 
+                                      <a href="#" class="btn btn-sm btn-warning" role="button"><i class="ti ti-pencil"></i></a>
+
+                                      <a href="#" class="btn btn-sm btn-danger" role="button"><i class="ti ti-trash"></i></a>
+                                  </div>
+                                </td>
+                            </tr>
+
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

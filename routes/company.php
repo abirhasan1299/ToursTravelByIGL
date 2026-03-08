@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Company\PackageController;
 use App\Http\Controllers\Company\SubscriptionController;
+use App\Http\Controllers\Company\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard',function (){
@@ -26,3 +27,10 @@ Route::get('package/create',[PackageController::class,'create'])->name('package.
 Route::get('package/getState',[PackageController::class,'getState'])->name('package.getstate');
 
 Route::post('package/store',[PackageController::class,'store'])->name('package.store');
+
+/*
+========================================================================
+                            Transaction Route
+========================================================================
+*/
+Route::get('transaction/history',[TransactionController::class,'index'])->name('transaction');

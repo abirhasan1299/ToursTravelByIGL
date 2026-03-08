@@ -1,7 +1,44 @@
 @php use Carbon\Carbon; @endphp
 @extends('layout.admin')
 @section('title','Package')
-@push('css') @endpush
+@push('css')
+    <style>
+        /* Custom styles for enhanced cards */
+        .hover-shadow {
+            transition: all 0.3s ease;
+        }
+
+        .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+        }
+
+        .hover-lift {
+            transition: transform 0.2s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+        }
+
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+
+        .fs-7 {
+            font-size: 0.85rem;
+        }
+
+        .rounded-bl-3 {
+            border-bottom-left-radius: 1rem;
+        }
+
+        /* Badge positioning */
+        .z-1 {
+            z-index: 1;
+        }
+    </style>
+@endpush
 @section('content')
     @include('admin.partials.credit')
     @php
@@ -72,10 +109,23 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5 class="text-muted fs-base text-uppercase" title="Number of Orders">Credit</h5>
-                            <h3 class="my-3 py-1 fw-semibold"><span data-target="2,754"></span></h3>
+                            <h3 class="my-3 py-1 fw-semibold">
+                                <span>
+                                    {{$credit->c_credit ?? '0'}}
+                                </span>
+                            </h3>
                             <p class="mb-0 text-muted">
-                                <span class="text-success me-2"><i class="ti ti-calendar"></i> 2 days ago</span>
-                                <button href="#credit-modal" data-bs-toggle="modal" class="text-nowrap btn btn-sm btn-info">Buy</button>
+
+                                <span class="text-success me-2"><i class="ti ti-calendar"></i>
+                                    @if(!empty($credit->updated_at))
+                                        {{ $credit->updated_at->diffForHumans() }}
+                                    @else
+                                        {{'------'}}
+                                    @endif
+                                </span>
+
+                                <button href="#credit-modal" data-bs-toggle="modal" class="text-nowrap btn btn-sm btn-info">Buy now</button>
+
                             </p>
                         </div>
                         <div class="avatar-md flex-shrink-0">
@@ -94,60 +144,90 @@
 
     <div class="row mb-4">
 @foreach($package as $p)
-        <!-- Package Plan -->
+            <!-- Package Plan -->
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm hover-shadow transition-all rounded-4 overflow-hidden">
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card h-100 my-4 my-lg-0">
-                    <div class="card-body p-lg-4 pb-0 text-center">
+                    <!-- Popular Badge (Optional - can be conditionally shown) -->
+                    <div class="position-absolute top-0 end-0 bg-primary text-white px-3 py-1 rounded-bl-3 fs-7 fw-semibold z-1" style="border-bottom-left-radius: 1rem;">
+                        POPULAR
+                    </div>
 
+                    <!-- Card Header with Gradient Background -->
+                    <div class="card-header bg-gradient-primary text-white border-0 p-4 text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                         <!-- Package Name -->
-                        <h3 class="fw-bold mb-1">{{ strtoupper($p->p_name) }}</h3>
-                        <p class="text-muted mb-3">Perfect for growing companies</p>
+                        <h3 class="fw-bold mb-1 text-white">{{ strtoupper($p->p_name) }}</h3>
+                        <p class="text-white-50 mb-0 fs-7">Perfect for growing companies</p>
+                    </div>
+
+                    <div class="card-body p-4">
 
                         <!-- Package Price -->
-                        <div class="my-4">
-                            <h1 class="display-6 fw-bold mb-0">
+                        <div class="text-center mb-4">
+                            <h2 class="display-5 fw-bold text-dark mb-0">
                                 {{config('app.currency')." ".$p->p_price }}
-                            </h1>
-                            <small class="text-muted">Per Package</small>
+                            </h2>
+                            <span class="text-muted small">Per Package</span>
                         </div>
 
                         <!-- Package Features -->
-                        <ul class="list-unstyled text-start fs-sm mb-0">
+                        <div class="mb-4">
+                            <h6 class="text-uppercase text-muted small fw-semibold mb-3">Key Features</h6>
+                            <ul class="list-unstyled">
 
-                            <!-- Post Limit -->
-                            <li class="mb-2">
-                                <i class="ti ti-check text-success me-2 fs-5"></i>
-                                Post Limit : {{ $p->p_post_limit ?? 'Unlimited' }}
-                            </li>
+                                <!-- Post Limit -->
+                                <li class="d-flex align-items-center mb-3">
+                                    <div class="bg-success bg-opacity-10 rounded-circle p-1 me-3">
+                                        <i class="ti ti-check text-success fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted small">Post Limit:</span>
+                                        <span class="fw-semibold ms-1">{{ $p->p_post_limit ?? 'Unlimited' }}</span>
+                                    </div>
+                                </li>
 
-                            <!-- Expire Date -->
-                            <li class="mb-2">
-                                <i class="ti ti-check text-success me-2 fs-5"></i>
-                                Expire In : {{ getDaysFromRange($p->p_date_range) }} Days
-                            </li>
+                                <!-- Expire Date -->
+                                <li class="d-flex align-items-center mb-3">
+                                    <div class="bg-success bg-opacity-10 rounded-circle p-1 me-3">
+                                        <i class="ti ti-clock text-success fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted small">Expire In:</span>
+                                        <span class="fw-semibold ms-1">{{ getDaysFromRange($p->p_date_range) }} Days</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
-                            <!-- Benefits -->
-                            <li class="mb-2">
-                                <i class="ti ti-check text-success me-2 fs-5"></i>
+                        <!-- Benefits Section -->
+                        <div class="mb-4">
+                            <h6 class="text-uppercase text-muted small fw-semibold mb-2">Benefits</h6>
+                            <div class="">
                                 {!! $p->p_benefit !!}
-                            </li>
+                            </div>
+                        </div>
 
-                            <!-- Details -->
-                            <li class="mb-2">
-                                <i class="ti ti-check text-success me-2 fs-5"></i>
+                        <!-- Details Section -->
+                        <div class="mb-4">
+                            <h6 class="text-uppercase text-muted small fw-semibold mb-2">Details</h6>
+                            <div class="">
                                 {!! $p->p_detail !!}
-                            </li>
+                            </div>
+                        </div>
 
-                        </ul>
+                        <!-- Button -->
+                        <div class="d-grid mt-4">
+                            <a href="#" class="btn btn-primary py-3 fw-semibold rounded-pill hover-lift">
+                                <i class="ti ti-rocket me-2"></i>
+                                Choose This Plan
+                            </a>
+                        </div>
 
-                    </div>
-
-                    <!-- Button -->
-                    <div class="card-footer bg-transparent px-5 pb-4">
-                        <a href="#" class="btn btn-outline-dark w-100 py-2 fw-semibold rounded-pill">
-                            Choose Plan
-                        </a>
+                        <!-- Guarantee Text -->
+                        <p class="text-center text-muted small mt-3 mb-0">
+                            <i class="ti ti-shield-check me-1"></i>
+                            30-day money-back guarantee
+                        </p>
                     </div>
                 </div>
             </div>

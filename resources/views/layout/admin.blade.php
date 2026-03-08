@@ -480,6 +480,13 @@
                                 <span class="menu-text" data-lang="dashboards">Subscription</span>
                             </a>
                         </li>
+
+                        <li class="side-nav-item">
+                            <a href="{{route('company.transaction')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-credit-card text-primary" ></i></span>
+                                <span class="menu-text" data-lang="dashboards">Payment History</span>
+                            </a>
+                        </li>
 @endif
                 </ul>
             </div>

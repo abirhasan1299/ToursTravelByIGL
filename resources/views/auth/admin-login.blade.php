@@ -35,12 +35,6 @@
                 <div class="row justify-content-center">
                     <div class="col-xxl-5 col-md-6 col-sm-8">
                         <div class="card p-4">
-                            @if(session('error'))
-                                <div class="alert alert-danger text-bg-danger alert-dismissible" role="alert">
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    <div>{{session('error')}}</div>
-                                </div>
-                            @endif
                             <form action="{{route(('admin.verify'))}}" method="post" autocomplete="off">
                                     @csrf
                                 <div class="mb-3">
@@ -118,7 +112,7 @@
                     icon: 'error',
                     title: 'Message',
                     text: '{{ session('error') }}',
-                    confirmButtonColor: 'rgba(98,255,224,0.45)'
+                    confirmButtonColor: 'rgba(238,11,45,0.76)'
                 });
             </script>
         @endif

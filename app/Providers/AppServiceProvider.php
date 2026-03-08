@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (request()->getHost() == 'localhost' || request()->getHost() == '127.0.0.1') {
+            URL::forceScheme('http');
+        } else {
+            URL::forceScheme('https');
+        }
+
     }
 }

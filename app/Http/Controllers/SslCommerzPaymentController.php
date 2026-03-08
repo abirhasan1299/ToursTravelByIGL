@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Credit;
+use App\Models\Transaction;
 use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
@@ -101,23 +103,45 @@ class SslCommerzPaymentController extends Controller
                 if ($transaction) {
 
                     // update status
-                    DB::table('transactions')
+                     DB::table('transactions')
                         ->where('t_transaction_id', $tran_id)
                         ->update([
                             't_status' => 'complete',
                             'updated_at' => now()
                         ]);
 
+                     $user = Transaction::where('t_transaction_id',$tran_id)->first();
+
+                    // Add Credit for transaction
+
+                    $credit = Credit::where('c_user_id', $user->t_user_id)->first();
+
+                    if ($credit) {
+
+                        $credit->c_credit = $credit->c_credit + ($amount / 100);
+                        $credit->save();
+
+                    } else {
+
+                        Credit::create([
+                           'c_user_id' =>  $user->t_user_id,
+                            'c_credit' => ($amount / 100),
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+
+                    }
+
+
                     return redirect()->route('admin.login')->with('success', 'Payment Successful');
 
                 } else {
-                    return "Transaction not found or already completed";
+                    return redirect()->route('admin.login')->with('error', 'Payment Failed');
                 }
 
             } else {
-                return "Payment validation failed";
+                return redirect()->route('admin.login')->with('error', 'Payment Validation failed');
             }
-
     }
 
     public function fail(Request $request)
@@ -128,15 +152,17 @@ class SslCommerzPaymentController extends Controller
             ->where('t_transaction_id', $tran_id)
             ->select('t_transaction_id', 't_status', 't_currency', 't_amount')->first();
 
-        if ($order_details->status == 'pending') {
+        if ($order_details->t_status == 'pending') {
             $update_product = DB::table('transactions')
                 ->where('t_transaction_id', $tran_id)
                 ->update(['t_status' => 'failed']);
-            echo "Transaction is Falied";
+           return redirect()->route('admin.login')->with('error', 'Payment Failed');
         } else if ($order_details->t_status == 'processing' || $order_details->t_status == 'complete') {
-            echo "Transaction is already Successful";
+
+            return redirect()->route('admin.login')->with('error', 'Transaction is already Successful');
+
         } else {
-            echo "Transaction is Invalid";
+            return redirect()->route('admin.login')->with('error', 'Transaction is Invalid');
         }
 
     }
@@ -146,20 +172,20 @@ class SslCommerzPaymentController extends Controller
         $tran_id = $request->input('tran_id');
 
         $order_details = DB::table('transactions')
-            ->where('transaction_id', $tran_id)
+            ->where('t_transaction_id', $tran_id)
             ->select('t_transaction_id', 't_status', 't_currency', 't_amount')->first();
 
-        if ($order_details->status == 'pending') {
+        if ($order_details->t_status == 'pending') {
             $update_product = DB::table('transactions')
                 ->where('t_transaction_id', $tran_id)
                 ->update(['t_status' => 'canceled']);
-            echo "Transaction is Cancel";
-        } else if ($order_details->status == 'processing' || $order_details->status == 'complete') {
-            echo "Transaction is already Successful";
-        } else {
-            echo "Transaction is Invalid";
-        }
+            return redirect()->route('admin.login')->with('error', 'Transaction is Cancelled');
 
+        } else if ($order_details->t_status == 'processing' || $order_details->status == 'complete') {
+            return redirect()->route('admin.login')->with('error', 'Transaction is already Successful');
+        } else {
+            return redirect()->route('admin.login')->with('error', 'Transaction is Invalid');
+        }
 
     }
 

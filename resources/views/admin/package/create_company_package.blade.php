@@ -240,7 +240,7 @@
                                                     required>
                                                 <option selected disabled>Select Country</option>
                                                 @foreach($data as $d)
-                                                    <option value="{{$d['name']}}">{{$d['name']}}</option>
+                                                    <option value="{{$d['name']}}" {{old('start_location')==$d['name']?'selected':''}}>{{$d['name']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -252,7 +252,7 @@
                                                     required>
                                                 <option selected disabled>Select Country</option>
                                                 @foreach($data as $d)
-                                                    <option value="{{$d['name']}}">{{$d['name']}}</option>
+                                                    <option value="{{$d['name']}}" {{old('end_location')==$d['name']?'selected':''}}>{{$d['name']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -265,14 +265,14 @@
                                                 <i class="ti ti-checkbox text-success me-2"></i>What's Included
                                             </label>
                                             <textarea class="form-control summernote border-2" id="include" name="include" rows="4"
-                                                      placeholder="• Hotel accommodation&#10;• Meals (Breakfast & Dinner)&#10;• Transportation"></textarea>
+                                                      placeholder="• Hotel accommodation&#10;• Meals (Breakfast & Dinner)&#10;• Transportation">{{old('include')}}</textarea>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="exclude" class="form-label fw-semibold">
                                                 <i class="ti ti-x text-danger me-2"></i>What's Excluded
                                             </label>
                                             <textarea class="form-control border-2 summernote" id="exclude" name="exclude" rows="4"
-                                                      placeholder="• Airfare&#10;• Personal expenses&#10;• Travel insurance"></textarea>
+                                                      placeholder="• Airfare&#10;• Personal expenses&#10;• Travel insurance">{{old('exclude')}}</textarea>
                                         </div>
                                     </div>
 
@@ -282,7 +282,7 @@
                                             <i class="ti ti-article text-primary me-2"></i>Tour Details
                                         </label>
                                         <textarea class="form-control border-2 summernote" id="detail" name="detail" rows="5"
-                                                  placeholder="Provide a detailed description of the tour package..."></textarea>
+                                                  placeholder="Provide a detailed description of the tour package...">{{old('detail')}}</textarea>
                                     </div>
                                 </div>
 
@@ -319,9 +319,12 @@
                                         <label for="subdestination" class="form-label fw-semibold">
                                             <i class="ti ti-location text-primary me-2"></i>Subdestination
                                         </label>
-                                        <select class="form-control border-2  select2"  data-toggle="select2" id="destination" multiple name="destination"
+                                        <select class="form-control border-2  select2"  data-toggle="select2" id="destination" multiple name="destination[]"
                                                     required>
-                                               
+                                            @foreach($state as $s)
+                                            <option value="{{$s['name']}}">{{$s['name']}}</option>
+                                            @endforeach
+
                                             </select>
                                         <div class="form-text text-muted">
                                             <i class="ti ti-info-circle me-1"></i>Optional: Add specific locations within the package
@@ -414,27 +417,4 @@
             }
         });
     </script>
-    <script>
-$(document).ready(function(){
-
-        $.ajax({
-            url: "{{ route('company.package.getstate') }}",
-            type: "GET",
-            success: function(data){
-
-                $('#destination').html('<option value="">Select State</option>');
-
-                $.each(data, function(key, value){
-                    $('#destination').append(
-                        '<option value="'+value.iso2+'">'+value.name+'</option>'
-                    );
-                });
-
-            }
-        });
-
-    
-
-});
-</script>
 @endpush
