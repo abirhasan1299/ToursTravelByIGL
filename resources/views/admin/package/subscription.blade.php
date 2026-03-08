@@ -155,4 +155,25 @@
     </div>
 @endsection
 
-@push('js') @endpush
+@push('js')
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Message',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#126600'
+            });
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Message',
+                text: '{{ session('error') }}',
+                confirmButtonColor: 'rgba(98,255,224,0.45)'
+            });
+        </script>
+    @endif
+@endpush

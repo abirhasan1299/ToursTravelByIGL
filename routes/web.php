@@ -16,18 +16,19 @@ Route::post('auth/verify',[AuthController::class,'AdminLoginPost'])->name('admin
 Route::get('auth/logout',[AuthController::class,'AdminLogout'])->name('admin.logout');
 
 
-Route::middleware(['payment'])->group(function () {
-//------------------- SSLCOMMERZ Start---------------------------
 
-Route::match(['get','post'],'pay', [SslCommerzPaymentController::class, 'index'])->name('pay');
-Route::match(['get','post'],'pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
 
-Route::match(['get','post'],'success', [SslCommerzPaymentController::class, 'success']);
-Route::match(['get','post'],'fail', [SslCommerzPaymentController::class, 'fail']);
-Route::match(['get','post'],'cancel', [SslCommerzPaymentController::class, 'cancel']);
+//------------------- SSLCOMMERZ Start------------------------------------------
 
-Route::match(['get','post'],'ipn', [SslCommerzPaymentController::class, 'ipn']);
+Route::post('sslcommerz/pay', [SslCommerzPaymentController::class, 'index'])->name('pay');
+
+Route::post('sslcommerz/success', [SslCommerzPaymentController::class, 'success']);
+
+Route::post('sslcommerz/fail', [SslCommerzPaymentController::class, 'fail']);
+
+Route::post('sslcommerz/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('sslcommerz/ipn', [SslCommerzPaymentController::class, 'ipn']);
 
 //-------------------- SSLCOMMERZ END --------------------------------
-});
 

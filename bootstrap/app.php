@@ -27,7 +27,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth.role' => Authorization::class,
-            'payment'=>VerifyCsrfToken::class,
+        ]);
+        // Add your SSLCommerz routes here
+        $middleware->validateCsrfTokens(except: [
+            'sslcommerz/success',
+            'sslcommerz/fail',
+            'sslcommerz/cancel',
+            'sslcommerz/ipn',
+            'sslcommerz/pay-via-ajax', // if you are using ajax
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

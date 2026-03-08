@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Company\PackageController;
 use App\Http\Controllers\Company\SubscriptionController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard',function (){
     return view('admin.dashboard');

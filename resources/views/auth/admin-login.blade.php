@@ -18,6 +18,8 @@
 
 <!-- App css -->
 <link id="app-style" href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+        <!-- Sweet Alert css-->
+        <link href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -86,13 +88,40 @@
         </div>
 
         <!-- end auth-fluid-->
+        <!-- Jquery for Datatables-->
+        <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
         <!-- Vendor js -->
         <script src="{{asset('assets/js/vendors.min.js')}}"></script>
 
         <!-- App js -->
         <script src="{{asset('assets/js/app.js')}}"></script>
 
-
+        <!-- Sweet Alerts js -->
+        <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     </body>
+
+
+        @if(session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Message',
+                    text: '{{ session('success') }}',
+                    confirmButtonColor: '#126600'
+                });
+            </script>
+        @endif
+        @if(session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Message',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: 'rgba(98,255,224,0.45)'
+                });
+            </script>
+        @endif
+
+
 </html>

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
 use App\Http\Controllers\Root\PackageController;
@@ -7,12 +8,14 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
 /*
     |--------------------------------------------------------------------------
     | Comapany Routes
     |--------------------------------------------------------------------------
     |
 */
+
 Route::get('/create-company',[CompanyController::class,'createCompany'])->name('create-company');
 
 Route::get('/list-company',[CompanyController::class,'listCompany'])->name('list-company');
