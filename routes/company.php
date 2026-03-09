@@ -40,7 +40,7 @@ Route::delete('package/activity/destroy/{id}',[PackageController::class,'destroy
 ========================================================================
 */
 
-
+Route::post('package/credit/plan',[PackageController::class,'BuyWithCredit'])->name('package.buy.with.credit');
 
 /*
 ========================================================================

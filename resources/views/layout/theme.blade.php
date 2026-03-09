@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="bracket-web">
-    <meta name="description" content="Gotur is a modern travel & tour booking HTML Template. It is perfect for travel agencies, tour operators, trip holiday booking websites, adventure and booking companies looking for a unique and intuitive search function and all other travel & tourism websites and businesses.">
+    <meta name="author" content="IGL TOUR">
+    <meta name="description" content="IGL TOUR LTD">
     <title>@yield('title')</title>
 
     <!-- favicons Icons -->
@@ -84,14 +84,14 @@
         <div class="container-fluid">
             <div class="main-header__inner">
                 <div class="main-header__logo logo-retina">
-                    <a href="index.html"><img src="{{asset('assets/images/logo-dark.png')}}" alt="gotur HTML" width="160" height="45"></a>
+                    <a href="#"><img src="{{asset('assets/images/logo-dark.png')}}" alt="gotur HTML" width="160" height="45"></a>
                 </div><!-- /.main-header__logo -->
                 <div class="main-header__right">
                     <nav class="main-header__nav main-menu">
                         <ul class="main-menu__list">
 
                             <li class="dropdown megamenu">
-                                <a href="#">Home</a>
+                                <a href="{{route('home')}}">Home</a>
                             </li>
 
 
@@ -124,39 +124,8 @@
                                 </ul>
                             </li>
 
-                            <li class="dropdown">
-                                <a href="#">tours list</a>
-                                <ul>
-                                    <li class="dropdown">
-                                        <a href="tour-listing-1.html">Tour Listing 01</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="tour-listing-1.html">Tour Grid</a></li>
-                                            <li><a href="tour-listing-1-left.html">Tour Left</a></li>
-                                            <li><a href="tour-listing-1-right.html">Tour Right</a></li>
-                                            <li><a href="tour-listing-1-carousel.html">Tour Carousel</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="dropdown">
-                                        <a href="tour-listing-2.html">Tour Listing 02</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="tour-listing-2.html">Tour Grid</a></li>
-                                            <li><a href="tour-listing-2-left.html">Tour Left</a></li>
-                                            <li><a href="tour-listing-2-right.html">Tour Right</a></li>
-                                            <li><a href="tour-listing-2-carousel.html">Tour Carousel</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="tour-listing-list.html">Tour Listing List</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="tour-listing-list.html">Tour Grid</a></li>
-                                            <li><a href="tour-listing-list-left.html">Tour Left</a></li>
-                                            <li><a href="tour-listing-list-right.html">Tour Right</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="tour-listing-details-1.html">Listing Details 01</a></li>
-                                    <li><a href="tour-listing-details-2.html">Listing Details 02</a></li>
-                                </ul>
+                            <li>
+                                <a href="{{route('front.tour-list')}}">Tours List</a>
                             </li>
 
                             <li class="dropdown">

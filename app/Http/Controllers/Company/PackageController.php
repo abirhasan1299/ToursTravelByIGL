@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\CompanyPackage;
+use App\Models\Credit;
 use App\Models\Package;
+use App\Models\UserPlanOwn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class PackageController extends Controller
 {
@@ -20,6 +24,32 @@ class PackageController extends Controller
         $data = Package::where('user_id', Auth::user()->id)->get();
 
         return view('admin.package.company_package',compact('data'));
+    }
+
+    public function BuyWithCredit(Request $request)
+    {
+        $package = CompanyPackage::findOrFail($request->package_id);
+        $mycredit = Credit::where('c_user_id', Auth::user()->id)->first();
+
+        if($mycredit->c_credit>=$package->p_credit)
+        {
+            $mycredit->c_credit = $mycredit->c_credit - $package->p_credit;
+            $mycredit->save();
+
+            UserPlanOwn::updateOrCreate(
+                [
+                    'user_id'=>auth()->user()->id
+                ],
+                [
+                    'user_id'=>auth()->user()->id,
+                    'company_package_id'=>$package->id,
+                    'status'=>'active'
+                ]
+            );
+            return redirect()->back()->with('success','Plan Purchased Successfully');
+        }else{
+            return redirect()->back()->with('error','Your Credit is not enough');
+        }
     }
 
     public function Activity($id)
@@ -68,6 +98,22 @@ class PackageController extends Controller
 
     public function create()
     {
+        $userPackage = UserPlanOwn::where('user_id',auth()->user()->id)->first();
+        $dates = explode(' to ',$userPackage->userPackage->p_date_range);
+
+        if (!Carbon::parse($dates[1])->isFuture())
+        {
+
+            return redirect()->route('company.package.index')->with('error','Your Package is Expired. Buy new package');
+        }
+
+        $postcount = Package::where('user_id',Auth::user()->id)->count();
+
+        if($postcount>=$userPackage->userPackage->p_post_limit)
+        {
+            return redirect()->route('company.package.index')->with('error','Your Post reached limit. Buy new package');
+        }
+
         $response = Http::withHeaders([
             'X-CSCAPI-KEY' => 'fd6394ac8fc2d21c0a473ee0be18f033fefa1ea0c07b92e598c7cebe983d1c51'
         ])->get('https://api.countrystatecity.in/v1/countries');

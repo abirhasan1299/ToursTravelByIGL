@@ -38,6 +38,12 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Credit</label>
+                                        <input type="number" name="p_credit" id="modal_p_credit" class="form-control">
+                                        <small class="text-danger" id="error_p_credit"></small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
                                         <label class="form-label fw-semibold">Date Range</label>
                                         <input type="date" name="p_date_range" id="modal_p_date_range" data-provider="flatpickr"  data-range-date="true" class="form-control">
                                         <small class="text-danger" id="error_p_date_range"></small>

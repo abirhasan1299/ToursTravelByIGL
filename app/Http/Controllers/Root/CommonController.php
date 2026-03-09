@@ -7,5 +7,9 @@ use Illuminate\Http\Request;
 
 class CommonController extends Controller
 {
-    //
+    public function TourList()
+    {
+        return view('theme.tour-listing');
+    }
+
 }

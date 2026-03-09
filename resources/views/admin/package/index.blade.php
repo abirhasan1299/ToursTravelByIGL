@@ -99,7 +99,7 @@
                 icon: 'success',
                 title: 'Package',
                 text: '{{ session('success') }}',
-                confirmButtonColor: '#126600'
+                confirmButtonColor: '#3061fd'
             });
         </script>
     @endif
@@ -109,7 +109,7 @@
                 icon: 'error',
                 title: 'Package Error',
                 text: '{{ session('error') }}',
-                confirmButtonColor: 'rgba(98,255,224,0.45)'
+                confirmButtonColor: 'rgb(190,0,0)'
             });
         </script>
     @endif
@@ -171,8 +171,7 @@
                             $('#modal_p_date_range').val(data.p_date_range);
                             $('#modal_p_post_limit').val(data.p_post_limit);
                             $('#modal_p_status').val(data.p_status);
-
-
+                            $('#modal_p_credit').val(data.p_credit);
 
                             // Show modal
                             var modal = new bootstrap.Modal(document.getElementById('edit-package-modal'));

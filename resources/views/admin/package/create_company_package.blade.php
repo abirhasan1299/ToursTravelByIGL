@@ -105,21 +105,7 @@
                     </div>
                 </div>
 
-                <!-- Progress Steps -->
-                <div class="d-flex justify-content-between mb-4">
-                    <div class="step active">
-                        <div class="step-icon bg-primary text-white rounded-circle">1</div>
-                        <span class="step-text fw-semibold">Basic Info</span>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon bg-light text-muted rounded-circle">2</div>
-                        <span class="step-text text-muted">Package Details</span>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon bg-light text-muted rounded-circle">3</div>
-                        <span class="step-text text-muted">Settings</span>
-                    </div>
-                </div>
+
 
                 <!-- Main Form Card -->
                 <div class="card border-0 shadow-lg rounded-4 overflow-hidden">

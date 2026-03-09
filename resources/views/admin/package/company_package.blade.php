@@ -94,7 +94,7 @@
                 icon: 'error',
                 title: 'Package Error',
                 text: '{{ session('error') }}',
-                confirmButtonColor: 'rgba(98,255,224,0.45)'
+                confirmButtonColor: 'rgb(138,0,0)'
             });
         </script>
     @endif

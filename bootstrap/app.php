@@ -34,7 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'sslcommerz/fail',
             'sslcommerz/cancel',
             'sslcommerz/ipn',
-            'sslcommerz/pay-via-ajax', // if you are using ajax
+            'sslcommerz/pay-via-ajax',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

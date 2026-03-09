@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyPackage;
 use App\Models\Credit;
+use App\Models\UserPlanOwn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,9 @@ class SubscriptionController extends Controller
     {
         $package = CompanyPackage::where('p_status','active')->get();
         $credit = Credit::where('c_user_id',Auth::user()->id)->first();
+        $own_package = UserPlanOwn::where('user_id',auth()->user()->id)->first();
 
-        return view('admin.package.subscription',compact('package','credit'));
+        return view('admin.package.subscription',compact('package','credit','own_package'));
     }
 
 }

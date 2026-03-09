@@ -69,6 +69,23 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Credit -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            Credit
+                                        </label>
+                                        <div class="input-group">
+
+                                            <input type="number" name="p_credit"
+                                                   class="form-control"
+                                                   placeholder="50" value="{{old('p_credit')}}">
+
+                                        </div>
+                                        @error('p_credit')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+
                                     <!-- Date Range -->
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-semibold">
