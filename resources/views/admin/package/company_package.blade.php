@@ -53,11 +53,15 @@
                                 </td>
                                 <td>
                                   <div class="d-flex justify-content-between">
-                                      <a href="#" class="btn btn-sm btn-info" role="button"><i class="ti ti-calendar"></i> </a>
+                                      <a href="{{route('company.package.activity',base64_encode($d->id))}}" class="btn btn-sm btn-info" role="button"><i class="ti ti-calendar"></i> </a>
 
                                       <a href="#" class="btn btn-sm btn-warning" role="button"><i class="ti ti-pencil"></i></a>
 
-                                      <a href="#" class="btn btn-sm btn-danger" role="button"><i class="ti ti-trash"></i></a>
+                                      <form action="{{route('company.package.activity.destroy',$d->id)}}" method="post" class="delete-form">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button type="submit" class="btn btn-sm btn-danger" role="button"><i class="ti ti-trash"></i></button>
+                                      </form>
                                   </div>
                                 </td>
                             </tr>
@@ -73,16 +77,7 @@
     </div>
 @endsection
 @push('js')
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
 
-            @if ($errors->any())
-            var myModal = new bootstrap.Modal(document.getElementById('package-modal'));
-            myModal.show();
-            @endif
-
-        });
-    </script>
     @if(session('success'))
         <script>
             Swal.fire({
@@ -113,7 +108,7 @@
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "This record will be deleted!",
+                    text: "This record and activity will be deleted!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Yes, delete it!',
@@ -137,40 +132,5 @@
 
     </script>
 
-    <script>
-        $(document).ready(function(){
-
-            // Click Edit Button
-            $('.edit-btn').click(function(){
-                let packageId = $(this).data('id');
-                let actionUrl = '/admin/package/edit/' + packageId;
-
-                $('#package-form').attr('action', actionUrl);
-
-                $.ajax({
-                    url: '/admin/package/getData/' + packageId,
-                    type: 'GET',
-                    success: function(data){
-
-                        // Populate modal fields
-                        $('#modal_package_id').val(data.id);
-                        $('#modal_p_name').val(data.p_name);
-                        $('#modal_p_detail').summernote('code', data.p_detail);
-                        $('#modal_p_benefit').summernote('code', data.p_benefit);
-                        $('#modal_p_price').val(data.p_price);
-                        $('#modal_p_date_range').val(data.p_date_range);
-                        $('#modal_p_post_limit').val(data.p_post_limit);
-                        $('#modal_p_status').val(data.p_status);
-
-
-
-                        // Show modal
-                        var modal = new bootstrap.Modal(document.getElementById('edit-package-modal'));
-                        modal.show();
-                    }
-                });
-            });
-        });
-    </script>
 
 @endpush

@@ -28,9 +28,25 @@ Route::get('package/getState',[PackageController::class,'getState'])->name('pack
 
 Route::post('package/store',[PackageController::class,'store'])->name('package.store');
 
+Route::get('package/activity/{id}',[PackageController::class,'Activity'])->name('package.activity');
+
+Route::post('package/activity/store',[PackageController::class,'ActivityStore'])->name('package.activity.store');
+
+Route::delete('package/activity/destroy/{id}',[PackageController::class,'destroy'])->name('package.activity.destroy');
+
+/*
+========================================================================
+                            Package Booking Route
+========================================================================
+*/
+
+
+
 /*
 ========================================================================
                             Transaction Route
 ========================================================================
 */
 Route::get('transaction/history',[TransactionController::class,'index'])->name('transaction');
+
+

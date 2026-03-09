@@ -46,38 +46,6 @@
 
     @endphp
     <div class="row h-100 mt-3">
-        <div class="col-lg-3 col-md-6 col-xxl-6">
-            <div class="card card-h-100 overflow-hidden">
-                <div class="card-body pb-0">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="overflow-hidden flex-shrink-0">
-                            <h3 class="fw-normal text-reset fs-20 lh-base">
-                                <span class="text-muted fs-base text-uppercase h5">Good Day,</span> <br />
-                                <b>{{Auth::user()->name}} !</b>
-                            </h3>
-                        </div>
-                        <div class="flex-grow-1 text-end">
-                            <img class="d-none d-xxl-inline-block" src="{{ asset('assets/images/svg/email-campaign.svg') }}" width="110" alt="Generic placeholder image" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body d-flex align-items-center p-2 bg-light bg-opacity-50">
-                    <p class="d-flex align-items-center justify-content-between w-100 mb-0">
-                                                <span class="me-2"
-                                                ><i class="ti ti-calendar fs-15 align-middle"></i>
-                                                    <span class="align-middle ms-1 fw-semibold">
-                                                        <script>
-                                                            document.write(new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }))
-                                                        </script>
-                                                    </span></span
-                                                >
-                        <span class="text-nowrap"><i class="ti ti-clock fs-15 align-middle"></i><span class="align-middle ms-1 fw-semibold" id="clock-widget"></span></span>
-                    </p>
-                </div>
-                <!-- end card-body -->
-            </div>
-        </div>
-        <!-- end col-->
 
         <div class="col-lg-3 col-md-6 col-xxl-6">
             <div class="card card-h-100">
@@ -143,6 +111,9 @@
     </div>
 
     <div class="row mb-4">
+         @php
+            $popularity = ['POPULAR',"REGULAR","BEGINNERS","STARTING","EXPERTS"]
+         @endphp
 @foreach($package as $p)
             <!-- Package Plan -->
             <div class="col-xl-4 col-md-6 mb-4">
@@ -150,14 +121,14 @@
 
                     <!-- Popular Badge (Optional - can be conditionally shown) -->
                     <div class="position-absolute top-0 end-0 bg-primary text-white px-3 py-1 rounded-bl-3 fs-7 fw-semibold z-1" style="border-bottom-left-radius: 1rem;">
-                        POPULAR
+                        {{$popularity[array_rand($popularity)]}}
                     </div>
 
                     <!-- Card Header with Gradient Background -->
                     <div class="card-header bg-gradient-primary text-white border-0 p-4 text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                         <!-- Package Name -->
                         <h3 class="fw-bold mb-1 text-white">{{ strtoupper($p->p_name) }}</h3>
-                        <p class="text-white-50 mb-0 fs-7">Perfect for growing companies</p>
+                       
                     </div>
 
                     <div class="card-body p-4">

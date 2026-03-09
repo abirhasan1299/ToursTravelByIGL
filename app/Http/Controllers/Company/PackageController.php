@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,50 @@ class PackageController extends Controller
         return view('admin.package.company_package',compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function Activity($id)
+    {
+        $data = Package::where('id', base64_decode($id))->first();
+
+        $activity = Activity::where('package_id', base64_decode($id))->orderBy('day_no','asc')->get();
+
+        return view('admin.package.activity',compact('data','activity'));
+    }
+
+    public function ActivityStore(Request $request)
+    {
+        try {
+
+            $package = Package::findOrFail($request->package_id);
+
+            for ($i = 0; $i < $package->day; $i++) {
+
+                Activity::updateOrCreate(
+                    [
+                        'package_id' => $request->package_id,
+                        'day_no' => $request->day_no[$i],
+                    ],
+                    [
+                        'title'  => $request->title[$i] ?? '',
+                        'detail' => $request->detail[$i] ?? '',
+                        'day_no' => $request->day_no[$i]??'',
+                    ]
+                );
+
+            }
+
+            return redirect()->route('company.package.index')
+                ->with('success','Activity saved successfully');
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+
+            return redirect()->route('company.package.index')
+                ->with('error','Something went wrong');
+        }
+    }
+
+
     public function create()
     {
         $response = Http::withHeaders([
@@ -106,35 +148,33 @@ class PackageController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+
+            $data = Package::findOrFail($id);
+
+            // delete activities first
+            Activity::where('package_id', $id)->delete();
+
+            // delete package
+            $data->delete();
+
+            return redirect()
+                ->route('company.package.index')
+                ->with('success', 'Package deleted successfully');
+
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
+
+            return redirect()
+                ->route('company.package.index')
+                ->with('error', 'Something went wrong');
+        }
     }
 }
