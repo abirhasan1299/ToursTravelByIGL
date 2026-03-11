@@ -3,10 +3,12 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CommonController;
 use App\Http\Controllers\SslCommerzPaymentController;
+use App\Models\About;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('theme.index');
+    $about = About::where('id',1)->first();
+    return view('theme.index',compact('about'));
 })->name('home');
 
 //--------------------Admin Login Route-----------------------------------------

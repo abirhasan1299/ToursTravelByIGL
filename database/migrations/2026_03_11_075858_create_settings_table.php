@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('app_name');
+            $table->string('app_about')->nullable();
+            $table->string('app_email')->nullable();
+            $table->string('app_currency')->nullable();
+            $table->string('app_working_hour')->nullable();
+            $table->string('app_phone')->nullable();
+            $table->string('app_address')->nullable();
+            $table->string('app_facebook')->nullable();
+            $table->string('app_twitter')->nullable();
+            $table->string('app_youtube')->nullable();
+            $table->string('app_instagram')->nullable();
+            $table->string('app_google_map')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('settings');
+    }
+};

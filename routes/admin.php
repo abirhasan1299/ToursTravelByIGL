@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Root\CompanyInfo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
@@ -8,6 +9,20 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+/*
+    |--------------------------------------------------------------------------
+    | Website Informations Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('/about',[CompanyInfo::class,'index'])->name('about');
+
+Route::post('/about/store',[CompanyInfo::class,'store'])->name('about.store');
+
+Route::get('/settings',[CompanyInfo::class,'setting'])->name('setting');
+
+Route::post('/settings/store',[CompanyInfo::class,'StoreSetting'])->name('setting.store');
 
 /*
     |--------------------------------------------------------------------------

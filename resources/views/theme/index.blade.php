@@ -9,8 +9,10 @@
                     <div class="col-xl-7 col-lg-8 col-md-10">
                         <div class="main-slider-one__content">
                             <h5 class="main-slider-one__sub-title main-three bw-split-in-top">Discover Your</h5><!-- slider-sub-title -->
-                            <h2 class="main-slider-one__title main-three bw-split-in-down">Next Step <br> Destination</h2><!-- slider-title -->
-                            <p class="main-slider-one__text main-three bw-split-in-down">Lorem ipsum dolor sit amet consectetur adipiscing elit. Mauris nullam the Lorem ipsum dolor sit amet consectetur adipiscing elit.</p><!-- /.main-slider-one__text -->
+                            <h2 class="main-slider-one__title main-three bw-split-in-down">
+                                {{$about->hero_header??'Next Step'}}
+                                <br> Destination</h2><!-- slider-title -->
+                            <p class="main-slider-one__text main-three bw-split-in-down">{{$about->hero_detail??'Lorem ipsum dolor sit amet consectetur adipiscing elit. Mauris nullam the Lorem ipsum dolor sit amet consectetur adipiscing elit.'}}</p><!-- /.main-slider-one__text -->
                         </div><!-- /.main-slider-one__content -->
                     </div><!-- /.col-xl-6 -->
                 </div><!-- /.row -->
@@ -184,14 +186,14 @@
                             </div><!-- /.about-two__thumb__funfact__icon -->
                             <div class="about-two__thumb__funfact__content count-box">
                                 <h2 class="about-two__thumb__funfact__count">
-                                    <span class="count-text" data-stop="25" data-speed="2000"></span>
+                                    <span class="count-text" data-stop="{{$about->exp_years}}" data-speed="2000"> </span>
                                     <span>Years</span>
                                 </h2><!-- /.about-two__thumb__funfact__count -->
                                 <p class="about-two__thumb__funfact__text">Of Experience</p><!-- /.about-two__thumb__funfact__text -->
                             </div><!-- /.about-two__thumb__funfact__content -->
                         </div><!-- /.about-two__thumb__funfact -->
                         <div class="about-two__thumb__item-element">
-                            <img src="{{asset('assets/images/shapes/corki.png')}}" alt="gotur image">
+                            <img src="{{asset('assets/images/shapes/corki.png')}}" alt=" image">
                         </div><!-- /.about-two__thumb__item -->
                     </div><!-- /.about-two__left -->
                 </div><!-- /.col-lg-6 -->
@@ -201,7 +203,7 @@
                             <h6 class="sec-title__tagline bw-split-in-right">About company</h6><!-- /.sec-title__tagline -->
                             <h3 class="sec-title__title bw-split-in-left">Great Opportunity for Adventure & Travels</h3><!-- /.sec-title__title -->
                         </div><!-- /.sec-title -->
-                        <p class="about-two__top__text wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>It is a long established fact that a reader will be distracted the readable content of a page when looking at layout the point.</p><!-- /.about-two__top__text -->
+                        <p class="about-two__top__text wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>{{$about->company_title??'Lorem ipsum dolor sit amet consectetur adipiscing elit. Mauris nullam the Lorem ipsum dolor sit amet consectetur adipiscing elit.'}}</p><!-- /.about-two__top__text -->
                         <div class="about-two__feature">
                             <div class="row gutter-y-20 gutter-x-20">
                                 <div class="col-xl-6 col-lg-12 col-md-6 wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
@@ -222,7 +224,7 @@
                                         </div><!-- /.about-two__feature_icon -->
                                         <div class="about-two__feature-content">
                                             <h5 class="about-two__feature-title">Mission & Vision</h5><!-- /.about-two__feature-title -->
-                                            <p class="about-two__feature-text">Ut vehiculadictumst. Maecenas ante.</p><!-- /.about-two__feature-text -->
+                                            <p class="about-two__feature-text">{{$about->mv??'Ut vehiculadictumst. Maecenas ante. Step'}}</p><!-- /.about-two__feature-text -->
                                         </div><!-- /.about-two__feature-content -->
                                     </div><!-- /.about-two__feature-vestion -->
                                 </div><!-- /.col-xl-6 col-lg-12 col-md-6 -->
@@ -232,11 +234,11 @@
 
                             <div class="about-two__button__author">
                                 <div class="about-two__button__author__thumb">
-                                    <img src="{{asset('assets/images/resources/about-author-1-1.png')}}" alt="author">
+                                    <img src="{{asset('storage/author_img/'.$about->author_img)}}" alt="author">
                                 </div><!-- /.about-two__button__call__icon -->
                                 <div class="about-two__button__author__content">
-                                    <h5 class="about-two__button__author__name">Ronald Richards</h5>
-                                    <span class="about-two__button__author__dec">Co, Founder</span><!-- /.about-two__button__author__dec -->
+                                    <h5 class="about-two__button__author__name">{{$about->author_name??"TITAN KONOK"}}</h5>
+                                    <span class="about-two__button__author__dec">{{$about->author_designation??"Designation"}}</span><!-- /.about-two__button__author__dec -->
                                 </div><!-- /.about-two__button__call__content -->
                             </div><!-- /.about-two__button__call -->
                         </div><!-- /.about-two__button -->
@@ -245,70 +247,7 @@
             </div><!-- /.row -->
         </div><!-- /.container -->
         <div class="client-carousel  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-            <div class="container">
-                <h6 class="client-carousel__title">1k + Brands Trust Us</h6><!-- /.client-carousel__title -->
-                <div class="client-carousel__one gotur-owl__carousel owl-theme owl-carousel" data-owl-options='{
-            "items": 5,
-            "margin": 65,
-            "smartSpeed": 700,
-            "loop":true,
-            "autoplay": false,
-            "nav":false,
-            "dots":false,
-            "navText": ["<span class=\"icon-left-arrow\"></span>","<span class=\"icon-right-arrow\"></span>"],
-            "responsive":{
-                "0":{
-                    "items": 2,
-                    "margin": 30
-                },
-                "431":{
-                    "items": 1,
-                    "margin": 30
-                },
-                "500":{
-                    "items": 2,
-                    "margin": 40
-                },
-                "768":{
-                    "items": 3,
-                    "margin": 50
-                },
-                "992":{
-                    "items": 4,
-                    "margin": 60
-                },
-                "1200":{
-                    "items": 5,
-                    "margin": 100
-                }
-            }
-            }'>
-                    <div class="client-carousel__one__item">
-                        <img src="{{asset('assets/images/brand/brand-1-1.png')}}" alt="gotur" class="client-carousel__one__image">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__hover-image">
-                    </div><!-- /.owl-slide-item-->
-                    <div class="client-carousel__one__item">
-                        <img src="{{asset('assets/images/brand/brand-1-1.png')}}" alt="gotur" class="client-carousel__one__image">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__hover-image">
-                    </div><!-- /.owl-slide-item-->
-                    <div class="client-carousel__one__item">
-                        <img src="{{asset('assets/images/brand/brand-1-1.png')}}" alt="gotur" class="client-carousel__one__image">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__hover-image">
-                    </div><!-- /.owl-slide-item-->
-                    <div class="client-carousel__one__item">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__image">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__hover-image">
-                    </div><!-- /.owl-slide-item-->
-                    <div class="client-carousel__one__item">
-                        <img src="{{asset('assets/images/brand/brand-1-1.png')}}" alt="gotur" class="client-carousel__one__image">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__hover-image">
-                    </div><!-- /.owl-slide-item-->
-                    <div class="client-carousel__one__item">
-                        <img src="{{asset('assets/images/brand/brand-1-1.png')}}" alt="gotur" class="client-carousel__one__image">
-                        <img src="{{asset('assets/images/brand/brand-hover-1-1.png')}}" alt="gotur" class="client-carousel__one__hover-image">
-                    </div><!-- /.owl-slide-item-->
-                </div><!-- /.thm-owl__slider -->
-            </div><!-- /.container -->
+
         </div><!-- /.client-carousel -->
         <div class="about-two__element-one">
             <img src="{{asset('assets/images/shapes/about-1-1.png')}}" alt>
@@ -500,7 +439,6 @@
             <img src="{{asset('assets/images/shapes/monjil.png')}}" alt>
         </div><!-- /.destination-filter__element -->
     </section><!-- /.destination-filter -->
-
     <section class="cta-five section-space">
         <div class="cta-five__inner">
             <div class="cta-five__bg wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms" style="background-image: url(assets/images/backgrounds/cta-1-1.jpg);"></div><!-- /.cta-five__bg -->
@@ -515,7 +453,7 @@
                                     </div><!-- /.cta-five__funfact__icon -->
                                     <div class="cta-five__funfact__content count-box">
                                         <h3 class="cta-five__funfact__count">
-                                            <span class="count-text" data-stop="30" data-speed="1500"></span>
+                                            <span class="count-text" data-stop="{{$about->tour_success??'30'}}" data-speed="1500"></span>
                                             <span>k+</span>
                                         </h3><!-- /.cta-five__funfact__count -->
                                         <p class="cta-five__funfact__text">Tours success</p><!-- /.cta-five__funfact__text -->
@@ -527,7 +465,7 @@
                                     </div><!-- /.cta-five__funfact__icon -->
                                     <div class="cta-five__funfact__content count-box">
                                         <h3 class="cta-five__funfact__count">
-                                            <span class="count-text" data-stop="6500" data-speed="1500"></span>
+                                            <span class="count-text" data-stop="{{$about->happy_traveler??'30'}}" data-speed="1500"></span>
                                             <span>+</span>
                                         </h3><!-- /.cta-five__funfact__count -->
                                         <p class="cta-five__funfact__text">Happy Traveler</p><!-- /.cta-five__funfact__text -->
@@ -539,7 +477,7 @@
                                     </div><!-- /.cta-five__funfact__icon -->
                                     <div class="cta-five__funfact__content count-box">
                                         <h3 class="cta-five__funfact__count">
-                                            <span class="count-text" data-stop="6561" data-speed="1500"></span>
+                                            <span class="count-text" data-stop="{{$about->award??'30'}}" data-speed="1500"></span>
                                             <span>+</span>
                                         </h3><!-- /.cta-five__funfact__count -->
                                         <p class="cta-five__funfact__text">Awards Winning</p><!-- /.cta-five__funfact__text -->
@@ -551,7 +489,7 @@
                                     </div><!-- /.cta-five__funfact__icon -->
                                     <div class="cta-five__funfact__content count-box">
                                         <h3 class="cta-five__funfact__count">
-                                            <span class="count-text" data-stop="25" data-speed="1500"></span>
+                                            <span class="count-text" data-stop="{{$about->exp_years??'30'}}" data-speed="1500"></span>
                                             <span>+</span>
                                         </h3><!-- /.cta-five__funfact__count -->
                                         <p class="cta-five__funfact__text">Our Experience</p><!-- /.cta-five__funfact__text -->
@@ -569,648 +507,6 @@
             </div><!-- /.container -->
         </div><!-- /.cta-five__inner -->
     </section><!-- /.cta-five -->
-
-    <section class="feature-package feature-package--two" id="guide">
-        <div class="container">
-            <div class="feature-package__top">
-                <div class="row align-items-end">
-                    <div class="col-lg-8">
-                        <div class="sec-title ">
-                            <h6 class="sec-title__tagline bw-split-in-right">popular tours</h6><!-- /.sec-title__tagline -->
-                            <h3 class="sec-title__title bw-split-in-left">Most Popular <span>Tours</span></h3><!-- /.sec-title__title -->
-                        </div><!-- /.sec-title -->
-                    </div><!-- /.col-lg-8 -->
-                    <div class="col-lg-4">
-                        <div class="feature-package__bottom__nav">
-                            <button class="feature-package__carousel__nav--left"><span class="icon-arrow-left"></span></button>
-                            <button class="feature-package__carousel__nav--right"><span class="icon-arrow-right"></span></button>
-                        </div>
-                    </div><!-- /.col-lg-4 -->
-                </div><!-- /.row -->
-            </div><!-- /.feature-package__top -->
-        </div><!-- /.container -->
-        <div class="container-fluid">
-            <div class="feature-package__inner">
-                <div class="feature-package__carousel gotur-owl__carousel gotur-owl__carousel--custom-nav gotur-owl__carousel--with-shadow owl-carousel owl-theme" data-owl-nav-prev=".feature-package__carousel__nav--left" data-owl-nav-next=".feature-package__carousel__nav--right" data-owl-options='{
-                    "items": 1,
-                    "margin": 30,
-                    "loop": false,
-                    "smartSpeed": 700,
-                    "nav": false,
-                    "dots": false,
-                    "autoplay": false,
-                    "responsive": {
-                        "0": {
-                            "items": 1
-                        },
-                        "576": {
-                            "items": 2
-                        },
-                        "768": {
-                            "items": 2
-                        },
-                        "992": {
-                            "items": 3
-                        },
-                        "1199": {
-                            "items": 3
-                        },
-                        "1500": {
-                            "items": 4
-                        }
-                    }
-                }'>
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-1.jpg')}}" alt="All Inclusive Ultimate Circle Island Day with Lunch">
-                                <div class="listing-card-four__btn-group">
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">All Inclusive Ultimate Circle Island Day with Lunch</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-2.jpg')}}" alt="Molokini and Turtle Town Snorkeling Adventure Aboard">
-                                <div class="listing-card-four__btn-group">
-
-                                    <div class="listing-card-four__discount">-40% Off</div><!-- /.listing-card-four__discount -->
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">Molokini and Turtle Town Snorkeling Adventure Aboard</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-3.jpg')}}" alt="All Inclusive Ultimate Circle Island Day with Lunch">
-                                <div class="listing-card-four__btn-group">
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">All Inclusive Ultimate Circle Island Day with Lunch</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-4.jpg')}}" alt="Molokini and Turtle Town Snorkeling Adventure Aboard">
-                                <div class="listing-card-four__btn-group">
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">Molokini and Turtle Town Snorkeling Adventure Aboard</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-1.jpg')}}" alt="All Inclusive Ultimate Circle Island Day with Lunch">
-                                <div class="listing-card-four__btn-group">
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">All Inclusive Ultimate Circle Island Day with Lunch</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-2.jpg')}}" alt="Molokini and Turtle Town Snorkeling Adventure Aboard">
-                                <div class="listing-card-four__btn-group">
-
-                                    <div class="listing-card-four__discount">-40% Off</div><!-- /.listing-card-four__discount -->
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">Molokini and Turtle Town Snorkeling Adventure Aboard</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-3.jpg')}}" alt="All Inclusive Ultimate Circle Island Day with Lunch">
-                                <div class="listing-card-four__btn-group">
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">All Inclusive Ultimate Circle Island Day with Lunch</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                    <div class="item">
-                        <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                            <div class="listing-card-four__image">
-                                <img src="{{asset('assets/images/blog/listing-list-4-4.jpg')}}" alt="Molokini and Turtle Town Snorkeling Adventure Aboard">
-                                <div class="listing-card-four__btn-group">
-
-
-                                    <div class="listing-card-four__featured">Featured</div><!-- /.listing-card-four__featured -->
-
-                                </div><!-- /.listing-card-four__btn-group -->
-                                <div class="listing-card-four__btns">
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    <div class="listing-card-four__btns__hover">
-                                        <a href="#" class="listing-card-four__popup card__popup" data-gallery-options='{
-                    "items": [
-                        {
-                            "src": "assets/images/blog/listing-1-1.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-2.jpg"
-                        },
-                        {
-                            "src": "assets/images/blog/listing-1-3.jpg"
-                        }
-                    ],
-                    "gallery": {
-                        "enabled": true
-                    },
-                    "type": "image"
-                }'>
-                                            <span class="icon-image"></span>
-                                        </a>
-                                        <a class="video-popup" href="https://www.youtube.com/watch?v=0MuL8fd3pb8"><span class="icon-video"></span></a>
-                                    </div><!-- /.listing-card-four__btns__hover -->
-                                </div>
-                                <ul class="listing-card-four__meta list-unstyled">
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-pin1"></i> </span>Slingerland</a>
-                                    </li>
-                                    <li>
-                                        <a href="tour-listing-details-2.html"> <span class="listing-card-four__meta__icon"> <i class="icon-calendar"></i> </span>6 Days, 3 Night</a>
-                                    </li>
-                                </ul><!-- /.listing-card-four__meta -->
-                                <a href="tour-listing-details-2.html" class="listing-card-four__image__overly"></a>
-                            </div><!-- /.listing-card-four__image -->
-                            <div class="listing-card-four__content">
-                                <div class="listing-card-four__rating">
-                                    <span>(10 Review)</span>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                </div><!-- /.listing-card-four__rating -->
-                                <h3 class="listing-card-four__title"><a href="tour-listing-details-2.html">Molokini and Turtle Town Snorkeling Adventure Aboard</a></h3><!-- /.listing-card-four__title -->
-
-                                <div class="listing-card-four__content__btn">
-                                    <div class="listing-card-four__price">
-                                        <span class="listing-card-four__price__sub">Per Day</span>
-                                        <span class="listing-card-four__price__number">$59.00</span>
-                                    </div><!-- /.listing-card-four__price -->
-                                    <a href="tour-listing-details-2.html" class="listing-card-four__btn gotur-btn"> Book Now <span class="icon"><i class="icon-right"></i> </span></a>
-                                </div><!-- /.listing-card-four__content__btn -->
-                            </div><!-- /.listing-card-four__content -->
-                        </div><!-- /.listing-card-four -->
-                    </div><!-- /.item -->
-                </div><!-- /.feature-package__carousel -->
-            </div><!-- /.feature-package__inner -->
-
-        </div><!-- /.container -->
-
-        <div class="feature-package__element">
-            <img src="assets/images/shapes/love-1-2.png" alt>
-        </div><!-- /.feature-package__element -->
-    </section><!-- /.feature-package -->
-
-    <section class="offer-one section-space">
-        <div class="container">
-            <div class="sec-title text-center">
-                <h6 class="sec-title__tagline bw-split-in-right">Special Offers</h6><!-- /.sec-title__tagline -->
-                <h3 class="sec-title__title bw-split-in-left">Offers To <span> Inspire You</span></h3><!-- /.sec-title__title -->
-            </div><!-- /.sec-title -->
-            <div class="row gutter-y-30 gutter-x-30">
-                <div class="col-lg-6 wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
-                    <div class="offer-one__card">
-                        <div class="offer-one__card__content">
-                            <div class="sec-title ">
-                                <h6 class="sec-title__tagline bw-split-in-right">Special Offer</h6><!-- /.sec-title__tagline -->
-                                <h3 class="sec-title__title bw-split-in-left">Explore All Tour Of The <br> World With Us</h3><!-- /.sec-title__title -->
-                            </div><!-- /.sec-title -->
-                            <div class="offer-one__card__btn">
-                                <a href="tour-listing-details.blade.php" class="gotur-btn">Book Now <span class="icon"><i class="icon-right"></i></span></a>
-                            </div><!-- /.offer-one__card__btn -->
-                        </div><!-- /.offer-one__card__content -->
-                        <div class="offer-one__card__left">
-                            <div class="offer-one__card__thumb">
-                                <img src="{{asset('assets/images/resources/offer-1-1.jpg')}}" alt="shape">
-                            </div><!-- /.offer-one__card__thumb -->
-                        </div><!-- /.offer-one__card__left -->
-                    </div><!-- /.offer-one__card -->
-                </div><!-- /.col-lg-6 -->
-                <div class="col-lg-6 wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                    <div class="offer-one__card offer-one__card--two">
-                        <div class="offer-one__card__left">
-                            <div class="offer-one__card__thumb">
-                                <img src="{{asset('assets/images/resources/offer-1-2.jpg')}}" alt="shape">
-                            </div><!-- /.offer-one__card__thumb -->
-                        </div><!-- /.offer-one__card__left -->
-                        <div class="offer-one__card__content">
-                            <div class="sec-title text-end">
-                                <h6 class="sec-title__tagline bw-split-in-right">Get 40% Offer</h6><!-- /.sec-title__tagline -->
-                                <h3 class="sec-title__title bw-split-in-left">Tours and Trip <br> Packages, Globally</h3><!-- /.sec-title__title -->
-                            </div><!-- /.sec-title -->
-                            <div class="offer-one__card__btn">
-                                <a href="tour-listing-details.blade.php" class="gotur-btn gotur-btn--primary">Book Now <span class="icon"><i class="icon-right"></i></span></a>
-                            </div><!-- /.offer-one__card__btn -->
-                        </div><!-- /.offer-one__card__content -->
-                    </div><!-- /.offer-one__card -->
-                </div><!-- /.col-lg-6 -->
-            </div><!-- /.row -->
-        </div><!-- /.container -->
-        <div class="offer-one__element">
-            <img src="{{asset('assets/images/resources/about-3-1.png')}}" alt>
-        </div><!-- /.offer-one__element -->
-    </section><!-- /.offer-one -->
 
     <section class="why-choose-one section-space-bottom">
         <div class="container">
@@ -1284,220 +580,6 @@
         </div><!-- /.why-choose-one__element -->
     </section><!-- /.why-choose-one -->
 
-    <section class="testimonials-three testimonials-three--two section-space" id="testimonials">
-        <div class="testimonials-three__bg" style="background-image: url({{asset('assets/images/backgrounds/testi-3-1.png')}});"></div><!-- /.testimonials-three__bg -->
-        <div class="container-fluid">
-            <div class="row align-items-center gutter-y-40">
-                <div class="col-xl-6">
-                    <div class="testimonials-three__top">
-                        <div class="testimonials-three__thumb wow fadeInLeft" data-wow-duration='1500ms' data-wow-delay='400ms'>
-                            <img src="{{asset('assets/images/resources/testi--3-1.png')}}" alt="gotur image">
-                        </div><!-- /.testimonials-three__thumb -->
-                        <div class="testimonials-three__bottom__nav">
-                            <button class="testimonials-three__carousel__nav--left"><span class="icon-arrow-left"></span></button>
-                            <button class="testimonials-three__carousel__nav--right"><span class="icon-arrow-right"></span></button>
-                        </div>
-                    </div><!-- /.testimonials-three__top -->
-                </div><!-- /.col-xl-4 -->
-                <div class="col-xl-6">
-                    <div class="testimonials-three__inner">
-                        <div class="testimonials-three__carousel gotur-owl__carousel gotur-owl__carousel--custom-nav gotur-owl__carousel--basic-nav owl-carousel owl-theme" data-owl-nav-prev=".testimonials-three__carousel__nav--left" data-owl-nav-next=".testimonials-three__carousel__nav--right" data-owl-options='{
-                            "items": 1,
-                            "margin": 30,
-                            "loop": true,
-                            "smartSpeed": 700,
-                            "nav": false,
-                            "dots": false,
-                            "autoplay": false,
-                            "responsive": {
-                                "0": {
-                                    "items": 1
-                                },
-                                "768": {
-                                    "items": 2
-                                },
-                                "992": {
-                                    "items": 2
-                                },
-                                "1199": {
-                                    "items": 2
-                                }
-                            }
-                        }'>
-                            <div class="item">
-                                <div class="testimonials-two-card testimonials-two-card--two  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='00ms'>
-                                    <div class="testimonials-two-card__inner">
-                                        <div class="testimonials-two-card__top">
-                                            <img src="{{asset('assets/images/resources/testimonials-2-1.png')}}" alt="testiomonials author">
-                                        </div><!-- /.testimonials-two-card__top -->
-                                        <div class="testimonials-two-card__content testimonials-two-card__content--two">
-                                            <div class="testimonials-two-card__author">
-                                                <h4 class="testimonials-two-card__author__name">Courtney Henry</h4><!-- /.testimonials-two-card__author__name -->
-                                                <p class="testimonials-two-card__author__dec">Marketing Coordinator</p><!-- /.testimonials-two-card__author__dec -->
-                                            </div><!-- /.testimonials-two-card__author -->
-                                            <p class="testimonials-two-card__text">Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar maximus leo</p><!-- /.testimonials-two-card__text -->
-                                        </div><!-- /.testimonials-two-card__content -->
-                                        <div class="testimonials-two-card__star testimonials-two-card__star--two">
-                                            <div class="testimonials-two-card__star__item">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div><!-- /.testimonials-two-card__star__item -->
-                                        </div><!-- /.testimonials-two-card__star -->
-                                        <div class="testimonials-two-card__quite">
-                                            <i class="icon-straight-quotes"></i>
-                                        </div><!-- /.testimonials-two-card__quite -->
-                                    </div><!-- /.testimonials-two-card__inner -->
-                                </div><!-- /.testimonials-two-card -->
-                            </div><!-- /.item -->
-                            <div class="item">
-                                <div class="testimonials-two-card testimonials-two-card--two  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='00ms'>
-                                    <div class="testimonials-two-card__inner">
-                                        <div class="testimonials-two-card__top">
-                                            <img src="{{asset('assets/images/resources/testimonials-2-2.png')}}" alt="testiomonials author">
-                                        </div><!-- /.testimonials-two-card__top -->
-                                        <div class="testimonials-two-card__content testimonials-two-card__content--two">
-                                            <div class="testimonials-two-card__author">
-                                                <h4 class="testimonials-two-card__author__name">Jacob Jones</h4><!-- /.testimonials-two-card__author__name -->
-                                                <p class="testimonials-two-card__author__dec">Web Designer</p><!-- /.testimonials-two-card__author__dec -->
-                                            </div><!-- /.testimonials-two-card__author -->
-                                            <p class="testimonials-two-card__text">Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar maximus leo</p><!-- /.testimonials-two-card__text -->
-                                        </div><!-- /.testimonials-two-card__content -->
-                                        <div class="testimonials-two-card__star testimonials-two-card__star--two">
-                                            <div class="testimonials-two-card__star__item">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div><!-- /.testimonials-two-card__star__item -->
-                                        </div><!-- /.testimonials-two-card__star -->
-                                        <div class="testimonials-two-card__quite">
-                                            <i class="icon-straight-quotes"></i>
-                                        </div><!-- /.testimonials-two-card__quite -->
-                                    </div><!-- /.testimonials-two-card__inner -->
-                                </div><!-- /.testimonials-two-card -->
-                            </div><!-- /.item -->
-                            <div class="item">
-                                <div class="testimonials-two-card testimonials-two-card--two  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='00ms'>
-                                    <div class="testimonials-two-card__inner">
-                                        <div class="testimonials-two-card__top">
-                                            <img src="{{asset('assets/images/resources/testimonials-2-1.png')}}" alt="testiomonials author">
-                                        </div><!-- /.testimonials-two-card__top -->
-                                        <div class="testimonials-two-card__content testimonials-two-card__content--two">
-                                            <div class="testimonials-two-card__author">
-                                                <h4 class="testimonials-two-card__author__name">Courtney Henry</h4><!-- /.testimonials-two-card__author__name -->
-                                                <p class="testimonials-two-card__author__dec">Marketing Coordinator</p><!-- /.testimonials-two-card__author__dec -->
-                                            </div><!-- /.testimonials-two-card__author -->
-                                            <p class="testimonials-two-card__text">Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar maximus leo</p><!-- /.testimonials-two-card__text -->
-                                        </div><!-- /.testimonials-two-card__content -->
-                                        <div class="testimonials-two-card__star testimonials-two-card__star--two">
-                                            <div class="testimonials-two-card__star__item">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div><!-- /.testimonials-two-card__star__item -->
-                                        </div><!-- /.testimonials-two-card__star -->
-                                        <div class="testimonials-two-card__quite">
-                                            <i class="icon-straight-quotes"></i>
-                                        </div><!-- /.testimonials-two-card__quite -->
-                                    </div><!-- /.testimonials-two-card__inner -->
-                                </div><!-- /.testimonials-two-card -->
-                            </div><!-- /.item -->
-                            <div class="item">
-                                <div class="testimonials-two-card testimonials-two-card--two  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='00ms'>
-                                    <div class="testimonials-two-card__inner">
-                                        <div class="testimonials-two-card__top">
-                                            <img src="{{asset('assets/images/resources/testimonials-2-2.png')}}" alt="testiomonials author">
-                                        </div><!-- /.testimonials-two-card__top -->
-                                        <div class="testimonials-two-card__content testimonials-two-card__content--two">
-                                            <div class="testimonials-two-card__author">
-                                                <h4 class="testimonials-two-card__author__name">Jacob Jones</h4><!-- /.testimonials-two-card__author__name -->
-                                                <p class="testimonials-two-card__author__dec">Web Designer</p><!-- /.testimonials-two-card__author__dec -->
-                                            </div><!-- /.testimonials-two-card__author -->
-                                            <p class="testimonials-two-card__text">Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar maximus leo</p><!-- /.testimonials-two-card__text -->
-                                        </div><!-- /.testimonials-two-card__content -->
-                                        <div class="testimonials-two-card__star testimonials-two-card__star--two">
-                                            <div class="testimonials-two-card__star__item">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div><!-- /.testimonials-two-card__star__item -->
-                                        </div><!-- /.testimonials-two-card__star -->
-                                        <div class="testimonials-two-card__quite">
-                                            <i class="icon-straight-quotes"></i>
-                                        </div><!-- /.testimonials-two-card__quite -->
-                                    </div><!-- /.testimonials-two-card__inner -->
-                                </div><!-- /.testimonials-two-card -->
-                            </div><!-- /.item -->
-                            <div class="item">
-                                <div class="testimonials-two-card testimonials-two-card--two  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='00ms'>
-                                    <div class="testimonials-two-card__inner">
-                                        <div class="testimonials-two-card__top">
-                                            <img src="{{asset('assets/images/resources/testimonials-2-1.png')}}" alt="testiomonials author">
-                                        </div><!-- /.testimonials-two-card__top -->
-                                        <div class="testimonials-two-card__content testimonials-two-card__content--two">
-                                            <div class="testimonials-two-card__author">
-                                                <h4 class="testimonials-two-card__author__name">Courtney Henry</h4><!-- /.testimonials-two-card__author__name -->
-                                                <p class="testimonials-two-card__author__dec">Marketing Coordinator</p><!-- /.testimonials-two-card__author__dec -->
-                                            </div><!-- /.testimonials-two-card__author -->
-                                            <p class="testimonials-two-card__text">Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar maximus leo</p><!-- /.testimonials-two-card__text -->
-                                        </div><!-- /.testimonials-two-card__content -->
-                                        <div class="testimonials-two-card__star testimonials-two-card__star--two">
-                                            <div class="testimonials-two-card__star__item">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div><!-- /.testimonials-two-card__star__item -->
-                                        </div><!-- /.testimonials-two-card__star -->
-                                        <div class="testimonials-two-card__quite">
-                                            <i class="icon-straight-quotes"></i>
-                                        </div><!-- /.testimonials-two-card__quite -->
-                                    </div><!-- /.testimonials-two-card__inner -->
-                                </div><!-- /.testimonials-two-card -->
-                            </div><!-- /.item -->
-                            <div class="item">
-                                <div class="testimonials-two-card testimonials-two-card--two  wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='00ms'>
-                                    <div class="testimonials-two-card__inner">
-                                        <div class="testimonials-two-card__top">
-                                            <img src="{{asset('assets/images/resources/testimonials-2-2.png')}}" alt="testiomonials author">
-                                        </div><!-- /.testimonials-two-card__top -->
-                                        <div class="testimonials-two-card__content testimonials-two-card__content--two">
-                                            <div class="testimonials-two-card__author">
-                                                <h4 class="testimonials-two-card__author__name">Jacob Jones</h4><!-- /.testimonials-two-card__author__name -->
-                                                <p class="testimonials-two-card__author__dec">Web Designer</p><!-- /.testimonials-two-card__author__dec -->
-                                            </div><!-- /.testimonials-two-card__author -->
-                                            <p class="testimonials-two-card__text">Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar maximus leo</p><!-- /.testimonials-two-card__text -->
-                                        </div><!-- /.testimonials-two-card__content -->
-                                        <div class="testimonials-two-card__star testimonials-two-card__star--two">
-                                            <div class="testimonials-two-card__star__item">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div><!-- /.testimonials-two-card__star__item -->
-                                        </div><!-- /.testimonials-two-card__star -->
-                                        <div class="testimonials-two-card__quite">
-                                            <i class="icon-straight-quotes"></i>
-                                        </div><!-- /.testimonials-two-card__quite -->
-                                    </div><!-- /.testimonials-two-card__inner -->
-                                </div><!-- /.testimonials-two-card -->
-                            </div><!-- /.item -->
-                        </div><!-- /.testimonials-three__carousel -->
-                    </div><!-- /.testimonials-three__inner -->
-                </div><!-- /.col-xl-8 -->
-            </div><!-- /.row -->
-        </div><!-- /.container -->
-    </section><!-- /.testimonials-three -->
 
 @endsection
 @push('js')

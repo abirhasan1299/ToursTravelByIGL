@@ -56,7 +56,7 @@
         <div class="container-fluid">
             <div class="main-header__inner">
                 <div class="main-header__logo logo-retina">
-                    <a href="#"><img src="{{asset('assets/images/igl.png')}}" alt="" width="160" height="100"></a>
+                    <a href="#"><img src="{{asset('assets/images/igl.png')}}" alt="" width="" height=""></a>
                 </div><!-- /.main-header__logo -->
                 <div class="main-header__right">
                     <nav class="main-header__nav main-menu">
@@ -127,7 +127,7 @@
             <div class="container">
                 <div class="main-footer__top__inner wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
                     <div class="footer-widget__logo logo-retina">
-                        <a href="#"><img src="{{asset('assets/images/igl.png')}}" width="158" height="45" alt="gotur logo"></a>
+                        <a href="#"><img src="{{asset('assets/images/igl.png')}}" width="160" height="80" alt="gotur logo"></a>
                     </div><!-- /.footer-widget__logo -->
                     <ul class="list-unstyled footer-widget__list">
                         <li>

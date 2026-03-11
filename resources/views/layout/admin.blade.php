@@ -452,7 +452,7 @@
 
                     </li>
 @if(auth()->user()->role==1)
-                    <li class="side-nav-title mt-2" data-lang="main">Company</li>
+
                     <li class="side-nav-item">
                         <a href="{{route('admin.list-company')}}" class="side-nav-link">
                             <span class="menu-icon"><i class="ti ti-building"></i></span>
@@ -464,6 +464,18 @@
                             <span class="menu-icon"><i class="ti ti-box"></i></span>
                             <span class="menu-text" data-lang="dashboards">Package</span>
                         </a>
+                    </li>
+                    <li class="side-nav-item">
+                        <a href="{{route('admin.about')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-info-circle"></i></span>
+                                <span class="menu-text" data-lang="dashboards">About</span>
+                        </a>
+                    </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.setting')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-settings"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Settings</span>
+                            </a>
                     </li>
 @endif
 @if(auth()->user()->role==2)

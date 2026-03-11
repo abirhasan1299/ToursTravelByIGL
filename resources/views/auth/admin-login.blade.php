@@ -63,6 +63,9 @@
                                         <input type="password" name="password" class="form-control" id="userPassword" placeholder="••••••••" required  />
                                     </div>
                                 </div>
+                                <div class="mb-3 d-flex justify-content-center">
+                                    <a href="#">Forget Password ?</a>
+                                </div>
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary fw-semibold py-2">Sign In</button>

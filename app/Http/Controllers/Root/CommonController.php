@@ -75,5 +75,4 @@ class CommonController extends Controller
     }
 
 
-
 }

@@ -3392,7 +3392,7 @@ h6 {
   }
 }
 .main-header--two .main-header__logo {
-  padding: 22.5px 37px;
+  padding: 10px;
   background-color: var(--gotur-white, #fff);
   border-radius: 0 1000px 1000px 0;
   position: relative;
@@ -17932,7 +17932,7 @@ a + .listing-card-four__btns__hover {
   display: flex;
   align-items: center;
   justify-content: start;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .footer-widget__logo a {
   display: block;
