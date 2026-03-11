@@ -51,40 +51,12 @@
 <!-- /.preloader -->
 <div class="page-wrapper">
 
-    <div class="top-one top-one--two">
-        <div class="container-fluid">
-            <div class="top-one__inner">
-                <ul class="list-unstyled top-one__info">
-                    <li class="top-one__info__item">
-                        <i class="icon-telephone"></i>
-                        <a href="tel:+6108-666-0112">+6108-666-0112</a>
-                    </li><!-- /.top-one__info__item -->
-                    <li class="top-one__info__item">
-                        <i class="icon-email"></i>
-                        <a href="mailto:info@gmail.com">info@gmail.com</a>
-                    </li><!-- /.top-one__info__item -->
-                </ul><!-- /.list-unstyled top-one__info -->
-                <div class="top-one__right">
-                    <div class="top-one__info__item">
-                        <i class="icon-maps-and-flags"></i>
-                        <a href="https://www.google.com/maps">184 Main Collins Street Victoria 8007</a>
-                    </div><!-- /.top-one__info__item -->
-                    <div class="top-one__social">
-                        <a href="https://facebook.com/"> <i class="icon-facebook" aria-hidden="true"></i> <span class="sr-only">Facebook</span></a>
-                        <a href="https://twitter.com/"> <i class="icon-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
-                        <a href="https://instagram.com/"> <i class="icon-linkedin" aria-hidden="true"></i> <span class="sr-only">Linked In</span></a>
-                        <a href="https://youtube.com/"> <i class="icon-youtube" aria-hidden="true"></i> <span class="sr-only">Youtube</span></a>
-                    </div><!-- /.top-one__social -->
-                </div><!-- /.top-one__right -->
-            </div><!-- /.top-one__inner -->
-        </div><!-- /.container-fluid -->
-    </div><!-- /.top-one -->
 
     <header class="main-header main-header--one sticky-header sticky-header--normal">
         <div class="container-fluid">
             <div class="main-header__inner">
                 <div class="main-header__logo logo-retina">
-                    <a href="#"><img src="{{asset('assets/images/logo-dark.png')}}" alt="gotur HTML" width="160" height="45"></a>
+                    <a href="#"><img src="{{asset('assets/images/igl.png')}}" alt="" width="160" height="100"></a>
                 </div><!-- /.main-header__logo -->
                 <div class="main-header__right">
                     <nav class="main-header__nav main-menu">
@@ -96,129 +68,47 @@
 
 
                             <li>
-                                <a href="#">about us</a>
+                                <a href="{{route('front.about')}}">about us</a>
                             </li>
 
-                            <li class="dropdown">
-                                <a href="#">Destination</a>
-                                <ul>
-                                    <li class="dropdown">
-                                        <a href="destination-one.html">destination 01</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="destination-one.html">destination grid</a></li>
-                                            <li><a href="destination-one-left.html">destination Left</a></li>
-                                            <li><a href="destination-one-right.html">destination Right</a></li>
-                                            <li><a href="destination-one-carousel.html">destination Carousel</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="destination-two.html">destination 02</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="destination-two.html">destination grid</a></li>
-                                            <li><a href="destination-two-left.html">destination Left</a></li>
-                                            <li><a href="destination-two-right.html">destination Right</a></li>
-                                            <li><a href="destination-two-carousel.html">destination Carousel</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="destination-details.html">Destination Details</a></li>
-                                </ul>
-                            </li>
 
                             <li>
                                 <a href="{{route('front.tour-list')}}">Tours List</a>
                             </li>
 
-                            <li class="dropdown">
-                                <a href="#">pages</a>
-                                <ul>
-                                    <li><a href="team.html">Our Team</a></li>
-                                    <li><a href="team-carousel.html">Team Carousel</a></li>
-                                    <li><a href="team-details.html">Team Details</a></li>
-                                    <li><a href="testimonials.html">Testimonials</a></li>
-                                    <li><a href="testimonials-carousel.html">Testimonials Carousel</a></li>
-                                    <li><a href="pricing.html">Pricing Plan</a></li>
-                                    <li class="dropdown">
-                                        <a href="gallery.html">Gallery</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="gallery.html">Gallery masonry</a></li>
-                                            <li><a href="gallery-filter.html">Gallery filter</a></li>
-                                            <li><a href="gallery-grid.html">Gallery Grid</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="faq.html">FAQS</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="404.html">404 Error</a></li>
-                                </ul>
+                            <li>
+                                <a href="#">destinations</a>
                             </li>
 
-                            <li class="dropdown">
-                                <a href="#">Shop</a>
-                                <ul>
-                                    <li class="dropdown">
-                                        <a href="#">Products</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="products.html">No sidebar</a></li>
-                                            <li><a href="products-left.html">Left sidebar</a></li>
-                                            <li><a href="products-right.html">Right sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#">Products list</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="products-list.html">No sidebar</a></li>
-                                            <li><a href="products-list-left.html">Left sidebar</a></li>
-                                            <li><a href="products-list-right.html">Right sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="products-carousel.html">Products carousel</a></li>
-                                    <li><a href="product-details.html">Product details</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#">news</a>
-                                <ul>
-                                    <li class="dropdown">
-                                        <a href="#">news grid</a>
-                                        <ul>
-                                            <li><a href="blog-grid.html">No sidebar</a></li>
-                                            <li><a href="blog-grid-left.html">Left sidebar</a></li>
-                                            <li><a href="blog-grid-right.html">Right sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#">news list</a>
-                                        <ul>
-                                            <li><a href="blog-list.html">No sidebar</a></li>
-                                            <li><a href="blog-list-left.html">Left sidebar</a></li>
-                                            <li><a href="blog-list-right.html">Right sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="blog-carousel.html">Blog carousel</a></li>
-                                    <li class="dropdown">
-                                        <a href="#">news details</a>
-                                        <ul>
-                                            <li><a href="blog-details.html">No sidebar</a></li>
-                                            <li><a href="blog-details-left.html">Left sidebar</a></li>
-                                            <li><a href="blog-details-right.html">Right sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
                             <li>
-                                <a href="contact.html">Contact</a>
+                                <a href="{{route('front.pricing')}}">Pricing</a>
+                            </li>
+
+                            <li>
+                                <a href="#">Gallery</a>
+                            </li>
+
+                            <li>
+                                <a href="#">Testimonial</a>
+                            </li>
+
+                            <li>
+                                <a href="{{route('front.faq')}}">FAQ</a>
+                            </li>
+
+                            <li>
+                                <a href="{{route('front.contact')}}">Contact</a>
                             </li>
                         </ul>
                     </nav><!-- /.main-header__nav -->
                     <div class="main-header__info">
                         <a href="#" class="search-toggler main-header__info__item"> <i class="icon-search-interface-symbol" aria-hidden="true"></i> <span class="sr-only">Search</span> </a>
-                        <a href="cart.html" class="main-header__info__item"> <i class="icon-shopping-carts" aria-hidden="true"></i> <span class="sr-only">Cart</span> </a>
+
                     </div>
                     <div class="main-header__btn-popup main-header__element__btn">
                         <i class="icon-menu-bar"></i>
                     </div><!-- /.mobile-nav__toggler -->
-                    <a href="contact.html" class="gotur-btn main-header__btn">get in touch <i class="icon-paper-plane"></i></a>
+                    <a href="{{route('front.login')}}" class="gotur-btn main-header__btn">Login <i class="icon-paper-plane"></i></a>
                     <div class="mobile-nav__btn mobile-nav__toggler">
                         <span></span>
                         <span></span>
@@ -237,7 +127,7 @@
             <div class="container">
                 <div class="main-footer__top__inner wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
                     <div class="footer-widget__logo logo-retina">
-                        <a href="#"><img src="{{asset('assets/images/logo-light.png')}}" width="158" height="45" alt="gotur logo"></a>
+                        <a href="#"><img src="{{asset('assets/images/igl.png')}}" width="158" height="45" alt="gotur logo"></a>
                     </div><!-- /.footer-widget__logo -->
                     <ul class="list-unstyled footer-widget__list">
                         <li>
@@ -358,7 +248,7 @@
     <div class="mobile-nav__content">
         <span class="mobile-nav__close mobile-nav__toggler"><i class="fa fa-times"></i></span>
         <div class="logo-box logo-retina">
-            <a href="#" aria-label="logo image"><img src="{{asset('assets/images/logo-light.png')}}" width="158" alt="logo"></a>
+            <a href="#" aria-label="logo image"><img src="{{asset('assets/images/igl.png')}}" width="200px" height="100px" alt="logo"></a>
         </div><!-- /.logo-box -->
         <div class="mobile-nav__container"></div><!-- /.mobile-nav__container -->
         <ul class="mobile-nav__contact list-unstyled">
@@ -481,7 +371,7 @@
 <script src="{{asset('assets/vendors/gsap/scrollTrigger.min.js')}}"></script>
 <script src="{{asset('assets/vendors/gsap/splittext.min.js')}}"></script>
 <script src="{{asset('assets/vendors/gsap/gotur-gsap.js')}}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- template js -->
 <script src="{{asset('assets/js/gotur.js')}}"></script>
 @stack('js')

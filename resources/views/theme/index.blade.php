@@ -229,7 +229,7 @@
                             </div><!-- /.row -->
                         </div><!-- /.about-two__feature -->
                         <div class="about-two__button wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
-                            <a href="blog-details-left.html" class="gotur-btn gotur-btn--primary">Discover More <span class="icon"><i class="icon-right"></i></span><!-- /.icon --></a>
+
                             <div class="about-two__button__author">
                                 <div class="about-two__button__author__thumb">
                                     <img src="{{asset('assets/images/resources/about-author-1-1.png')}}" alt="author">
@@ -1177,7 +1177,7 @@
                                 <h3 class="sec-title__title bw-split-in-left">Explore All Tour Of The <br> World With Us</h3><!-- /.sec-title__title -->
                             </div><!-- /.sec-title -->
                             <div class="offer-one__card__btn">
-                                <a href="tour-listing-details-1.html" class="gotur-btn">Book Now <span class="icon"><i class="icon-right"></i></span></a>
+                                <a href="tour-listing-details.blade.php" class="gotur-btn">Book Now <span class="icon"><i class="icon-right"></i></span></a>
                             </div><!-- /.offer-one__card__btn -->
                         </div><!-- /.offer-one__card__content -->
                         <div class="offer-one__card__left">
@@ -1200,7 +1200,7 @@
                                 <h3 class="sec-title__title bw-split-in-left">Tours and Trip <br> Packages, Globally</h3><!-- /.sec-title__title -->
                             </div><!-- /.sec-title -->
                             <div class="offer-one__card__btn">
-                                <a href="tour-listing-details-1.html" class="gotur-btn gotur-btn--primary">Book Now <span class="icon"><i class="icon-right"></i></span></a>
+                                <a href="tour-listing-details.blade.php" class="gotur-btn gotur-btn--primary">Book Now <span class="icon"><i class="icon-right"></i></span></a>
                             </div><!-- /.offer-one__card__btn -->
                         </div><!-- /.offer-one__card__content -->
                     </div><!-- /.offer-one__card -->
@@ -1285,7 +1285,7 @@
     </section><!-- /.why-choose-one -->
 
     <section class="testimonials-three testimonials-three--two section-space" id="testimonials">
-        <div class="testimonials-three__bg" style="background-image: url(assets/images/backgrounds/testi-3-1.png);"></div><!-- /.testimonials-three__bg -->
+        <div class="testimonials-three__bg" style="background-image: url({{asset('assets/images/backgrounds/testi-3-1.png')}});"></div><!-- /.testimonials-three__bg -->
         <div class="container-fluid">
             <div class="row align-items-center gutter-y-40">
                 <div class="col-xl-6">
@@ -1499,189 +1499,23 @@
         </div><!-- /.container -->
     </section><!-- /.testimonials-three -->
 
-    <section class="blog-five section-space-top" id="blog">
-        <div class="container">
-            <div class="sec-title text-center">
-                <h6 class="sec-title__tagline bw-split-in-right">Blog & News</h6><!-- /.sec-title__tagline -->
-                <h3 class="sec-title__title bw-split-in-left">Explore Blogs <span>And News</span></h3><!-- /.sec-title__title -->
-            </div><!-- /.sec-title -->
-            <div class="row gutter-y-30">
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                    <div class="blog-card-two blog-card-two--two wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                        <div class="blog-card-two__image">
-                            <img src="{{asset('assets/images/blog/blog-2-7.jpg')}}" alt="The Surfing Man Will Blow Your Mind">
-                            <a href="blog-details-right.html" class="blog-card-two__image__link"><span class="sr-only">The Surfing Man Will Blow Your Mind</span></a>
-                        </div><!-- /.blog-card-two__image -->
-                        <div class="blog-card-two__content">
-                            <div class="blog-card-two__top">
-                                <div class="blog-card-two__date">
-                                    <span class="blog-card-two__date__day">17</span>
-                                    <span class="blog-card-two__date__month">Mar</span>
-                                </div><!-- /.blog-card-two__date -->
-                                <ul class="list-unstyled blog-card-two__meta">
-                                    <li>
-                                        <a href="blog-details-right.html"> <span class="blog-card-two__meta__icon"> <i class="icon-user"></i> </span> By Admin</a>
-                                    </li>
-                                    <li>
-                                        <a href="blog-details-right.html"> <span class="blog-card-two__meta__icon"> <i class="icon-price-tag"></i> </span>Travel</a>
-                                    </li>
-                                </ul><!-- /.list-unstyled blog-card-two__meta -->
-                            </div><!-- /.blog-card-two__top -->
-                            <h3 class="blog-card-two__title"><a href="blog-details-right.html">The Surfing Man Will Blow Your Mind</a></h3><!-- /.blog-card-two__title -->
-                            <a href="blog-details-right.html" class="blog-card-two__content__btn"> Read More <i class="icon-arrow-right"></i></a>
-                        </div><!-- /.blog-card-two__content -->
-                    </div><!-- /.blog-card-two -->
-                </div><!-- /.col-xl-3 col-lg-4 col-md-6 col-sm-6 -->
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                    <div class="blog-card-two blog-card-two--two wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
-                        <div class="blog-card-two__image">
-                            <img src="{{asset('assets/images/blog/blog-2-8.jpg')}}" alt="The Surfing Man Will Blow Your Mind">
-                            <a href="blog-details-right.html" class="blog-card-two__image__link"><span class="sr-only">The Surfing Man Will Blow Your Mind</span></a>
-                        </div><!-- /.blog-card-two__image -->
-                        <div class="blog-card-two__content">
-                            <div class="blog-card-two__top">
-                                <div class="blog-card-two__date">
-                                    <span class="blog-card-two__date__day">15</span>
-                                    <span class="blog-card-two__date__month">Dec</span>
-                                </div><!-- /.blog-card-two__date -->
-                                <ul class="list-unstyled blog-card-two__meta">
-                                    <li>
-                                        <a href="blog-details-right.html"> <span class="blog-card-two__meta__icon"> <i class="icon-user"></i> </span> By Admin</a>
-                                    </li>
-                                    <li>
-                                        <a href="blog-details-right.html"> <span class="blog-card-two__meta__icon"> <i class="icon-price-tag"></i> </span>Travel</a>
-                                    </li>
-                                </ul><!-- /.list-unstyled blog-card-two__meta -->
-                            </div><!-- /.blog-card-two__top -->
-                            <h3 class="blog-card-two__title"><a href="blog-details-right.html">The Surfing Man Will Blow Your Mind</a></h3><!-- /.blog-card-two__title -->
-                            <a href="blog-details-right.html" class="blog-card-two__content__btn"> Read More <i class="icon-arrow-right"></i></a>
-                        </div><!-- /.blog-card-two__content -->
-                    </div><!-- /.blog-card-two -->
-                </div>
-            </div><!-- /.row -->
-        </div><!-- /.container -->
-    </section><!-- /.blog-five -->
-
-    <div class="instagram-one section-space instagram-one--two wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
-        <div class="instagram-one__top">
-            <div class="container">
-                <h5 class="instagram-one__title">Follow Instagram</h5><!-- /.instagram-one__title -->
-            </div><!-- /.container -->
-        </div><!-- /.instagram-one__top -->
-        <div class="container-fluid">
-            <div class="instagram-one__carousel gotur-owl__carousel owl-carousel owl-theme" data-owl-options='{
-                "items": 6,
-                "margin": 30,
-                "loop": false,
-                "smartSpeed": 700,
-                "nav": false,
-                "dots": false,
-                "autoplay": true,
-                "responsive": {
-                    "0": {
-                        "items": 1
-                    },
-                    "500": {
-                        "items": 2
-                    },
-                    "768": {
-                        "items": 3
-                    },
-                    "992": {
-                        "items": 3
-                    },
-                    "1080": {
-                        "items": 4
-                    },
-                    "1200": {
-                        "items": 5
-                    },
-                    "1400": {
-                        "items": 6
-                    }
-                }
-            }'>
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-1.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-2.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-3.png')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-4.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-5.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-6.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-1.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-2.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-3.png')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div><!-- /.item -->
-                <div class="item">
-                    <div class="instagram-one__item">
-                        <img src="{{asset('assets/images/instragarm/insta-1-4.jpg')}}" alt="instagram">
-                        <a href="https://www.instagram.com/" class="instagram-one__item__overly">
-                            <div class="instagram-one__item__overly__icon"><i class="fab fa-instagram"></i></div><!-- /.instagram-one__item__overly__icon -->
-                        </a>
-                    </div><!-- /.instagram-one__item -->
-                </div>
-            </div><!-- /.instagram-one__carousel -->
-        </div><!-- /.container -->
-    </div><!-- /.instagram-one -->
 @endsection
+@push('js')
+    <script>
+        @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Message',
+            text: '{{ session('success') }}'
+        });
+        @endif
+
+        @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Message',
+            text: '{{ session('error') }}'
+        });
+        @endif
+    </script>
+@endpush

@@ -35,6 +35,9 @@
                 <div class="row justify-content-center">
                     <div class="col-xxl-5 col-md-6 col-sm-8">
                         <div class="card p-4">
+                            <center>
+                                <img src="{{asset('assets/images/igl.png')}}" style="width: 150px;">
+                            </center>
                             <form action="{{route(('admin.verify'))}}" method="post" autocomplete="off">
                                     @csrf
                                 <div class="mb-3">

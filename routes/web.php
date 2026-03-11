@@ -20,6 +20,19 @@ Route::get('auth/logout',[AuthController::class,'AdminLogout'])->name('admin.log
 
 Route::get('tour-list',[CommonController::class,'TourList'])->name('front.tour-list');
 
+Route::get('tour-details/{id}',[CommonController::class,'TourDetails'])->name('front.tour.detail');
+
+Route::get('contact',[CommonController::class,'Contact'])->name('front.contact');
+Route::get('login',[CommonController::class,'Login'])->name('front.login');
+
+Route::get('pricing',[CommonController::class,'Pricing'])->name('front.pricing');
+
+Route::get('faq',[CommonController::class,'Faq'])->name('front.faq');
+
+Route::get('about-us',[CommonController::class,'About'])->name('front.about');
+
+Route::post('about-us/store',[CommonController::class,'ContactForm'])->name('front.contact.store');
+
 //------------------- SSLCOMMERZ Start------------------------------------------
 
 Route::post('sslcommerz/pay', [SslCommerzPaymentController::class, 'index'])->name('pay');
