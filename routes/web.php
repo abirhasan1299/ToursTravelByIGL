@@ -12,7 +12,7 @@ Route::get('/', function () {
 })->name('home');
 
 //--------------------Admin Login Route-----------------------------------------
-Route::get('auth/login',[AuthController::class,'AdminLogin'])->name('admin.login');
+Route::get('auth/login',[AuthController::class,'AdminLogin'])->name('login');
 
 Route::post('auth/verify',[AuthController::class,'AdminLoginPost'])->name('admin.verify');
 
