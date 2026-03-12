@@ -11,12 +11,18 @@ Route::get('/', function () {
     return view('theme.index',compact('about'));
 })->name('home');
 
-//--------------------Admin Login Route-----------------------------------------
+//--------------------Auth Route-----------------------------------------
 Route::get('auth/login',[AuthController::class,'AdminLogin'])->name('login');
 
 Route::post('auth/verify',[AuthController::class,'AdminLoginPost'])->name('admin.verify');
 
 Route::get('auth/logout',[AuthController::class,'AdminLogout'])->name('admin.logout');
+
+Route::get('auth/reset-password',[AuthController::class,'resetPassword'])->name('auth.otp.send');
+
+Route::post('auth/verify/email',[AuthController::class,'Forget_Password_OTP'])->name('auth.verify.email');
+
+Route::post('auth/otp/verify',[AuthController::class,'OTP_Verify'])->name('auth.verify.otp');
 
 //--------------------Frontend Routes-----------------------------------------
 

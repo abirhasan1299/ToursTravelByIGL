@@ -17,7 +17,7 @@ class Authorization
     public function handle(Request $request, Closure $next,...$roles): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login to access this page.');
+            return redirect()->route('login');
         }
 
         if (!in_array(Auth::user()->role, $roles)) {

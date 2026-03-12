@@ -24,6 +24,7 @@
     </head>
 
     <body>
+    @include('partials.forget_password_modal')
         <div class="position-absolute top-0 end-0">
             <img src="{{asset('assets/images/auth-card-bg.svg')}}" class="auth-card-bg-img" alt="auth-card-bg" />
         </div>
@@ -64,7 +65,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 d-flex justify-content-center">
-                                    <a href="#">Forget Password ?</a>
+                                    <a href="#forget-password-modal" data-bs-toggle="modal" >Forget Password ?</a>
                                 </div>
 
                                 <div class="d-grid">

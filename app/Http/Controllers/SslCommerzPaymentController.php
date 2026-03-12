@@ -215,14 +215,14 @@ class SslCommerzPaymentController extends Controller
                      }
 
 
-                    return redirect()->route('admin.login')->with('success', 'Payment Successful');
+                    return redirect()->route('login')->with('success', 'Payment Successful');
 
                 } else {
-                    return redirect()->route('admin.login')->with('error', 'Payment Failed');
+                    return redirect()->route('login')->with('error', 'Payment Failed');
                 }
 
             } else {
-                return redirect()->route('admin.login')->with('error', 'Payment Validation failed');
+                return redirect()->route('login')->with('error', 'Payment Validation failed');
             }
     }
 
@@ -241,10 +241,10 @@ class SslCommerzPaymentController extends Controller
            return redirect()->route('admin.login')->with('error', 'Payment Failed');
         } else if ($order_details->t_status == 'processing' || $order_details->t_status == 'complete') {
 
-            return redirect()->route('admin.login')->with('error', 'Transaction is already Successful');
+            return redirect()->route('login')->with('error', 'Transaction is already Successful');
 
         } else {
-            return redirect()->route('admin.login')->with('error', 'Transaction is Invalid');
+            return redirect()->route('login')->with('error', 'Transaction is Invalid');
         }
 
     }
@@ -264,9 +264,9 @@ class SslCommerzPaymentController extends Controller
             return redirect()->route('admin.login')->with('error', 'Transaction is Cancelled');
 
         } else if ($order_details->t_status == 'processing' || $order_details->status == 'complete') {
-            return redirect()->route('admin.login')->with('error', 'Transaction is already Successful');
+            return redirect()->route('login')->with('error', 'Transaction is already Successful');
         } else {
-            return redirect()->route('admin.login')->with('error', 'Transaction is Invalid');
+            return redirect()->route('login')->with('error', 'Transaction is Invalid');
         }
 
     }
