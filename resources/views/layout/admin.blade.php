@@ -472,6 +472,12 @@
                         </a>
                     </li>
                         <li class="side-nav-item">
+                            <a href="{{route('admin.faqs')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-message-question"></i></span>
+                                <span class="menu-text" data-lang="dashboards">FAQ</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
                             <a href="{{route('admin.setting')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-settings"></i></span>
                                 <span class="menu-text" data-lang="dashboards">Settings</span>

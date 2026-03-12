@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Root\CompanyInfo;
+use App\Http\Controllers\Root\FaqController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
@@ -9,6 +10,24 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
+/*
+    |--------------------------------------------------------------------------
+    | FAQ's Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('faqs',[FaqController::class,'index'])->name('faqs');
+
+Route::post('faqs/store',[FaqController::class,'store'])->name('faqs.store');
+
+Route::get('faqs/edit/{id}',[FaqController::class,'edit'])->name('faqs.edit');
+
+Route::put('faqs/update/{id}',[FaqController::class,'update'])->name('faqs.update');
+
+Route::delete('faqs/destroy/{id}',[FaqController::class,'destroy'])->name('faqs.destroy');
+
 /*
     |--------------------------------------------------------------------------
     | Website Informations Routes

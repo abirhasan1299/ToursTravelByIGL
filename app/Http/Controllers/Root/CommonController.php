@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Faq;
 use App\Models\Package;
 use App\Models\Contact;
 use Illuminate\Http\Request;
@@ -71,7 +72,8 @@ class CommonController extends Controller
 
     public function Faq()
     {
-        return view('theme.faq');
+        $data = Faq::where('status','active')->orderBy('id','desc')->get();
+        return view('theme.faq',compact('data'));
     }
 
 

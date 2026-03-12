@@ -134,21 +134,21 @@
                             <div class="footer-widget__list__icon"><i class="icon-email"></i></div><!-- /.footer-widget__list__icon -->
                             <div class="footer-widget__list__content">
                                 <span class="footer-widget__list__subtitle">send email</span>
-                                <a href="mailto:info@company.com">info@company.com</a>
+                                <a href="mailto:{{settings()->app_email??"Null"}}">{{settings()->app_email??"Null"}}</a>
                             </div><!-- /.footer-widget__list__content -->
                         </li>
                         <li>
                             <div class="footer-widget__list__icon"><i class="icon-telephone"></i></div><!-- /.footer-widget__list__icon -->
                             <div class="footer-widget__list__content">
                                 <span class="footer-widget__list__subtitle">call agent</span>
-                                <a href="tel:+208-666-0112">+91 123 654 900</a>
+                                <a href="tel:{{settings()->app_phone??"Nll"}}">{{settings()->app_phone??"Nll"}}</a>
                             </div><!-- /.footer-widget__list__content -->
                         </li>
                         <li>
                             <div class="footer-widget__list__icon"><i class="icon-clock-1"></i></div><!-- /.footer-widget__list__icon -->
                             <div class="footer-widget__list__content">
                                 <span class="footer-widget__list__subtitle">opening time</span>
-                                <p>Hours: Mon-Fri: 8am – 7pm</p>
+                                <p>{{settings()->app_working_hour??""}}</p>
                             </div><!-- /.footer-widget__list__content -->
                         </li>
                     </ul><!-- /.list-unstyled -->
@@ -160,13 +160,13 @@
                 <div class="row gutter-y-40">
                     <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="00ms">
                         <div class="footer-widget footer-widget--about">
-                            <h2 class="footer-widget__title">about Gotur</h2><!-- /.footer-widget__title -->
-                            <p class="footer-widget__about-text">available, but the majority have suffered alteration in some form by injected humour, or</p><!-- /.footer-widget__about-text -->
+                            <h2 class="footer-widget__title">about {{settings()->app_name}}</h2><!-- /.footer-widget__title -->
+                            <p class="footer-widget__about-text">{{settings()->app_about??""}} </p><!-- /.footer-widget__about-text -->
                             <div class="footer-widget__social">
-                                <a href="https://facebook.com/"> <i class="icon-facebook" aria-hidden="true"></i> <span class="sr-only">Facebook</span></a>
-                                <a href="https://twitter.com/"> <i class="fab fa-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
-                                <a href="https://instagram.com/"> <i class="fab fa-instagram" aria-hidden="true"></i> <span class="sr-only">Linked In</span></a>
-                                <a href="https://youtube.com/"> <i class="icon-youtube" aria-hidden="true"></i> <span class="sr-only">Youtube</span></a>
+                                <a href="{{settings()->app_facebook}}"> <i class="icon-facebook" aria-hidden="true"></i> <span class="sr-only">Facebook</span></a>
+                                <a href="{{settings()->app_twitter??""}}"> <i class="fab fa-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
+                                <a href="{{settings()->app_instagram??""}}"> <i class="fab fa-instagram" aria-hidden="true"></i> <span class="sr-only">Linked In</span></a>
+                                <a href="{{settings()->app_youtube??""}}"> <i class="icon-youtube" aria-hidden="true"></i> <span class="sr-only">Youtube</span></a>
                             </div><!-- /.footer-widget__social -->
                         </div><!-- /.footer-widget -->
                     </div><!-- /.col-lg-4 -->
@@ -175,11 +175,11 @@
                         <div class="footer-widget footer-widget--links">
                             <h2 class="footer-widget__title">Destinations</h2><!-- /.footer-widget__title -->
                             <ul class="list-unstyled footer-widget__links">
-                                <li><a href="destination-details.html">South America</a></li>
-                                <li><a href="destination-details.html">Middle East</a></li>
-                                <li><a href="destination-details.html">San Franc Rica</a></li>
-                                <li><a href="destination-details.html">New York</a></li>
-                                <li><a href="destination-details.html">Tokyo</a></li>
+                                <li><a href="#">South America</a></li>
+                                <li><a href="#">Middle East</a></li>
+                                <li><a href="#">San Franc Rica</a></li>
+                                <li><a href="#">New York</a></li>
+                                <li><a href="#">Tokyo</a></li>
                             </ul><!-- /.list-unstyled footer-widget__links -->
                         </div><!-- /.footer-widget -->
                     </div><!-- /.col-lg-4 -->
@@ -188,11 +188,11 @@
                         <div class="footer-widget footer-widget--post">
                             <h2 class="footer-widget__title">useful links</h2><!-- /.footer-widget__title -->
                             <ul class="list-unstyled footer-widget__links">
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="destination-one.html">Destination</a></li>
-                                <li><a href="blog-grid.html">News & blog</a></li>
-                                <li><a href="team.html">Meet the Guide</a></li>
-                                <li><a href="contact.html">Contacts</a></li>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Destination</a></li>
+                                <li><a href="#">News & blog</a></li>
+                                <li><a href="#">Meet the Guide</a></li>
+                                <li><a href="#">Contacts</a></li>
                             </ul><!-- /.list-unstyled footer-widget__links -->
                         </div><!-- /.footer-widget -->
                     </div><!-- /.col-lg-6 -->
@@ -227,7 +227,7 @@
             <div class="container">
                 <div class="main-footer__bottom__inner">
                     <p class="main-footer__copyright">
-                        &copy; Copyright <span class="dynamic-year"></span> by IGL Web Ltd.
+                        &copy; Copyright <span class="dynamic-year"></span> by {{settings()->app_name}}.
                     </p>
                     <a href="#" data-target="html" class="scroll-to-target scroll-to-top">
                             <span class="scroll-to-top__wrapper">
@@ -303,7 +303,7 @@
                         </div>
                         <div class="header-right-sidebar__container__list__content">
                             <span class="header-right-sidebar__container__list__title">send email</span>
-                            <a href="#">info@company.com</a>
+                            <a href="mail:{{settings()->app_email}}">{{settings()->app_email}}</a>
                         </div>
                     </li>
                     <li class="header-right-sidebar__container__list__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
@@ -312,7 +312,7 @@
                         </div>
                         <div class="header-right-sidebar__container__list__content">
                             <span class="header-right-sidebar__container__list__title">call agent</span>
-                            <a href="tel:+91-123-654-900">+91 123 654 900</a>
+                            <a href="{{'tel:'.settings()->app_phone}}">{{settings()->app_phone}}</a>
                         </div>
                     </li>
                     <li class="header-right-sidebar__container__list__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='700ms'>
@@ -321,7 +321,7 @@
                         </div>
                         <div class="header-right-sidebar__container__list__content">
                             <span class="header-right-sidebar__container__list__title">opening time</span>
-                            <p>Hours: Mon-Fri: 8am – 7pm</p>
+                            <p>{{settings()->app_working_hour}}</p>
                         </div>
                     </li>
                 </ul>

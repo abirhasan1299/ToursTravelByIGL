@@ -20,13 +20,7 @@
                     <div class="row gutter-y-30">
                         <div class="col-lg-4">
                             <div class="faq-page__sidebar">
-                                <div class="faq-page__sidebar__item wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
-                                    <ul class="faq-page__sidebar__list list-unstyled tab-buttons">
-                                        <li class="sidebar__tab tab-btn active-btn" data-tab="#itemOne"><span>Travel & Tour</span></li>
-                                        <li class="sidebar__tab tab-btn" data-tab="#itemTwo"><span>Agency</span></li>
-                                        <li class="sidebar__tab tab-btn" data-tab="#itemThree"><span>Payment Mothered</span></li>
-                                    </ul><!-- /.faq-page__sidebar__list -->
-                                </div><!-- /.faq-page__sidebar__item -->
+
                                 <div class="faq-page__sidebar__item wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="500ms">
                                     <div class="faq-page__sidebar__cta">
                                         <img src="{{asset('assets/images/resources/faq-sidebar.png')}}" alt="sidebar">
@@ -44,270 +38,28 @@
 
                                 <div class="faq-accordion__item tab active-tab" id="itemOne">
                                     <div class="faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Travel & Tour</div><!-- /.faq-page__title -->
+                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Frequently Asking Questions</div><!-- /.faq-page__title -->
+                                        @foreach($data as $d)
+
                                         <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
                                             <div class="accordion-title">
-                                                <h4 class="accordion-title__text">How long should a business plan be?<span class="accordion-title__icon"></span></h4>
+                                                <h4 class="accordion-title__text">
+                                                    {{$d->title}}
+                                                    <span class="accordion-title__icon"></span></h4>
                                             </div><!-- /.accordian-title -->
                                             <div class="accordion-content">
                                                 <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
+                                                    <p class="inner__text">
+                                                        {!! $d->detail !!}
+                                                    </p>
                                                 </div><!-- /.accordian-content -->
                                             </div>
                                         </div><!-- /.accordian-item -->
-                                        <div class="accordion active wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What is included in your services?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                    </div>
-                                    <div class="faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Adventure</div><!-- /.faq-page__title -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">How long should a business plan be?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What is included in your services?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
+
+                                        @endforeach
                                     </div>
                                 </div><!-- /.faq-accordion__item -->
 
-                                <div class="faq-accordion__item tab" id="itemTwo">
-                                    <div class="faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Travel & Tour</div><!-- /.faq-page__title -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">How long should a business plan be?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion active wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What is included in your services?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                    </div>
-                                    <div class="faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Adventure</div><!-- /.faq-page__title -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">How long should a business plan be?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What is included in your services?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                    </div>
-                                </div><!-- /.faq-accordion__item -->
-
-                                <div class="faq-accordion__item tab" id="itemThree">
-                                    <div class="faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Travel & Tour</div><!-- /.faq-page__title -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">How long should a business plan be?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion active wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What is included in your services?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                    </div>
-                                    <div class="faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                                        <div class="faq-page__title wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>Adventure</div><!-- /.faq-page__title -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">How long should a business plan be?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What is included in your services?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                        <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                            <div class="accordion-title">
-                                                <h4 class="accordion-title__text">What type of company is measured?<span class="accordion-title__icon"></span></h4>
-                                            </div><!-- /.accordian-title -->
-                                            <div class="accordion-content">
-                                                <div class="inner">
-                                                    <p class="inner__text">Nulla facilisi. Vestibulum tristique sem in eros eleifend imperdiet. Donec quis convallis neque. In id lacus pulvinar lacus, eget vulputate lectus. Ut viverra bibendum lorem, at tempus nibh mattis in. Sed a massa eget lacus consequat auctor.</p>
-                                                </div><!-- /.accordian-content -->
-                                            </div>
-                                        </div><!-- /.accordian-item -->
-                                    </div>
-                                </div><!-- /.faq-accordion__item -->
 
                             </div><!-- /.tabs-content -->
                         </div><!-- /.col-lg-8 -->
