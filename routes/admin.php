@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Root\CompanyInfo;
 use App\Http\Controllers\Root\FaqController;
+use App\Http\Controllers\Root\GalleryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
@@ -10,6 +11,17 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
+/*
+    |--------------------------------------------------------------------------
+    | Gallery Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+Route::get('gallery',[GalleryController::class,'index'])->name('gallery');
+
+Route::post('gallery/store',[GalleryController::class,'store'])->name('gallery.store');
+
 
 /*
     |--------------------------------------------------------------------------

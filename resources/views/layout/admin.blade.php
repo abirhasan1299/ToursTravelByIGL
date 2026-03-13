@@ -465,6 +465,12 @@
                             <span class="menu-text" data-lang="dashboards">Package</span>
                         </a>
                     </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.gallery')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-photo"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Gallery</span>
+                            </a>
+                        </li>
                     <li class="side-nav-item">
                         <a href="{{route('admin.about')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-info-circle"></i></span>

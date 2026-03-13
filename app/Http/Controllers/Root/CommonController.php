@@ -76,5 +76,9 @@ class CommonController extends Controller
         return view('theme.faq',compact('data'));
     }
 
+    public function gallery()
+    {
+        return view('theme.gallery');
+    }
 
 }

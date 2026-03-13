@@ -85,7 +85,7 @@
                             </li>
 
                             <li>
-                                <a href="#">Gallery</a>
+                                <a href="{{route('front.gallery')}}">Gallery</a>
                             </li>
 
                             <li>

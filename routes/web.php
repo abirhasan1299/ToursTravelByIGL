@@ -41,6 +41,8 @@ Route::get('about-us',[CommonController::class,'About'])->name('front.about');
 
 Route::post('about-us/store',[CommonController::class,'ContactForm'])->name('front.contact.store');
 
+Route::get('gallery',[CommonController::class,'gallery'])->name('front.gallery');
+
 //------------------- SSLCOMMERZ Start------------------------------------------
 
 Route::post('sslcommerz/pay', [SslCommerzPaymentController::class, 'index'])->name('pay');

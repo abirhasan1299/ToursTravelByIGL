@@ -1,7 +1,8 @@
 <?php
 use App\Models\Setting;
+use Illuminate\Support\Facades\Log;
 
-   if(!function_exists('settings'))
+if(!function_exists('settings'))
    {
        function settings()
        {
