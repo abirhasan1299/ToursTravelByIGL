@@ -15,7 +15,7 @@ Route::get('/dashboard', function () {
 
 /*
     |--------------------------------------------------------------------------
-    | Gallery and Conatact Routes
+    | Gallery and Contact Routes
     |--------------------------------------------------------------------------
     |
 */
@@ -25,6 +25,8 @@ Route::get('gallery',[GalleryController::class,'index'])->name('gallery');
 Route::post('gallery/store',[GalleryController::class,'store'])->name('gallery.store');
 
 Route::delete('gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+Route::get('contacts/',[FaqController::class,'ContactList'])->name('contacts.list');
 
 /*
     |--------------------------------------------------------------------------

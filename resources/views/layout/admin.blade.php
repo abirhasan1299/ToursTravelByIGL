@@ -471,6 +471,12 @@
                                 <span class="menu-text" data-lang="dashboards">Gallery</span>
                             </a>
                         </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.contacts.list')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-message"></i></i></span>
+                                <span class="menu-text" data-lang="dashboards">Contact Box</span>
+                            </a>
+                        </li>
                     <li class="side-nav-item">
                         <a href="{{route('admin.about')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-info-circle"></i></span>

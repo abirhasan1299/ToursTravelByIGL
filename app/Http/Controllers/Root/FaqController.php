@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -68,6 +69,12 @@ class FaqController extends Controller
         $data = Faq::findOrFail($id);
         $data->update($validate);
         return redirect()->route('admin.faqs')->with('success','Faq updated successfully');
+    }
+
+    public function ContactList()
+    {
+        $data = Contact::orderBy('id', 'desc')->get();
+        return view('admin.about.contact', compact('data'));
     }
 
 }
