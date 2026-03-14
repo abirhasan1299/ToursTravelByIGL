@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Company\BookingController;
 use App\Http\Controllers\Company\PackageController;
 use App\Http\Controllers\Company\SubscriptionController;
 use App\Http\Controllers\Company\TransactionController;
@@ -11,6 +12,14 @@ Route::get('dashboard',function (){
 
 
 Route::get('subscription',[SubscriptionController::class,'index'])->name('subscription.index');
+
+/*
+========================================================================
+                            Booking  Route
+========================================================================
+*/
+
+Route::get('booking',[BookingController::class,'index'])->name('booking');
 
 
 /*

@@ -12,16 +12,19 @@ Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
+
 /*
     |--------------------------------------------------------------------------
-    | Gallery Routes
+    | Gallery and Conatact Routes
     |--------------------------------------------------------------------------
     |
 */
+
 Route::get('gallery',[GalleryController::class,'index'])->name('gallery');
 
 Route::post('gallery/store',[GalleryController::class,'store'])->name('gallery.store');
 
+Route::delete('gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
 /*
     |--------------------------------------------------------------------------

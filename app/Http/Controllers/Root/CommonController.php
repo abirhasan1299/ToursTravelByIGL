@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Root;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Faq;
+use App\Models\Gallery;
+use App\Models\IpBlock;
 use App\Models\Package;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 
 class CommonController extends Controller
 {
@@ -23,6 +26,7 @@ class CommonController extends Controller
 
     public function TourDetails($id)
     {
+
         $tour = Package::findOrFail(base64_decode($id));
         $activities = Activity::where('package_id', $tour->id)->get();
 
@@ -78,7 +82,8 @@ class CommonController extends Controller
 
     public function gallery()
     {
-        return view('theme.gallery');
+        $data = Gallery::all();
+        return view('theme.gallery',compact('data'));
     }
 
 }

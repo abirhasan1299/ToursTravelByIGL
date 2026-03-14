@@ -302,7 +302,7 @@
                             // In real implementation, use fetch with CSRF or a form submission.
                             const form = document.createElement('form');
                             form.method = 'POST';
-                            form.action = `/admin/gallery/${photoId}`; // adjust to your route
+                            form.action = `/admin/gallery/destroy/${photoId}`; // adjust to your route
                             const csrf = document.createElement('input');
                             csrf.name = '_token';
                             csrf.value = '{{ csrf_token() }}';

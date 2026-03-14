@@ -17,12 +17,13 @@
      <section class="gallery-page section-space">
             <div class="container">
                 <div class="row masonry-layout gutter-y-30 gutter-x-30">
-
+@foreach ($data as $d)
+    
                     <div class="col-md-6 col-lg-4">
                         <div class="gallery-page__card">
-                            <img src="{{asset('assets/images/gallery/gallery-1-1.jpg')}}" alt="gotur">
+                            <img src="{{asset('storage/gallery/'.$d->img_name)}}" alt="gotur">
                             <div class="gallery-page__card__hover">
-                                <a href="{{asset('assets/images/gallery/gallery-1-1.jpg')}}" class="img-popup">
+                                <a href="{{asset('storage/gallery/'.$d->img_name)}}" class="img-popup">
                                     <div class="gallery-page__card__icon">
                                         <span class="gallery-page__card__icon__item"></span>
                                     </div>
@@ -30,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-
+@endforeach
                 </div>
             </div>
         </section>

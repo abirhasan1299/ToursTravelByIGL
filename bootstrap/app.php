@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\Authorization;
-use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,12 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         //-----------Define Custom Routes--------------------------
         then: function(){
-            Route::middleware(['web','auth','auth.role:2'])
+            Route::middleware(['web','auth','auth.role:2','bot'])
                 ->prefix('company')
                 ->as('company.')
                 ->group(base_path('routes/company.php'));
 
-            Route::middleware(['web','auth','auth.role:1'])
+            Route::middleware(['web','auth','auth.role:1','bot'])
                 ->prefix('admin')
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
@@ -27,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth.role' => Authorization::class,
+            'bot'=>\App\Http\Middleware\DetectBots::class
         ]);
         // Add your SSLCommerz routes here
         $middleware->validateCsrfTokens(except: [

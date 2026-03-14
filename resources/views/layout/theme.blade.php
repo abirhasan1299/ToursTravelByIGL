@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/owl-carousel/css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/owl-carousel/css/owl.theme.default.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/owl-carousel/css/owl.theme.default.min.css')}}">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
     <!-- template styles -->
     <link rel="stylesheet" href="{{asset('assets/css/gotur.css')}}">
@@ -86,10 +88,6 @@
 
                             <li>
                                 <a href="{{route('front.gallery')}}">Gallery</a>
-                            </li>
-
-                            <li>
-                                <a href="#">Testimonial</a>
                             </li>
 
                             <li>
@@ -344,6 +342,8 @@
 </div>
 
 <script src="{{asset('assets/vendors/jquery/jquery-3.7.1.min.js')}}"></script>
+<!-- Sweet Alerts js -->
+<script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('assets/vendors/bootstrap-select/bootstrap-select.min.js')}}"></script>
 <script src="{{asset('assets/vendors/jarallax/jarallax.min.js')}}"></script>
@@ -371,7 +371,9 @@
 <script src="{{asset('assets/vendors/gsap/scrollTrigger.min.js')}}"></script>
 <script src="{{asset('assets/vendors/gsap/splittext.min.js')}}"></script>
 <script src="{{asset('assets/vendors/gsap/gotur-gsap.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
 <!-- template js -->
 <script src="{{asset('assets/js/gotur.js')}}"></script>
 @stack('js')

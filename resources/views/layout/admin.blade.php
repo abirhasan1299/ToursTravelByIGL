@@ -497,7 +497,12 @@
                                 <span class="menu-text" data-lang="dashboards">My Package</span>
                             </a>
                         </li>
-
+                        <li class="side-nav-item">
+                            <a href="{{route('company.booking')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-calendar-check"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Bookings</span>
+                            </a>
+                        </li>
                         <li class="side-nav-item">
                             <a href="{{route('company.subscription.index')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-crown"></i></span>

@@ -37,5 +37,16 @@ class GalleryController extends Controller
         return back()->with('success','Images uploaded successfully');
     }
 
+    public function destroy($id)
+    {
+        try{
+            Gallery::findOrFail($id)->delete();
+            return redirect()->back()->with('success','Deleted successfully');
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with('error','Delete Failed');
+        }
+    }
+
    
 }
