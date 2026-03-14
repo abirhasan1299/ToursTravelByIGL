@@ -21,6 +21,9 @@ Route::get('subscription',[SubscriptionController::class,'index'])->name('subscr
 
 Route::get('booking',[BookingController::class,'index'])->name('booking');
 
+Route::get('booking/data/{id}',[BookingController::class,'EditStatus'])->name('booking.info');
+
+Route::put('booking/update/{id}',[BookingController::class,'UpdateStatus'])->name('booking.update.status');
 
 /*
 ========================================================================

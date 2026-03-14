@@ -2,6 +2,9 @@
 @section('title','List Company')
 
 @section('content')
+
+    @include('admin.partials.booking-modal')
+
     <div class="row mt-2">
         <div class="col-12">
 
@@ -30,7 +33,7 @@
                                 <td>{{$d->user_email}}</td>
                                 <td>{{$d->user_phone}}</td>
                                 <td>{{$d->quantity}}</td>
-                                <td>{{$d->total}}</td>
+                                <td>{{$d->quantity*$d->package->amount}}</td>
                                 <td>{{$d->user_address}}</td>
                                 <td>
                                         <span class="badge badge-label text-bg-@php
@@ -58,9 +61,9 @@
                                 <td>
                                     {{\Carbon\Carbon::parse($d->created_at)->format('d M, Y')}}
                                 </td>
-                                <td class="d-flex justify-content-around">
+                                <td class="d-flex justify-content-center">
 
-                                    <a href="#" class="btn btn-sm btn-outline-success" role="button">
+                                    <a href="#edit-booking-modal" data-bs-toggle="modal" class="btn btn-sm btn-outline-success edit-btn" data-id="{{$d->id}}" role="button">
                                         <i class="ti ti-pencil"></i>
                                     </a>
 
@@ -76,3 +79,40 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function(){
+
+            $('.edit-btn').click(function(){
+
+                let bookingId = $(this).data('id');
+                let actionUrl = '/company/booking/update/' + bookingId;
+
+                $('#booking-form').attr('action', actionUrl);
+
+                $.ajax({
+                    url: '/company/booking/data/' + bookingId,
+                    type: 'GET',
+
+                    success:function(data){
+
+                        $('#name').val(data.user_name);
+                        $('#email').val(data.user_email);
+                        $('#phone').val(data.user_phone);
+                        $('#date').val(data.date);
+                        $('#address').val(data.user_address);
+                        $('#quantity').val(data.quantity);
+                        $('#ip').val(data.user_ip);
+                        $('#booking_status').val(data.status);
+
+                        var modal = new bootstrap.Modal(document.getElementById('edit-booking-modal'));
+                        modal.show();
+                    }
+
+                });
+
+            });
+
+        });
+    </script>
+@endpush

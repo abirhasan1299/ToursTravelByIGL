@@ -15,18 +15,18 @@ class UserBooking extends Controller
         try{
 
             $alreadyHaveBooking = Booking::where('package_id', $request->package_id)
-                ->where('user_phone', $request->user_phone)
-                ->where('user_email', $request->user_email)
+                ->orWhere('user_phone', $request->user_phone)
+                ->orWhere('user_email', $request->user_email)
                 ->exists();
 
             if(!$alreadyHaveBooking)
             {
-                $phoneNumber = Booking::where('user_phone', $request->user_phone)->count();
-                $email = Booking::where('user_email', $request->user_email)->count();
+                $phoneNumber = Booking::where('user_phone',$request->user_phone)->count();
+                $email = Booking::where('user_email',$request->user_email)->count();
 
                 if($phoneNumber>=3 ||$email>=3)
                 {
-                    return redirect()->route('front.tour-list')->with('error','One Phone Number or Email Can Used only for 3 packages, Use another phone number and Email');
+                    return redirect()->route('front.tour-list')->with('error','One Phone Number or Email Can Used only for different 3 packages, Use another phone number and Email');
                 }
                 if(!empty($request->user_phone))
                 {
@@ -68,7 +68,7 @@ class UserBooking extends Controller
                 }
 
             }else{
-                return redirect()->route('front.tour-list')->with('error','You have already booked this package');
+                return redirect()->route('front.tour-list')->with('error','You have already booked this package with this email or phone. Try another package');
             }
 
         }catch (\Exception $e){
