@@ -26,6 +26,15 @@ class CommonController extends Controller
 
     public function TourDetails($id)
     {
+        $key = $_SERVER['REMOTE_ADDR'];
+
+        if(RateLimiter::tooManyAttempts($key,3))
+        {
+            $seconds = RateLimiter::availableIn($key);
+            return redirect()->route('front.tour-list')->with('error',`Too many attempts . Try {$seconds} later ...`);
+        }
+
+        RateLimiter::hit($key,240);
 
         $tour = Package::findOrFail(base64_decode($id));
         $activities = Activity::where('package_id', $tour->id)->get();
