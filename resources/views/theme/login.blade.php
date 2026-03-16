@@ -39,15 +39,16 @@
                                 </div><!-- /.login-page__top -->
                                 <div class="tabs-content">
                                     <div class="tabs-content__item tab active-tab" id="login">
-                                        <form class="contact-form-validated form-one" action="#">
+                                        <form class=" form-one" action="{{route('admin.verify')}}" method="post">
+                                            @csrf
                                             <div class="login-page__group">
                                                 <div class="login-page__input-box">
                                                     <i class="icon-email"></i>
-                                                    <input type="text" name="name" placeholder="your email">
+                                                    <input type="text" name="email" placeholder=" Email">
                                                 </div>
                                                 <div class="login-page__input-box">
                                                     <i class="icon-padlock"></i>
-                                                    <input type="password" placeholder="password" class="login-page__password">
+                                                    <input type="password" placeholder="password" class="login-page__password" name="password">
                                                     <span class="toggle-password pass-field-icon fa fa-fw fa-eye-slash"></span>
                                                 </div>
                                                 <div class="login-page__input-box login-page__input-box--bottom">
@@ -67,15 +68,24 @@
                                         <p class="login-page__form__text">don’t have an account?<a href="#">register</a></p>
                                     </div><!-- /.tabs-content__item -->
                                     <div class="tabs-content__item tab" id="register">
-                                        <form class="contact-form-validated form-one" action="#">
+                                        <form class="form-one" action="{{route('auth.register.company')}}" method="post">
+                                            @csrf
                                             <div class="login-page__group">
                                                 <div class="login-page__input-box">
+                                                    <i class="icon-user"></i>
+                                                    <input type="text" name="username" placeholder="Username">
+                                                </div>
+                                                <div class="login-page__input-box">
                                                     <i class="icon-email"></i>
-                                                    <input type="text" name="name" placeholder="your email">
+                                                    <input type="text" name="useremail" placeholder="Email">
+                                                </div>
+                                                <div class="login-page__input-box">
+                                                    <i class="icon-phone"></i>
+                                                    <input type="text" name="phone" placeholder="Mobile Number">
                                                 </div>
                                                 <div class="login-page__input-box">
                                                     <i class="icon-padlock"></i>
-                                                    <input type="password" placeholder="password" class="login-page__password">
+                                                    <input type="password" name="password" placeholder="password" class="login-page__password">
                                                     <span class="toggle-password pass-field-icon fa fa-fw fa-eye-slash"></span>
                                                 </div>
                                                 <div class="login-page__input-box login-page__input-box--bottom">
@@ -102,3 +112,34 @@
             </div><!-- /.container -->
         </section><!-- /.login-page -->
 @endsection
+@push('js')
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                html: `{!! implode('<br>', $errors->all()) !!}`
+            });
+        </script>
+    @endif
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Message',
+                text: '{{ session('success') }}',
+                confirmButtonColor: 'rgba(0,83,136,0.71)'
+            });
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Message',
+                text: '{{ session('error') }}',
+                confirmButtonColor: 'rgba(255,0,0,0.61)'
+            });
+        </script>
+    @endif
+@endpush

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\CompanyPackage;
 use App\Models\Faq;
 use App\Models\Gallery;
 use App\Models\IpBlock;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class CommonController extends Controller
 {
+
     public function TourList()
     {
         $tours = Package::where('status', 'active')
@@ -55,7 +57,9 @@ class CommonController extends Controller
 
     public function Pricing()
     {
-        return view('theme.pricing');
+        $packages = CompanyPackage::inRandomOrder()->where('p_status', 'active')->get();
+
+        return view('theme.pricing',compact('packages'));
     }
 
     public function About()

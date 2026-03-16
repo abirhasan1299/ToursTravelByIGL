@@ -38,6 +38,8 @@ Route::middleware('bot')->group(function () {
 
     Route::post('auth/otp/verify',[AuthController::class,'OTP_Verify'])->name('auth.verify.otp');
 
+    Route::post('auth/company/register',[AuthController::class,'RegisterCompany'])->name('auth.register.company');
+
 //--------------------Frontend Routes-----------------------------------------
 
     Route::get('tour-list',[CommonController::class,'TourList'])->name('front.tour-list');

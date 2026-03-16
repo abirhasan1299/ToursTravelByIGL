@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
+use App\Models\Social;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -123,6 +125,31 @@ class AuthController extends Controller
             }
         }
         return redirect()->route('login')->with('error','Unauthorized Access');
+    }
+
+    public function RegisterCompany(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'useremail' => 'required|unique:users,email',
+            'phone' => 'required|unique:users,phone',
+            'password' => 'required',
+            'profilephoto' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $user = new User();
+        $user->name = $request->username;
+        $user->email = $request->useremail;
+        $user->password = Hash::make($request->password);
+        $user->phone = $request->phone;
+        $user->role = 2;
+        $user->status = 'pending';
+        $user->company_id = random_int(100000, 999999);
+        $user->save();
+
+
+        return redirect()->route('front.login')->with('success', 'Registration successfully done');
+
     }
 
 }

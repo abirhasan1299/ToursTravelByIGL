@@ -16,6 +16,9 @@ class SslCommerzPaymentController extends Controller
 
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('front.login');
+        }
         $post_data = array();
         $post_data['total_amount'] = $request->credit*100;
         $post_data['currency'] = config('app.currency');
@@ -83,6 +86,9 @@ class SslCommerzPaymentController extends Controller
 
     public function BuyPlan(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('front.login');
+        }
         $post_data = array();
         $package = CompanyPackage::findOrFail($request->package_id);
 
@@ -150,6 +156,7 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+
             $tran_id = $request->input('tran_id');
             $amount = $request->input('amount');
             $currency = $request->input('currency');

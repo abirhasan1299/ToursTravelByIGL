@@ -186,11 +186,11 @@
                         <div class="footer-widget footer-widget--post">
                             <h2 class="footer-widget__title">useful links</h2><!-- /.footer-widget__title -->
                             <ul class="list-unstyled footer-widget__links">
-                                <li><a href="#">About Us</a></li>
+                                <li><a href="{{route('front.about')}}">About Us</a></li>
                                 <li><a href="#">Destination</a></li>
                                 <li><a href="#">News & blog</a></li>
                                 <li><a href="#">Meet the Guide</a></li>
-                                <li><a href="#">Contacts</a></li>
+                                <li><a href="{{route('front.contact')}}">Contacts</a></li>
                             </ul><!-- /.list-unstyled footer-widget__links -->
                         </div><!-- /.footer-widget -->
                     </div><!-- /.col-lg-6 -->
@@ -206,7 +206,7 @@
                                 </div><!-- /.form-group -->
                                 <div class="form-group__check">
                                     <input type="checkbox" name="checkbox" id="check">
-                                    <label for="check">I agree to the <a href="faq.html">Privacy Policy.</a></label>
+                                    <label for="check">I agree to the <a href="{{route('front.faq')}}">Privacy Policy.</a></label>
                                 </div><!-- /.form-group -->
                             </form><!-- /.footer-widget__newsletter mc-form -->
                             <div class="mc-form__response"></div><!-- /.mc-form__response -->
@@ -215,10 +215,10 @@
                 </div><!-- /.row -->
             </div><!-- /.container -->
             <div class="main-footer__element-one">
-                <img src="assets/images/shapes/footer-shape-1-1.png" alt>
+                <img src="{{asset('assets/images/shapes/footer-shape-1-1.png')}}" alt>
             </div><!-- /.main-footer__element-one -->
             <div class="main-footer__element-two">
-                <img src="assets/images/shapes/footer-shape-1-2.png" alt>
+                <img src="{{asset('assets/images/shapes/footer-shape-1-2.png')}}" alt>
             </div><!-- /.main-footer__element-one -->
         </div><!-- /.main-footer__middle -->
         <div class="main-footer__bottom">
@@ -254,13 +254,13 @@
                     <span class="mobile-nav__contact__icon">
                         <i class="fa fa-envelope"></i>
                     </span>
-                <a href="mailto:needhelp@gotur.com">needhelp@gotur.com</a>
+                <a href="mailto:{{settings()->app_email}}">{{settings()->app_email}}</a>
             </li>
             <li>
                     <span class="mobile-nav__contact__icon">
                         <i class="fa fa-phone-alt"></i>
                     </span>
-                <a href="tel:+9156980036420">+91 5698 0036 420</a>
+                <a href="tel:{{settings()->app_phone}}">{{settings()->app_phone}}</a>
             </li>
         </ul><!-- /.mobile-nav__contact -->
         <div class="mobile-nav__social">
@@ -285,12 +285,14 @@
     <div class="header-right-sidebar__content">
         <span class="header-right-sidebar__close header-right-sidebar__toggler"><i class="fa fa-times"></i></span>
         <div class="header-right-sidebar__logo-box">
-            <a href="#" aria-label="logo image"> <img src="{{asset('assets/images/logo-landing.png')}}" width="158" alt="gotur"> </a>
+            <center>
+                <a href="{{route('home')}}" aria-label="logo image"> <img src="{{asset('assets/images/igl.png')}}" width="200" alt=""> </a>
+            </center>
         </div>
         <div class="header-right-sidebar__container">
             <div class="header-right-sidebar__container__about wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
                 <h3 class="header-right-sidebar__container__title">We’re Number One Travel Adventure Company</h3>
-                <p class="header-right-sidebar__container__text">It is a long established fact that a reader will be distracted the readable content of a page when looking at layout the point of using lorem the is Ipsum less normal distribution of letters.</p>
+                <p class="header-right-sidebar__container__text">{{settings()->app_about}}</p>
             </div>
             <div class="header-right-sidebar__container__contact">
                 <h3 class="header-right-sidebar__container__title">Contact Us</h3>
@@ -323,14 +325,6 @@
                         </div>
                     </li>
                 </ul>
-            </div>
-            <div class="header-right-sidebar__container__newsletter-box wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='900ms'>
-                <h3 class="header-right-sidebar__container__title">get notification</h3>
-                <form action="#" data-url="MAILCHIMP_FORM_URL" class="newsletter-box mc-form">
-                    <input type="email" name="EMAIL" placeholder="Email">
-                    <button type="submit" class="gotur-btn gotur-btn--base">subscribe now</button>
-                </form>
-                <div class="mc-form__response"></div>
             </div>
         </div>
     </div><!-- /.header-right-sidebar__content -->

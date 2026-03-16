@@ -3,10 +3,6 @@
 @section('title','Package')
 
 @section('content')
-    @php
-        function getDaysFromRange($range) { [$start, $end] = explode(' to ', $range); $startDate = Carbon::parse($start); $endDate = Carbon::parse($end); return $startDate->diffInDays($endDate) + 1; }
-
-    @endphp
 
 {{--    modal form--}}
     @include('admin.partials.create-package')
