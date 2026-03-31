@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Profile;
-use App\Models\Social;
+use App\Models\Package;
 use App\Models\User;
+use App\Models\UserPlanOwn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
@@ -19,6 +20,7 @@ class AuthController extends Controller
     {
         return view('auth.admin-login');
     }
+
     public function AdminLoginPost(Request $request)
     {
         $request->validate([
@@ -28,6 +30,11 @@ class AuthController extends Controller
 
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
         {
+            if(Auth::user()->status=="pending" || Auth::user()->status=="suspended")
+            {
+                return back()->with('error','Your Account is Under Review');
+            }
+
             $request->session()->regenerate();
 
             if(Auth::user()->role==1)
@@ -36,6 +43,8 @@ class AuthController extends Controller
             }
             elseif (Auth::user()->role==2)
             {
+                $this->Shutdown();
+
                 return redirect()->route('company.dashboard');
             }
 
@@ -48,6 +57,27 @@ class AuthController extends Controller
         Auth::logout();
         session()->flush();
         return redirect()->route('login');
+    }
+
+    public function Shutdown()
+    {
+        $userPackage = UserPlanOwn::where('user_id', auth()->id())->first();
+
+        if ($userPackage) {
+
+            $expiryDate = $userPackage->created_at
+                ->copy()
+                ->addDays((int) $userPackage->userPackage->p_date_range);
+
+            if (now()->greaterThanOrEqualTo($expiryDate)) {
+
+                Package::where('user_id', auth()->id())
+                    ->where('status', '!=', 'suspended')
+                    ->update([
+                        'status' => 'suspended'
+                    ]);
+            }
+        }
     }
 
     public function Forget_Password_OTP(Request $request)
@@ -136,6 +166,29 @@ class AuthController extends Controller
             'password' => 'required',
             'profilephoto' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+        //check if User email is really exist or not
+        $response = Http::withHeaders([
+            'x-api-key' => 'wcoC1ANRXJEiMvxFxOeVZ8MJTs43vSzYhA0d3yNT',
+            'Accept' => 'application/json',
+        ])->get('https://api.api-ninjas.com/v1/validateemail?email='.$request->useremail);
+
+        if ($response->successful()) {
+
+            $data = $response->json(); // convert to array
+
+            $flag = false;
+
+            if ($data['is_valid'] && $data['is_disposable']) {
+                $flag = true;
+            }
+        }
+
+
+        if(!$flag)
+        {
+            return redirect()->route('front.login')->with('error', 'Invalid Email');
+        }
 
         $user = new User();
         $user->name = $request->username;

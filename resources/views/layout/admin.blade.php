@@ -466,14 +466,27 @@
                         </a>
                     </li>
                         <li class="side-nav-item">
+                            <a href="{{route('admin.post.index')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-box"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Post</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.facility.index')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-check"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Hotel Facility</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
                             <a href="{{route('admin.gallery')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-photo"></i></span>
                                 <span class="menu-text" data-lang="dashboards">Gallery</span>
                             </a>
                         </li>
+
                         <li class="side-nav-item">
                             <a href="{{route('admin.contacts.list')}}" class="side-nav-link">
-                                <span class="menu-icon"><i class="ti ti-message"></i></i></span>
+                                <span class="menu-icon"><i class="ti ti-message"></i></span>
                                 <span class="menu-text" data-lang="dashboards">Contact Box</span>
                             </a>
                         </li>

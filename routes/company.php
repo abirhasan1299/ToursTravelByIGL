@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Company\BookingController;
+use App\Http\Controllers\Company\HotelController;
 use App\Http\Controllers\Company\PackageController;
 use App\Http\Controllers\Company\SubscriptionController;
 use App\Http\Controllers\Company\TransactionController;
@@ -13,6 +14,23 @@ Route::get('dashboard',function (){
 
 Route::get('subscription',[SubscriptionController::class,'index'])->name('subscription.index');
 
+/*
+========================================================================
+                            Hotel Route
+========================================================================
+*/
+
+Route::get('hotel',[HotelController::class,'index'])->name('hotel.index');
+
+Route::post('hotel/store',[HotelController::class,'store'])->name('hotel.store');
+
+Route::get('hotel/create',[HotelController::class,'create'])->name('hotel.create');
+
+Route::get('hotel/edit/{id}',[HotelController::class,'edit'])->name('hotel.edit');
+
+Route::put('hotel/update/{id}',[HotelController::class,'update'])->name('hotel.update');
+
+Route::delete('hotel/delete/{id}',[HotelController::class,'destroy'])->name('hotel.destroy');
 /*
 ========================================================================
                             Booking  Route

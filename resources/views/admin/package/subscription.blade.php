@@ -1,6 +1,6 @@
 @php use Carbon\Carbon; @endphp
 @extends('layout.admin')
-@section('title','Package')
+@section('title','Subscription')
 @push('css')
     <style>
         /* Custom Styles for Package Card */
@@ -161,12 +161,19 @@
                                 <span class="text-nowrap">Expire Date</span>
                                 <span class="text-danger me-2">
                                     <i class="ti ti-calendar"></i>
-                                    @php
-                                        $dates = explode(' to ', $own_package->userPackage->p_date_range??'');
-                                    @endphp
-                                    @if(!empty($dates[1]))
-                                        {{Carbon::parse($dates[1])->format('d M, Y')??'------'}}
+                                    @if($expiryDate!=null)
+                                        {{Carbon::parse($expiryDate)->format('d, M / Y')??'None'}}
                                     @endif
+
+                                </span>
+                                <span class="text-success me-2">
+                                     @if(!empty($daysLeft))
+                                         @if($daysLeft<=0)
+                                            <b class="text-danger">Expired</b>
+                                         @else
+                                             ( {{(int)$daysLeft}} Day's Remain)
+                                         @endif
+                                      @endif
                                 </span>
                             </p>
                         </div>
@@ -297,7 +304,7 @@
                                     <div class="bg-light rounded-2 p-2 text-center feature-box">
                                         <i class="ti ti-clock text-primary d-block" style="font-size: 1.1rem;"></i>
                                         <span class="text-muted small d-block" style="font-size: 0.65rem;">Days</span>
-                                        <span class="fw-semibold small">{{ getDaysFromRange($p->p_date_range) }}</span>
+                                        <span class="fw-semibold small">{{$p->p_date_range}}</span>
                                     </div>
                                 </div>
                             </div>

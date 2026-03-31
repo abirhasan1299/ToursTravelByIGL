@@ -7,13 +7,8 @@
 
             <a href="{{route('admin.create-company')}}" role="button" class="btn btn-primary mb-2"><i class="ti ti-plus"></i> Add Company</a>
 
-            @if(session('success'))
-                <div class="alert alert-success text-bg-success alert-dismissible" role="alert">
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <div>{{session('success')}}</div>
-                </div>
-            @endif
 
+@include('admin.partials.edit-user')
             <div class="card">
                 <div class="card-body">
                     <table data-tables="basic" class="table table-striped dt-responsive align-middle mb-0">
@@ -63,15 +58,18 @@
                                         {{\Carbon\Carbon::parse($d->create_at)->format('d M, Y')}}
                                     </td>
                                     <td class="d-flex justify-content-around">
-                                        <a href="#" class="btn btn-sm btn-outline-success" role="button">
-                                            <i class="ti ti-eye"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-outline-warning" role="button">
+
+                                        <button data-id="{{$d->id}}" class="btn btn-sm btn-outline-warning edit-btn" role="button">
                                             <i class="ti ti-pencil"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" role="button">
-                                            <i class="ti ti-trash"></i>
-                                        </a>
+                                        </button>
+
+                                        <form action="{{route('admin.destroy-company',$d->id)}}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" role="button">
+                                                <i class="ti ti-trash"></i>
+                                            </button>
+                                        </form>
 
                                     </td>
                                 </tr>
@@ -85,3 +83,56 @@
         </div>
     </div>
 @endsection
+@push('js')
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Message',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#126600'
+            });
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Message',
+                text: '{{ session('error') }}',
+                confirmButtonColor: 'rgba(238,11,45,0.76)'
+            });
+        </script>
+    @endif
+    <script>
+        $(document).ready(function(){
+
+            // Click Edit Button
+            $('.edit-btn').click(function(){
+                let userid = $(this).data('id');
+                let actionUrl = '/admin/users/update/' + userid;
+
+                $('#edit-user-form').attr('action', actionUrl);
+
+                $.ajax({
+                    url: '/admin/users/edit/' + userid,
+                    type: 'GET',
+                    success: function(data){
+
+                        // Populate modal fields
+                        $('#name').val(data.name);
+                        $('#email').val(data.email);
+                        $('#phone').val(data.phone);
+
+                        $('#edit_user_status').val(data.status);
+
+
+                        // Show modal
+                        var modal = new bootstrap.Modal(document.getElementById('edit-user-modal'));
+                        modal.show();
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

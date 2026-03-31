@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Root\CompanyInfo;
+use App\Http\Controllers\Root\FacilityController;
 use App\Http\Controllers\Root\FaqController;
 use App\Http\Controllers\Root\GalleryController;
+use App\Http\Controllers\Root\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
@@ -73,6 +75,12 @@ Route::get('/list-company',[CompanyController::class,'listCompany'])->name('list
 
 Route::post('/store-company',[CompanyController::class,'store'])->name('store-company');
 
+Route::get('/users/edit/{id}',[CompanyController::class,'editCompany'])->name('edit-company');
+
+Route::put('/users/update/{id}',[CompanyController::class,'update'])->name('update-company');
+
+Route::delete('/users/delete/{id}',[CompanyController::class,'destroy'])->name('destroy-company');
+
 /*
     |--------------------------------------------------------------------------
     | Package Routes
@@ -89,3 +97,38 @@ Route::post('/package/edit/{id}',[PackageController::class,'updatePackage'])->na
 Route::delete('/package/destroy/{id}',[PackageController::class,'destory'])->name('package.destroy');
 
 Route::get('/package/getData/{id}',[PackageController::class,'getData'])->name('package.getdata');
+
+/*
+    |--------------------------------------------------------------------------
+    | Post Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('/post/',[PostController::class,'index'])->name('post.index');
+
+Route::get('/post/create',[PostController::class,'create'])->name('post.create');
+
+Route::post('/post/store',[PostController::class,'store'])->name('post.store');
+
+Route::get('/post/verify/{id}',[PostController::class,'show'])->name('post.show');
+
+Route::get('/post/active/{id}',[PostController::class,'ActivateStatus'])->name('post.active');
+
+Route::get('/post/suspend/{id}',[PostController::class,'SuspendedStatus'])->name('post.suspend');
+
+Route::delete('/post/destroy/{id}',[PostController::class,'destroy'])->name('post.destroy');
+
+
+/*
+    |--------------------------------------------------------------------------
+    | HOTEL Facility
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('/facility/',[FacilityController::class,'index'])->name('facility.index');
+
+Route::post('/facility/store',[FacilityController::class,'store'])->name('facility.store');
+
+Route::delete('/facility/destroy/{id}',[FacilityController::class,'destroy'])->name('facility.destroy');

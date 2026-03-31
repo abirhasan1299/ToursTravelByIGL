@@ -5,13 +5,28 @@ use App\Http\Controllers\Root\CommonController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\UserBooking;
 use App\Models\About;
+use App\Models\Hotel;
+use App\Models\Package;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('bot')->group(function () {
 
     Route::get('/', function () {
+
         $about = About::where('id',1)->first();
-        return view('theme.index',compact('about'));
+
+        $startLocations = Package::select('start_location')
+                        ->distinct()
+                        ->pluck('start_location');
+
+        $tourTypes = Package::select('tour_type')
+                    ->distinct()
+                    ->pluck('tour_type');
+        $hotelLocations = Hotel::distinct()->pluck('location')->toArray();
+
+
+        return view('theme.index',compact('about','startLocations','tourTypes','hotelLocations'));
+
     })->name('home');
 
     Route::get('/404', function () {
@@ -25,7 +40,7 @@ Route::middleware('bot')->group(function () {
 
     Route::post('package/verify/otp/check',[UserBooking::class,'OTP_Verify'])->name('package.otp.verify');
 
-//--------------------Auth Route-----------------------------------------
+//--------------------Auth Route----------------------------------------------------
     Route::get('auth/login',[AuthController::class,'AdminLogin'])->name('login');
 
     Route::post('auth/verify',[AuthController::class,'AdminLoginPost'])->name('admin.verify');
@@ -40,7 +55,14 @@ Route::middleware('bot')->group(function () {
 
     Route::post('auth/company/register',[AuthController::class,'RegisterCompany'])->name('auth.register.company');
 
-//--------------------Frontend Routes-----------------------------------------
+
+//--------------------Frontend Routes------------------------------------------------
+
+    Route::get('/hotels', [CommonController::class, 'hotel'])->name('front.hotel-list');
+
+    Route::post('/hotels/filter', [CommonController::class, 'filter'])->name('front.hotel-list.filter');
+
+    Route::get('/hotels/about/{id}', [CommonController::class, 'showHotelDetails'])->name('front.hotel.about');
 
     Route::get('tour-list',[CommonController::class,'TourList'])->name('front.tour-list');
 
@@ -58,6 +80,8 @@ Route::middleware('bot')->group(function () {
     Route::post('about-us/store',[CommonController::class,'ContactForm'])->name('front.contact.store');
 
     Route::get('gallery',[CommonController::class,'gallery'])->name('front.gallery');
+
+    Route::post('/tour-list/filter', [CommonController::class, 'filterTours'])->name('front.tour-list.filter');
 
 //------------------- SSLCOMMERZ Start------------------------------------------
 

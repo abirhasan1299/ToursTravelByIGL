@@ -55,7 +55,6 @@
                                   <div class="d-flex justify-content-between">
                                       <a href="{{route('company.package.activity',base64_encode($d->id))}}" class="btn btn-sm btn-info" role="button"><i class="ti ti-calendar"></i> </a>
 
-                                      <a href="#" class="btn btn-sm btn-warning" role="button"><i class="ti ti-pencil"></i></a>
 
                                       <form action="{{route('company.package.activity.destroy',$d->id)}}" method="post" class="delete-form">
                                           @csrf

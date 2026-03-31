@@ -24,6 +24,7 @@
                             <th>Days</th>
                             <th>Price</th>
                             <th>Limit</th>
+                            <th>Featured</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -33,10 +34,13 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$d->p_name}}</td>
-                                <td>{{getDaysFromRange($d->p_date_range)}} Days</td>
+                                <td>{{$d->p_date_range}} Days</td>
                                 <td>{{config('app.currency')}} {{$d->p_price}}</td>
                                 <td>
                                     {{$d->p_post_limit}}
+                                </td>
+                                <td>
+                                    {{$d->p_featured_post}}
                                 </td>
                                 <td>
                                         <span class="badge badge-label text-bg-@php
@@ -145,7 +149,6 @@
 
     <script>
             $(document).ready(function(){
-
                 // Click Edit Button
                 $('.edit-btn').click(function(){
                     let packageId = $(this).data('id');
@@ -168,6 +171,7 @@
                             $('#modal_p_post_limit').val(data.p_post_limit);
                             $('#modal_p_status').val(data.p_status);
                             $('#modal_p_credit').val(data.p_credit);
+                            $('#modal_p_featured_post').val(data.p_featured_post);
 
                             // Show modal
                             var modal = new bootstrap.Modal(document.getElementById('edit-package-modal'));

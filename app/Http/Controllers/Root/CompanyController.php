@@ -77,4 +77,26 @@ class CompanyController extends Controller
        return redirect()->route('admin.list-company')->with('success', 'Company has been added successfully');
 
     }
+
+    public function editCompany($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
+    public function update(Request $request ,$id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = $request->status;
+        $user->save();
+
+        return redirect()->route('admin.list-company')->with('success', 'Status Updated Successfully');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('admin.list-company')->with('success', 'Company has been deleted successfully');
+    }
 }

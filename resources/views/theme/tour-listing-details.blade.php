@@ -1,661 +1,776 @@
 @extends('layout.theme')
-@section('title','Tour List')
+@section('title', $tour->title ?? 'Tour Details')
 @push('css')
+<style>
+    /* Modal Styles - Enhanced */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(29, 35, 31, 0.85);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        padding: 20px;
+    }
 
-    <style>
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
 
-        /* main content (button + demo card) */
-        .demo-wrapper {
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-        }
+    .modal-card {
+        background: var(--gotur-white, #fff);
+        width: 100%;
+        max-width: 580px;
+        border-radius: 20px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        padding: 0;
+        transform: scale(0.95) translateY(20px);
+        transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        opacity: 0;
+        overflow: hidden;
+    }
 
+    .active .modal-card {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
 
-        .brand {
-            font-weight: 500;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            color: #2c3e50;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            opacity: 0.75;
-        }
+    .modal-header {
+        background: var(--gotur-base, #63AB45);
+        padding: 20px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-        .open-modal-btn {
-            background: #1e2b37;
-            color: white;
-            border: none;
-            padding: 1.2rem 3rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-            border-radius: 60px;
-            box-shadow: 0 20px 30px -10px rgba(20, 40, 60, 0.3);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid rgba(255,255,255,0.15);
-            backdrop-filter: blur(4px);
-            letter-spacing: -0.01em;
-        }
+    .modal-header h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--gotur-white, #fff);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-        .open-modal-btn i {
-            font-size: 1.5rem;
-            color: #b3d9ff;
-        }
+    .modal-header h2 i {
+        font-size: 1.4rem;
+    }
 
-        .open-modal-btn:hover {
-            background: #15232e;
-            transform: scale(1.02) translateY(-3px);
-            box-shadow: 0 28px 38px -12px #1a2e3f;
-        }
+    .close-modal {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: var(--gotur-white, #fff);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .open-modal-btn:active {
-            transform: scale(0.98);
-            box-shadow: 0 12px 25px -8px #0f1e2b;
-        }
+    .close-modal:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(90deg);
+    }
 
-        .card-note {
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(8px);
-            margin-top: 2.5rem;
-            padding: 1.2rem;
-            border-radius: 40px;
-            font-size: 0.95rem;
-            color: #1a3b4e;
-            font-weight: 500;
-            border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 15px 25px -18px #0f2b38;
-        }
+    .booking-form {
+        padding: 28px;
+    }
 
-        /* ----- MODAL OVERLAY (fullscreen, centered) ----- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 25, 35, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.25s ease, visibility 0.25s;
-            z-index: 1000;
-            padding: 1.5rem;
-        }
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
 
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    .form-row .input-group {
+        flex: 1;
+    }
 
-        /* ----- MODAL CARD (frosted glass, sharp & professional) ----- */
-        .modal-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            width: 100%;
-            max-width: 620px;
-            border-radius: 40px;
-            box-shadow: 0 45px 65px -25px #0c1f2b, 0 0 0 1px rgba(255,255,255,0.5) inset, 0 0 0 2px rgba(255,255,255,0.1);
-            padding: 2rem 2.2rem;
-            transform: scale(0.96) translateY(10px);
-            transition: transform 0.35s cubic-bezier(0.15, 0.85, 0.35, 1.05), opacity 0.25s;
-            opacity: 0;
-            border: 1px solid rgba(255,255,255,0.7);
-        }
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
 
-        .active .modal-card {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
+    .input-group.full-width {
+        width: 100%;
+    }
 
-        /* header */
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.8rem;
-        }
+    .input-group label {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--gotur-black, #1D231F);
+    }
 
-        .modal-header h2 {
-            font-size: 1.9rem;
-            font-weight: 600;
-            letter-spacing: -0.03em;
-            background: linear-gradient(145deg, #1b2c3a, #1e3648);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            border-left: 5px solid #3079ab;
-            padding-left: 1rem;
-        }
+    .input-group label i {
+        color: var(--gotur-base, #63AB45);
+        margin-right: 6px;
+        width: 18px;
+    }
 
-        .close-modal {
-            background: transparent;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #38586e;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 60px;
-            transition: 0.2s;
-            background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(4px);
-        }
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--gotur-border-color, #E5E5E5);
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: var(--gotur-font, "Plus Jakarta Sans", sans-serif);
+        transition: all 0.3s ease;
+        background: var(--gotur-white, #fff);
+    }
 
-        .close-modal:hover {
-            background: rgba(255,99,99,0.2);
-            color: #be3b3b;
-            transform: rotate(90deg);
-        }
+    .input-group input:focus,
+    .input-group select:focus {
+        outline: none;
+        border-color: var(--gotur-base, #63AB45);
+        box-shadow: 0 0 0 3px rgba(99, 171, 69, 0.1);
+    }
 
-        /* form grid */
-        .booking-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
+    .input-group input:disabled {
+        background: var(--gotur-gray, #F3F8F6);
+        cursor: not-allowed;
+    }
 
+    .confirm-btn {
+        width: 100%;
+        background: var(--gotur-base, #63AB45);
+        color: var(--gotur-white, #fff);
+        border: none;
+        padding: 14px 24px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+    }
+
+    .confirm-btn:hover {
+        background: var(--gotur-primary, #F7921E);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(99, 171, 69, 0.3);
+    }
+
+    .confirm-btn i {
+        transition: transform 0.3s ease;
+    }
+
+    .confirm-btn:hover i {
+        transform: translateX(5px);
+    }
+
+    hr {
+        margin: 20px 0;
+        border: none;
+        height: 1px;
+        background: var(--gotur-border-color, #E5E5E5);
+    }
+
+    /* Share Button Styles */
+    .tour-listing-details__destination__right {
+        position: relative;
+    }
+
+    .tour-listing-details__destination__social__list {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--gotur-white, #fff);
+        border-radius: 12px;
+        padding: 10px 15px;
+        display: flex;
+        gap: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .tour-listing-details__destination__right:hover .tour-listing-details__destination__social__list {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .tour-listing-details__destination__social__list a {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--gotur-gray, #F3F8F6);
+        color: var(--gotur-text, #595959);
+        transition: all 0.3s ease;
+    }
+
+    .tour-listing-details__destination__social__list a:hover {
+        background: var(--gotur-base, #63AB45);
+        color: var(--gotur-white, #fff);
+        transform: translateY(-2px);
+    }
+
+    /* Destination Info Cards Enhancement */
+    .tour-listing-details__info-area__info li {
+        background: var(--gotur-gray, #F3F8F6);
+        padding: 20px 25px;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .tour-listing-details__info-area__info li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .tour-listing-details__info-area__icon {
+        font-size: 28px;
+    }
+
+    /* Sidebar Booking Card */
+    .tour-listing-details__sidebar__item-form {
+        background: var(--gotur-gray, #F3F8F6);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .tour-listing-details__sidebar__item-form .gotur-btn {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    /* Content Sections */
+    .tour-listing-details__content__item {
+        background: var(--gotur-white, #fff);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--gotur-border-color, #E5E5E5);
+    }
+
+    .tour-listing-details__title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .tour-listing-details__title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--gotur-base, #63AB45);
+        border-radius: 3px;
+    }
+
+    /* Tour Plan Accordion */
+    .faq-accordion .accordion {
+        border: 1px solid var(--gotur-border-color, #E5E5E5);
+        border-radius: 12px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+
+    .faq-accordion .accordion-title {
+        padding: 18px 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .faq-accordion .accordion-title h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .faq-accordion .accordion-title__icon {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-accordion .accordion-title__icon::before {
+        content: '\e918';
+        font-family: 'icomoon';
+        font-size: 12px;
+    }
+
+    .faq-accordion .active .accordion-title__icon {
+        transform: rotate(90deg);
+    }
+
+    .faq-accordion .accordion-content {
+        display: none;
+        padding: 0 25px 25px 25px;
+        border-top: 1px solid var(--gotur-border-color, #E5E5E5);
+    }
+
+    .faq-accordion .active .accordion-content {
+        display: block;
+    }
+
+    /* Include/Exclude Lists */
+    .tour-listing-details__list ul,
+    .tour-listing-details__amenities__inner ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .tour-listing-details__list li,
+    .tour-listing-details__amenities__inner li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+    }
+
+    .tour-listing-details__list li i,
+    .tour-listing-details__amenities__inner li i {
+        color: var(--gotur-base, #63AB45);
+        font-size: 16px;
+        width: 20px;
+    }
+
+    @media (max-width: 768px) {
         .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .form-row .input-group {
-            flex: 1 1 calc(50% - 0.5rem);
-            min-width: 170px;
-        }
-
-        .input-group {
-            display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 15px;
         }
-
-        .input-group.full-width {
-            flex: 1 1 100%;
+        
+        .tour-listing-details__list ul,
+        .tour-listing-details__amenities__inner ul {
+            grid-template-columns: 1fr;
         }
-
-        .input-group label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #1d4055;
-            margin-left: 0.5rem;
+        
+        .tour-listing-details__title {
+            font-size: 24px;
         }
-
-        .input-group label i {
-            margin-right: 6px;
-            color: #3079ab;
-            font-size: 0.8rem;
+        
+        .tour-listing-details__info-area__info {
+            flex-wrap: wrap;
         }
-
-        .input-group input {
-            background: rgba(255,255,255,0.9);
-            border: 1.5px solid rgba(45, 90, 120, 0.2);
-            border-radius: 24px;
-            padding: 0.9rem 1.5rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            color: #152f3f;
-            transition: 0.2s;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0,20,30,0.02);
+        
+        .tour-listing-details__info-area__info li {
+            flex: calc(50% - 15px);
+            min-width: 180px;
         }
-
-        .input-group input:focus {
-            border-color: #3079ab;
-            box-shadow: 0 8px 18px -12px #1e5270, 0 0 0 4px rgba(48, 121, 171, 0.15);
-            background: white;
-        }
-
-        .input-group input::placeholder {
-            color: #8ca3b2;
-            font-weight: 300;
-            font-size: 0.9rem;
-        }
-
-        /* total field special subtle style */
-        .input-group input[name="total"] {
-            background: rgba(230, 242, 250, 0.7);
-            font-weight: 600;
-            color: #0b3f5c;
-        }
-
-        /* confirm button */
-        .confirm-btn {
-            background: #1e384b;
-            border: none;
-            border-radius: 50px;
-            padding: 1.2rem 2rem;
-            margin-top: 1.2rem;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 20px 25px -15px #0e2635;
-            letter-spacing: 0.3px;
-        }
-
-        .confirm-btn i {
-            font-size: 1.3rem;
-            color: #9ac7ff;
-        }
-
-        .confirm-btn:hover {
-            background: #15445c;
-            gap: 22px;
-            background: #1f4660;
-            box-shadow: 0 24px 32px -14px #08212e;
-        }
-
-        .confirm-btn:active {
-            transform: scale(0.98);
-            background: #123141;
-        }
-
-        /* small success message (hidden by default) */
-        .toast-message {
-            background: #1b3e4b;
-            color: #ddf2fd;
-            padding: 0.8rem;
-            border-radius: 60px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-align: center;
-            margin-top: 1.3rem;
-            opacity: 0;
-            transition: 0.2s;
-            border: 1px solid #93c8ff;
-        }
-
-        .toast-message.show {
-            opacity: 1;
-        }
-
-        hr {
-            border: none;
-            height: 1px;
-            background: rgba(78, 118, 148, 0.2);
-            margin: 0.8rem 0 0.2rem;
-        }
-    </style>
+    }
+</style>
 @endpush
+
 @section('content')
-    <!-- MODAL OVERLAY (hidden by default) -->
+    <!-- Booking Modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-card">
             <div class="modal-header">
-                <h2><i class="fas fa-pen" style="margin-right: 12px; color:#3079ab;"></i>Booking Details</h2>
+                <h2><i class="fas fa-calendar-check"></i> Book This Tour</h2>
                 <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
             </div>
-
-            <!-- input fields: date, quantity, total, user_name, user_email, user_phone, user_address  -->
             <form method="post" class="booking-form" id="bookingForm" action="{{route('package.booking')}}">
                 @csrf
                 <div class="form-row">
                     <div class="input-group">
-                        <label><i class="far fa-calendar-alt"></i> date</label>
-                        <input type="date" name="date" id="dateField" value="2026-03-20" required>
+                        <label><i class="fas fa-calendar-alt"></i> Travel Date</label>
+                        <input type="date" name="date" id="dateField" required>
                     </div>
-
                     <div class="input-group">
-                        <label><i class="fas fa-hashtag"></i> quantity</label>
-                        <input type="hidden" name="package_id"  value="{{$tour->id}}">
-
-                        <input type="number" name="quantity" id="quantityField" placeholder="e.g. 2" min="1"  required>
+                        <label><i class="fas fa-users"></i> Quantity</label>
+                        <input type="hidden" name="package_id" value="{{$tour->id}}">
+                        <input type="number" name="quantity" id="quantityField" placeholder="Number of travelers" min="1" required>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="input-group">
-                        <label><i class="fas fa-coins"></i> total (BDT)</label>
-                        <input type="number" step="5" name="total" id="totalField" placeholder="0"   required disabled>
+                        <label><i class="fas fa-money-bill-wave"></i> Total (BDT)</label>
+                        <input type="text" name="total" id="totalField" placeholder="0" disabled>
                     </div>
                     <div class="input-group">
-                        <label><i class="fas fa-user-circle"></i> full name</label>
-                        <input type="text" name="user_name" id="userNameField" placeholder="Alex Rivera"  required>
+                        <label><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" name="user_name" id="userNameField" placeholder="Enter your full name" required>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="input-group">
-                        <label><i class="fas fa-envelope"></i> email</label>
-                        <input type="email" name="user_email" id="userEmailField" placeholder="hello@domain.com"  required>
+                        <label><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" name="user_email" id="userEmailField" placeholder="your@email.com" required>
                     </div>
                     <div class="input-group">
-                        <label><i class="fas fa-phone-alt"></i> phone</label>
-                        <input type="tel" name="user_phone" id="userPhoneField" placeholder="+1 (415) 555‑1234"  required>
+                        <label><i class="fas fa-phone"></i> Phone Number</label>
+                        <input type="tel" name="user_phone" id="userPhoneField" placeholder="+880XXXXXXXXX" required>
                     </div>
                 </div>
-
                 <div class="input-group full-width">
-                    <label><i class="fas fa-map-pin"></i> address</label>
-                    <input type="text" name="user_address" id="userAddressField" placeholder="Street, city, postal code" required>
+                    <label><i class="fas fa-map-marker-alt"></i> Address</label>
+                    <input type="text" name="user_address" id="userAddressField" placeholder="Your full address" required>
                 </div>
-
-                <!-- subtle separator -->
                 <hr>
-
-                <!-- confirm booking button (submit) -->
-                <button type="submit" class="confirm-btn" id="confirmBookingBtn">
-                    <span>✓ confirm booking</span>
-                    <i class="fas fa-arrow-right-long"></i>
+                <button type="submit" class="confirm-btn">
+                    <span>Confirm Booking</span>
+                    <i class="fas fa-arrow-right"></i>
                 </button>
-
             </form>
         </div>
     </div>
-  <section class="page-header">
-            <div class="page-header__bg" style="background-image: url({{asset('assets/images/backgrounds/page-header-bg-1-1.jpg')}});"></div><!-- /.page-header__bg -->
-            <div class="container">
-                <div class="page-header__content">
-                    <h2 class="page-header__title bw-split-in-right">Tour Details</h2>
-                    <ul class="gotur-breadcrumb list-unstyled">
-                        <li><a href="{{route('home')}}">Home</a></li>
-                        <li><span>Tour Details</span></li>
-                    </ul><!-- /.thm-breadcrumb list-unstyled -->
-                </div><!-- /.page-header__content -->
-            </div><!-- /.container -->
-        </section><!-- /.page-header -->
 
-  <section class="tour-listing-details section-space">
-            <div class="tour-listing-details__destination wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                <div class="container">
-                    <div class="tour-listing-details__destination__inner">
-                        <div class="tour-listing-details__destination__left">
-                            <h4 class="tour-listing-details__destination__title">{{$tour->title}}</h4><!-- /.tour-listing-details__destination__title -->
-                            <div class="tour-listing-details__destination__revue">
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header__bg" style="background-image: url({{asset('assets/images/backgrounds/page-header-bg-1-1.jpg')}});"></div>
+        <div class="container">
+            <div class="page-header__content">
+                <h2 class="page-header__title bw-split-in-right">{{$tour->title}}</h2>
+                <ul class="gotur-breadcrumb list-unstyled">
+                    <li><a href="{{route('home')}}">Home</a></li>
+                    <li><a href="{{route('front.tour-list')}}">Tours</a></li>
+                    <li><span>{{$tour->title}}</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-                                <div class="tour-listing-details__destination__posted">
-                                    <i class="icon-pin1"></i>
-                                    <p class="tour-listing-details__destination__posted-text">
-                                        {{$tour->start_location." to ".$tour->end_location}}
-                                    </p>
-                                </div><!-- / -->
-                                <div class="tour-listing-details__destination__posted">
-                                   @foreach(json_decode($tour->subdestination, true) as $des)
-                                    <i class="icon-pin1"></i>
-                                        {{ $des." " }}
-                                        @if (! $loop->last)
-                                             <i class="icon-arrow-right"></i>
-                                        @endif
-                                    @endforeach
-                                </div><!-- / -->
-                            </div><!-- /.tour-listing-details__destination__revue -->
-                        </div><!-- /.tour-listing-details__destination__left -->
-                        <div class="tour-listing-details__destination__right">
-                            <a href="javascript:void(0)" class="tour-listing-details__destination__btn gotur-btn">Share <i class="icon-share"></i></a>
-                            <div class="tour-listing-details__destination__social__list">
-                                <a href="https://twitter.com/">
-                                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                                    <span class="sr-only">Twitter</span>
-                                </a>
-                                <a href="https://facebook.com/">
-                                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                                    <span class="sr-only">Facebook</span>
-                                </a>
-                                <a href="https://pinterest.com/">
-                                    <i class="fab fa-pinterest-p" aria-hidden="true"></i>
-                                    <span class="sr-only">Pinterest</span>
-                                </a>
-                                <a href="https://instagram.com/">
-                                    <i class="fab fa-instagram" aria-hidden="true"></i>
-                                    <span class="sr-only">Instagram</span>
-                                </a>
+    <!-- Tour Details Section -->
+    <section class="tour-listing-details section-space">
+        <div class="container">
+            <!-- Destination Info -->
+            <div class="tour-listing-details__destination wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
+                <div class="tour-listing-details__destination__inner">
+                    <div class="tour-listing-details__destination__left">
+                        <h4 class="tour-listing-details__destination__title">{{$tour->title}}</h4>
+                        <div class="tour-listing-details__destination__revue">
+                            <div class="tour-listing-details__destination__posted">
+                                <i class="icon-pin1"></i>
+                                <p class="tour-listing-details__destination__posted-text">
+                                    {{$tour->start_location}} → {{$tour->end_location}}
+                                </p>
                             </div>
-                        </div><!-- /.tour-listing-details__destination__right -->
-                    </div><!-- /.tour-listing-details__destination__inner -->
-                </div><!-- /.container -->
-            </div><!-- /.tour-listing-details__destination -->
-            <div class="tour-listing-details__carousel wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                <div class="container">
-                    <div class="destination-carousel">
-                        <div class="destination-carousel__inner gotur-owl__carousel gotur-owl__carousel--basic-nav owl-carousel owl-theme" data-owl-options='{
-                "items": 1,
-                "margin": 30,
-                "loop": true,
-                "smartSpeed": 700,
-                "nav": true,
-                "navText": ["<span class=\"icon-arrow-left\"></span>","<span class=\"icon-arrow-right\"></span>"],
-                "dots": false,
-                "autoplay": false
-            }'>
-                            <div class="item">
-                                <div class="destination-carousel__item">
-                                    <img src="{{asset('storage/package/'.$tour->cover_img)}}" alt="destination">
-                                </div>
+                            <div class="tour-listing-details__destination__posted">
+                                @foreach(json_decode($tour->subdestination, true) as $des)
+                                    <i class="icon-pin1"></i>
+                                    {{$des}}
+                                    @if (!$loop->last)
+                                        <i class="icon-arrow-right"></i>
+                                    @endif
+                                @endforeach
                             </div>
+                        </div>
+                    </div>
+                    <div class="tour-listing-details__destination__right">
+                        <a href="javascript:void(0)" class="tour-listing-details__destination__btn gotur-btn">
+                            Share <i class="icon-share"></i>
+                        </a>
+                        <div class="tour-listing-details__destination__social__list">
+                            <a href="https://twitter.com/intent/tweet?text={{urlencode($tour->title)}}&url={{urlencode(url()->current())}}" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{urlencode(url()->current())}}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{urlencode(url()->current())}}&title={{urlencode($tour->title)}}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://wa.me/?text={{urlencode($tour->title . ' - ' . url()->current())}}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                        </div><!-- /.destination-carousel__inner -->
-                    </div><!-- /.destination-carousel -->
-                </div><!-- /.container -->
-            </div><!-- /.tour-listing-details__carousel -->
-            <div class="tour-listing-details__info-area wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                <div class="container">
-                    <ul class="tour-listing-details__info-area__info list-unstyled">
-                        <li>
-                            <div class="tour-listing-details__info-area__icon">
-                                <i class="icon-location"></i>
-                            </div><!-- /.tour-listing-details__info-area__icon -->
-                            <div class="tour-listing-details__info-area__content">
-                                <h5 class="tour-listing-details__info-area__title">Location</h5><!-- /.tour-listing-details__info-area__title -->
-                                <p class="tour-listing-details__info-area__text">{{$tour->end_location}}</p><!-- /.tour-listing-details__info-area__text -->
-                            </div><!-- /.tour-listing-details__info-area__content -->
-                        </li>
-                        <li>
-                            <div class="tour-listing-details__info-area__icon">
-                                <i class="icon-travel-and-tourism"></i>
-                            </div><!-- /.tour-listing-details__info-area__icon -->
-                            <div class="tour-listing-details__info-area__content">
-                                <h5 class="tour-listing-details__info-area__title">Activities Type</h5><!-- /.tour-listing-details__info-area__title -->
-                                <p class="tour-listing-details__info-area__text">{{ucfirst($tour->tour_type)}}</p><!-- /.tour-listing-details__info-area__text -->
-                            </div><!-- /.tour-listing-details__info-area__content -->
-                        </li>
-                        <li>
-                            <div class="tour-listing-details__info-area__icon">
-                                <i class="icon-clock"></i>
-                            </div><!-- /.tour-listing-details__info-area__icon -->
-                            <div class="tour-listing-details__info-area__content">
-                                <h5 class="tour-listing-details__info-area__title">Activate Day</h5><!-- /.tour-listing-details__info-area__title -->
-                                <p class="tour-listing-details__info-area__text">
-                                    {{$tour->day." Day, ".$tour->night." Night"}}
-                                </p><!-- /.tour-listing-details__info-area__text -->
-                            </div><!-- /.tour-listing-details__info-area__content -->
-                        </li>
-                        <li>
-                            <div class="tour-listing-details__info-area__icon">
-                                <i class="icon-group"></i>
-                            </div><!-- /.tour-listing-details__info-area__icon -->
-                            <div class="tour-listing-details__info-area__content">
-                                <h5 class="tour-listing-details__info-area__title">Max People</h5><!-- /.tour-listing-details__info-area__title -->
-                                <p class="tour-listing-details__info-area__text">{{$tour->max_people}}</p><!-- /.tour-listing-details__info-area__text -->
-                            </div><!-- /.tour-listing-details__info-area__content -->
-                        </li>
-                        <li>
-                            <a href="#" class="gotur-btn">{{config('app.currency')." ".number_format($tour->amount)}} / Per Person</a>
-                        </li>
-                    </ul><!-- /.tour-listing-details__info-area__info -->
-                </div><!-- /.container -->
-            </div><!-- /.tour-listing-details__info-area -->
-            <div class="container">
-                <div class="row gutter-y-30">
-                    <div class="col-lg-4">
-                        <div class="tour-listing-details__sidebar">
-                            <div class="tour-listing-details__sidebar__item tour-listing-details__sidebar__item-form wow fadeInUp" data-wow-delay="0.4s" data-wow-duration="1500ms">
-                                <h4 class="tour-listing-details__sidebar__title">Book This Tour</h4><!-- /.tour-listing-details__sidebar__title -->
-                                <br>
-                                <div class="sidebar-two__form">
-                                    <button type="submit" class="gotur-btn gotur-btn--base open-modal-btn" id="openModalBtn">Book Now <i class="icon-right"></i></button>
-                                </div>
-                            </div><!-- /.tour-listing-details__sidebar__item -->
-
-                        </div><!-- /.tour-listing-details-details__sidebar -->
-
-                    </div><!-- /.col-lg-6 -->
-                    <div class="col-lg-8">
-                        <div class="tour-listing-details__content">
-                            <div class="tour-listing-details__content__item tour-listing-details__content__text wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                <h4 class="tour-listing-details__title">Overview</h4><!-- /.tour-listing-details__title -->
-                                <p class="tour-listing-details__text">
-                                    {!! $tour->detail !!}
-                                </p><!-- /.tour-listing-details__text -->
-                            </div><!-- /.tour-listing-details__content__item -->
-                            <div class="tour-listing-details__content__item tour-listing-details__list wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                <h4 class="tour-listing-details__title">Include</h4><!-- /.tour-listing-details__title -->
-                                    <div>
-                                        {!! $tour->include !!}
+            <!-- Main Image Carousel -->
+            <div class="tour-listing-details__carousel wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='400ms'>
+                <div class="destination-carousel">
+                    <div class="destination-carousel__inner gotur-owl__carousel gotur-owl__carousel--basic-nav owl-carousel owl-theme" data-owl-options='{
+                        "items": 1,
+                        "margin": 30,
+                        "loop": true,
+                        "smartSpeed": 700,
+                        "nav": true,
+                        "navText": ["<span class=\"icon-arrow-left\"></span>","<span class=\"icon-arrow-right\"></span>"],
+                        "dots": false,
+                        "autoplay": true,
+                        "autoplayTimeout": 5000
+                    }'>
+                        <div class="item">
+                            <div class="destination-carousel__item">
+                                <img src="{{asset('storage/package/'.$tour->cover_img)}}" alt="{{$tour->title}}">
+                            </div>
+                        </div>
+                        @if($tour->gallery_images)
+                            @foreach(json_decode($tour->gallery_images, true) as $image)
+                                <div class="item">
+                                    <div class="destination-carousel__item">
+                                        <img src="{{asset('storage/package/'.$image)}}" alt="{{$tour->title}}">
                                     </div>
-                            </div><!-- /.tour-listing-details__content__item -->
-                            <div class="tour-listing-details__content__item tour-listing-details__amenities wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                                <h4 class="tour-listing-details__title">Exclude</h4><!-- /.tour-listing-details__title -->
-                                <div class="tour-listing-details__amenities__inner">
-                                    {!! $tour->exclude !!}
-                                </div><!-- /.tour-listing-details__amenities__inner -->
-                            </div><!-- / -->
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
 
+            <!-- Quick Info Cards -->
+            <div class="tour-listing-details__info-area wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
+                <ul class="tour-listing-details__info-area__info list-unstyled">
+                    <li>
+                        <div class="tour-listing-details__info-area__icon">
+                            <i class="icon-location"></i>
+                        </div>
+                        <div class="tour-listing-details__info-area__content">
+                            <h5 class="tour-listing-details__info-area__title">Location</h5>
+                            <p class="tour-listing-details__info-area__text">{{$tour->end_location}}</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tour-listing-details__info-area__icon">
+                            <i class="icon-travel-and-tourism"></i>
+                        </div>
+                        <div class="tour-listing-details__info-area__content">
+                            <h5 class="tour-listing-details__info-area__title">Tour Type</h5>
+                            <p class="tour-listing-details__info-area__text">{{ucfirst($tour->tour_type)}}</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tour-listing-details__info-area__icon">
+                            <i class="icon-clock"></i>
+                        </div>
+                        <div class="tour-listing-details__info-area__content">
+                            <h5 class="tour-listing-details__info-area__title">Duration</h5>
+                            <p class="tour-listing-details__info-area__text">{{$tour->day}} Days, {{$tour->night}} Nights</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tour-listing-details__info-area__icon">
+                            <i class="icon-group"></i>
+                        </div>
+                        <div class="tour-listing-details__info-area__content">
+                            <h5 class="tour-listing-details__info-area__title">Max People</h5>
+                            <p class="tour-listing-details__info-area__text">{{$tour->max_people}} Travelers</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="gotur-btn open-modal-btn">
+                            {{config('app.currency')}} {{number_format($tour->amount)}} <small>/ Person</small>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                            <div class="tour-listing-details__content__item tour-listing-details__ture-plan">
-                                <h4 class="tour-listing-details__title">Tour Plan</h4><!-- /.tour-listing-details__title -->
-                                <div class="faq-page__accordion faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-@foreach($activities as $a)
-                                    <div class="accordion wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
+            <!-- Main Content -->
+            <div class="row gutter-y-30">
+                <div class="col-lg-8">
+                    <div class="tour-listing-details__content">
+                        <!-- Overview -->
+                        <div class="tour-listing-details__content__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
+                            <h4 class="tour-listing-details__title">Overview</h4>
+                            <div class="tour-listing-details__text">
+                                {!! $tour->detail !!}
+                            </div>
+                        </div>
+
+                        <!-- What's Included -->
+                        <div class="tour-listing-details__content__item tour-listing-details__list wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='600ms'>
+                            <h4 class="tour-listing-details__title">What's Included</h4>
+                            <div>
+                                {!! $tour->include !!}
+                            </div>
+                        </div>
+
+                        <!-- What's Excluded -->
+                        <div class="tour-listing-details__content__item tour-listing-details__amenities wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='700ms'>
+                            <h4 class="tour-listing-details__title">What's Excluded</h4>
+                            <div class="tour-listing-details__amenities__inner">
+                                {!! $tour->exclude !!}
+                            </div>
+                        </div>
+
+                        <!-- Tour Plan -->
+                        <div class="tour-listing-details__content__item tour-listing-details__ture-plan wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='800ms'>
+                            <h4 class="tour-listing-details__title">Tour Plan</h4>
+                            <div class="faq-page__accordion faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
+                                @foreach($activities as $index => $activity)
+                                    <div class="accordion {{$index == 0 ? 'active' : ''}} wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='{{800 + ($index * 100)}}ms'>
                                         <div class="accordion-title">
-                                            <h4 class="accordion-title__text"> {{$a->title}}<span class="accordion-title__icon"></span></h4>
-                                        </div><!-- /.accordian-title -->
+                                            <h4>
+                                                {{$activity->title}}
+                                                <span class="accordion-title__icon"></span>
+                                            </h4>
+                                        </div>
                                         <div class="accordion-content">
                                             <div class="inner">
-                                                <p class="inner__text">
-                                                    {!! $a->detail !!}
-                                                </p>
-                                            </div><!-- /.accordian-content -->
+                                                <p>{!! $activity->detail !!}</p>
+                                            </div>
                                         </div>
-                                    </div><!-- /.accordian-item -->
-@endforeach
-                                </div>
-                            </div><!-- /.tour-listing-details__content__item -->
-                        </div><!-- /.tour-listing-details__content -->
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    </div><!-- /.col-lg-8 -->
-                </div><!-- /.row justify-content-center -->
-            </div><!-- /.container -->
-        </section><!-- /.tour-listing-details -->
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="tour-listing-details__sidebar">
+                        <!-- Booking Card -->
+                        <div class="tour-listing-details__sidebar__item tour-listing-details__sidebar__item-form wow fadeInUp" data-wow-delay="400ms" data-wow-duration="1500ms">
+                            <h4 class="tour-listing-details__sidebar__title">Book This Tour</h4>
+                            <div class="price-info" style="margin: 20px 0; text-align: center;">
+                                <span style="font-size: 32px; font-weight: 800; color: var(--gotur-base);">
+                                    {{config('app.currency')}} {{number_format($tour->amount)}}
+                                </span>
+                                <span style="display: block; font-size: 14px; color: var(--gotur-text);">per person</span>
+                            </div>
+                            <button type="button" class="gotur-btn open-modal-btn" id="openModalBtn" style="width: 100%;">
+                                Book Now <i class="icon-right"></i>
+                            </button>
+                            <div class="booking-info" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--gotur-border-color);">
+                                <p style="font-size: 13px; color: var(--gotur-text); margin-bottom: 8px;">
+                                    <i class="fas fa-check-circle" style="color: var(--gotur-base); margin-right: 8px;"></i>
+                                    Instant confirmation
+                                </p>
+                                <p style="font-size: 13px; color: var(--gotur-text); margin-bottom: 0;">
+                                    <i class="fas fa-shield-alt" style="color: var(--gotur-base); margin-right: 8px;"></i>
+                                    Best price guarantee
+                                </p>
+                            </div>
+                        </div>
 
+                        <!-- Tour Details Card -->
+                        <div class="tour-listing-details__sidebar__item wow fadeInUp" data-wow-delay="500ms" data-wow-duration="1500ms">
+                            <h4 class="tour-listing-details__sidebar__title">Tour Details</h4>
+                            <ul class="tour-details-list" style="list-style: none; padding: 0;">
+                                <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--gotur-border-color);">
+                                    <span><i class="fas fa-tag"></i> Tour ID:</span>
+                                    <strong>#{{$tour->id}}</strong>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--gotur-border-color);">
+                                    <span><i class="fas fa-clock"></i> Duration:</span>
+                                    <strong>{{$tour->day}} Days / {{$tour->night}} Nights</strong>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--gotur-border-color);">
+                                    <span><i class="fas fa-users"></i> Max People:</span>
+                                    <strong>{{$tour->max_people}}</strong>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                    <span><i class="fas fa-language"></i> Language:</span>
+                                    <strong>English, Bengali</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
+
 @push('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ticketPrice = {{$tour->amount}};
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Price calculation
+        const ticketPrice = {{$tour->amount}};
+        const qtyInput = document.getElementById('quantityField');
+        const totalInput = document.getElementById('totalField');
 
-            const qtyInput = document.getElementById('quantityField');
-            const totalInput = document.getElementById('totalField');
-
-            // Initial calculation
-            if (qtyInput.value) {
+        if (qtyInput && totalInput) {
+            function calculateTotal() {
                 let qty = parseInt(qtyInput.value) || 0;
                 let total = qty * ticketPrice;
                 totalInput.value = total.toFixed(2);
-            }
-
-            // Calculate on input change
-            qtyInput.addEventListener('input', function() {
-                let qty = parseInt(this.value) || 0;
-                let total = qty * ticketPrice;
-                totalInput.value = total.toFixed(2);
-
-                // Optional: Add a small highlight effect
-                totalInput.style.backgroundColor = '#e3f0fa';
+                
+                // Highlight effect
+                totalInput.style.backgroundColor = '#e8f5e9';
                 setTimeout(() => {
                     totalInput.style.backgroundColor = '';
                 }, 200);
+            }
+            
+            qtyInput.addEventListener('input', calculateTotal);
+            if (qtyInput.value) calculateTotal();
+        }
+
+        // Modal functionality
+        const modalOverlay = document.getElementById('modalOverlay');
+        const openBtns = document.querySelectorAll('.open-modal-btn');
+        const closeBtn = document.getElementById('closeModalBtn');
+
+        function openModal() {
+            if (modalOverlay) modalOverlay.classList.add('active');
+            // Set default date (tomorrow)
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateInput = document.getElementById('dateField');
+            if (dateInput) {
+                dateInput.value = tomorrow.toISOString().split('T')[0];
+            }
+        }
+
+        function closeModal() {
+            if (modalOverlay) modalOverlay.classList.remove('active');
+        }
+
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal();
             });
         });
-    </script>
 
-    <script>
-        (function() {
-            const modalOverlay = document.getElementById('modalOverlay');
-            const openBtn = document.getElementById('openModalBtn');
-            const closeBtn = document.getElementById('closeModalBtn');
-            const bookingForm = document.getElementById('bookingForm');
-            const toastEl = document.getElementById('toastMessage');
-
-            // open modal
-            openBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                modalOverlay.classList.add('active');
-                // tiny optional: focus first field (date)
-                setTimeout(() => {
-                    document.getElementById('dateField')?.focus();
-                }, 100);
-            });
-
-            // close modal function (x button or background click)
-            function closeModal() {
-                modalOverlay.classList.remove('active');
-                // also hide toast if visible (so next open is clean)
-                toastEl.classList.remove('show');
-            }
-
-            closeBtn.addEventListener('click', closeModal);
-
-            // click outside the modal card -> close
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        
+        if (modalOverlay) {
             modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
-                    closeModal();
-                }
+                if (e.target === modalOverlay) closeModal();
             });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
 
-            // ESC key close
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-                    closeModal();
-                }
+        // Accordion functionality
+        const accordions = document.querySelectorAll('.faq-accordion .accordion');
+        accordions.forEach(accordion => {
+            const title = accordion.querySelector('.accordion-title');
+            title.addEventListener('click', () => {
+                const isActive = accordion.classList.contains('active');
+                accordions.forEach(a => a.classList.remove('active'));
+                if (!isActive) accordion.classList.add('active');
             });
-
-
-
-            // small live demo: make total field react to quantity change? not required but adds ✨
-            // just to show professional behaviour: if you want you can ignore, but we add tiny feature: prefix total sign
-            const quantityInput = document.getElementById('quantityField');
-            const totalInput = document.getElementById('totalField');
-            // optional suggestion (but keep it simple and unobtrusive)
-            // this demonstrates professionalism (auto-calc not required, but shows attention)
-            quantityInput.addEventListener('input', function() {
-                // only if total is empty or seems default, but we do nothing automatic to avoid confusion.
-                // we could add a subtle tooltip but not needed.
-            });
-
-            // set nice default example for date (today + 1)
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const year = tomorrow.getFullYear();
-            const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
-            const day = String(tomorrow.getDate()).padStart(2, '0');
-            const defaultDate = `${year}-${month}-${day}`;
-            // only set if field is empty (but it already has a placeholder '2026-03-20', but we override with a closer date)
-            // use a more realistic default
-            document.getElementById('dateField').value = defaultDate;
-        })();
-    </script>
-
+        });
+    });
+</script>
 @endpush

@@ -11,11 +11,7 @@ if(!function_exists('settings'))
                return Setting::find(1);
            });
        }
-       function getDaysFromRange($range)
-       {
-           [$start, $end] = explode(' to ', $range); $startDate = Carbon::parse($start); $endDate = Carbon::parse($end);
-           return $startDate->diffInDays($endDate) + 1;
-       }
+
        function mask_phone($phone)
        {
            return str_repeat('*', strlen($phone) - 2) . substr($phone, -2);

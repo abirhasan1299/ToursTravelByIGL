@@ -274,32 +274,7 @@
 
                                 <!-- Settings Tab -->
                                 <div class="tab-pane fade" id="settings" role="tabpanel">
-                                    <!-- Status & Subdestination -->
-                                    <div class="mb-4">
-                                        <label for="status" class="form-label fw-semibold">
-                                            <i class="ti ti-toggle-left text-primary me-2"></i>Package Status
-                                        </label>
-                                        <div class="d-flex gap-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="status" id="status_active"
-                                                       value="active" checked>
-                                                <label class="form-check-label" for="status_active">
-                                                <span class="badge bg-success bg-opacity-10 text-success px-3 py-2">
-                                                    <i class="ti ti-circle-check me-1"></i>Active
-                                                </span>
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="status" id="status_inactive"
-                                                       value="inactive">
-                                                <label class="form-check-label" for="status_inactive">
-                                                <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2">
-                                                    <i class="ti ti-circle-x me-1"></i>Inactive
-                                                </span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                                     <div class="mb-4">
                                         <label for="subdestination" class="form-label fw-semibold">
@@ -307,9 +282,9 @@
                                         </label>
                                         <select class="form-control border-2  select2"  data-toggle="select2" id="destination" multiple name="destination[]"
                                                     required>
-                                            @foreach($state as $s)
-                                            <option value="{{$s['name']}}">{{$s['name']}}</option>
-                                            @endforeach
+
+                                                @include('admin.partials.state')
+
 
                                             </select>
                                         <div class="form-text text-muted">
@@ -317,28 +292,13 @@
                                         </div>
                                     </div>
 
-                                    <!-- Preview Section -->
-                                    <div class="bg-light rounded-3 p-4">
-                                        <h6 class="fw-semibold mb-3">
-                                            <i class="ti ti-eye me-2"></i>Package Preview
-                                        </h6>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="bg-white rounded-2 p-3 flex-grow-1">
-                                                <p class="mb-1 fw-bold" id="preview-title">Package Title</p>
-                                                <p class="small text-muted mb-0" id="preview-duration">Duration: 0 Days / 0 Nights</p>
-                                            </div>
-                                            <span class="badge bg-primary" id="preview-price">৳ 0</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
                             <!-- Form Actions -->
                             <div class="d-flex gap-3 justify-content-end mt-4 pt-3 border-top">
 
-                                <button type="reset" class="btn btn-outline-secondary px-4 py-2 rounded-3">
-                                    <i class="ti ti-refresh me-2"></i>Reset
-                                </button>
+
                                 <button type="submit" class="btn btn-primary px-5 py-2 rounded-3 shadow-sm">
                                     <i class="ti ti-device-floppy me-2"></i>Save Package
                                 </button>

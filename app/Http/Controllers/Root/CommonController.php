@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\CompanyPackage;
 use App\Models\Faq;
 use App\Models\Gallery;
+use App\Models\Hotel;
 use App\Models\IpBlock;
 use App\Models\Package;
 use App\Models\Contact;
@@ -16,6 +17,96 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class CommonController extends Controller
 {
+    public function hotel()
+    {
+        $hotels = Hotel::with('images')->inRandomOrder()->get();
+
+        return view('theme.hotel',compact('hotels'));
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Hotel::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', $request->location);
+        }
+
+        if ($request->filled('address')) {
+            $query->where('address', $request->address);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        $hotels = $query->orderBy('created_at', 'desc')->get();
+
+        $html = view('partials.hotels-cards', ['hotels' => $hotels])->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'count' => $hotels->count()
+        ]);
+    }
+
+    public function showHotelDetails($id)
+    {
+        $hotel = Hotel::with('images')->find(base64_decode($id));
+        return view('theme.hotel-details', compact('hotel'));
+    }
+
+    public function filterTours(Request $request)
+{
+    $query = Package::where('status','active')->query();
+
+    if ($request->search) {
+        $query->where('title', 'like', '%' . $request->search . '%');
+    }
+
+    if ($request->location) {
+        $query->where('end_location', $request->location);
+    }
+
+    if ($request->tour_type) {
+        $query->where('tour_type', $request->tour_type);
+    }
+
+    if ($request->min_price) {
+        $query->where('amount', '>=', $request->min_price);
+    }
+
+    if ($request->max_price) {
+        $query->where('amount', '<=', $request->max_price);
+    }
+
+    if ($request->duration) {
+        if ($request->duration == '15+') {
+            $query->where('day', '>=', 15);
+        } else {
+            $range = explode('-', $request->duration);
+            $query->whereBetween('day', [$range[0], $range[1]]);
+        }
+    }
+
+    $tours = $query->get();
+    $html = view('partials.tour-cards', compact('tours'))->render();
+
+    return response()->json([
+        'success' => true,
+        'html' => $html,
+        'count' => $tours->count()
+    ]);
+}
 
     public function TourList()
     {
@@ -66,6 +157,7 @@ class CommonController extends Controller
     {
         return view('theme.about');
     }
+
 
     public function ContactForm(Request $request)
     {

@@ -19,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-select/bootstrap-select.min.css')}}">
@@ -44,8 +45,7 @@
 
 <body class="custom-cursor">
 
-<div class="custom-cursor__cursor"></div>
-<div class="custom-cursor__cursor-two"></div>
+
 
 <div class="preloader">
     <div class="preloader__image" style="background-image: url({{asset('assets/images/loader.png')}});"></div>
@@ -55,67 +55,75 @@
 
 
     <header class="main-header main-header--one sticky-header sticky-header--normal">
-        <div class="container-fluid">
-            <div class="main-header__inner">
-                <div class="main-header__logo logo-retina">
-                    <a href="#"><img src="{{asset('assets/images/igl.png')}}" alt="" width="" height=""></a>
-                </div><!-- /.main-header__logo -->
-                <div class="main-header__right">
-                    <nav class="main-header__nav main-menu">
-                        <ul class="main-menu__list">
+    <div class="container-fluid">
+        <div class="main-header__inner">
+            <!-- Logo Section - Enhanced -->
+            <div class="main-header__logo logo-retina">
+                <a href="{{route('home')}}" class="logo-link">
+                    <img src="{{asset('assets/images/igl.png')}}" alt="{{settings()->app_name ?? 'IGL Tour'}}" class="logo-img">
+                </a>
+            </div><!-- /.main-header__logo -->
 
-                            <li class="dropdown megamenu">
-                                <a href="{{route('home')}}">Home</a>
-                            </li>
+            <!-- Navigation Menu -->
+            <div class="main-header__nav-wrapper">
+                <nav class="main-header__nav main-menu">
+                    <ul class="main-menu__list">
+                        <li class="{{ request()->routeIs('home') ? 'current' : '' }}">
+                            <a href="{{route('home')}}">Home</a>
+                        </li>
+                        <li class="{{ request()->routeIs('front.about') ? 'current' : '' }}">
+                            <a href="{{route('front.about')}}">About</a>
+                        </li>
 
+                        <li class="{{ request()->routeIs('front.tour-list') ? 'current' : '' }}">
+                            <a href="{{route('front.tour-list')}}">Tours</a>
+                        </li>
 
-                            <li>
-                                <a href="{{route('front.about')}}">about us</a>
-                            </li>
+                        <li class="{{ request()->routeIs('front.hotel-list') ? 'current' : '' }}">
+                            <a href="{{route('front.hotel-list')}}">Hotels</a>
+                        </li>
+                        <li class="#">
+                            <a href="#">Destinations</a>
+                        </li>
+                        <li class="{{ request()->routeIs('front.gallery') ? 'current' : '' }}">
+                            <a href="{{route('front.gallery')}}">Gallery</a>
+                        </li>
+                        <li class="{{ request()->routeIs('front.faq') ? 'current' : '' }}">
+                            <a href="{{route('front.faq')}}">FAQ</a>
+                        </li>
+                        <li class="{{ request()->routeIs('front.contact') ? 'current' : '' }}">
+                            <a href="{{route('front.contact')}}">Contact</a>
+                        </li>
+                    </ul>
+                </nav><!-- /.main-header__nav -->
+            </div>
 
+            <!-- Right Side Elements -->
+            <div class="main-header__right">
+                <div class="main-header__info">
+                    <a href="#" class="search-toggler main-header__info__item">
+                        <i class="icon-search-interface-symbol"></i>
+                    </a>
+                </div>
 
-                            <li>
-                                <a href="{{route('front.tour-list')}}">Tours List</a>
-                            </li>
+                <div class="main-header__btn-popup main-header__element__btn">
+                    <i class="icon-menu-bar"></i>
+                </div>
 
-                            <li>
-                                <a href="#">destinations</a>
-                            </li>
+                <a href="{{route('front.login')}}" class="gotur-btn main-header__btn">
+                    <span>Login</span>
+                    <i class="icon-paper-plane"></i>
+                </a>
 
-                            <li>
-                                <a href="{{route('front.pricing')}}">Pricing</a>
-                            </li>
-
-                            <li>
-                                <a href="{{route('front.gallery')}}">Gallery</a>
-                            </li>
-
-                            <li>
-                                <a href="{{route('front.faq')}}">FAQ</a>
-                            </li>
-
-                            <li>
-                                <a href="{{route('front.contact')}}">Contact</a>
-                            </li>
-                        </ul>
-                    </nav><!-- /.main-header__nav -->
-                    <div class="main-header__info">
-                        <a href="#" class="search-toggler main-header__info__item"> <i class="icon-search-interface-symbol" aria-hidden="true"></i> <span class="sr-only">Search</span> </a>
-
-                    </div>
-                    <div class="main-header__btn-popup main-header__element__btn">
-                        <i class="icon-menu-bar"></i>
-                    </div><!-- /.mobile-nav__toggler -->
-                    <a href="{{route('front.login')}}" class="gotur-btn main-header__btn">Login <i class="icon-paper-plane"></i></a>
-                    <div class="mobile-nav__btn mobile-nav__toggler">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div><!-- /.mobile-nav__toggler -->
-                </div><!-- /.main-header__right -->
-            </div><!-- /.main-header__inner -->
-        </div><!-- /.container-fluid -->
-    </header><!-- /.main-header -->
+                <div class="mobile-nav__btn mobile-nav__toggler">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div><!-- /.main-header__right -->
+        </div><!-- /.main-header__inner -->
+    </div><!-- /.container-fluid -->
+</header><!-- /.main-header -->
 
         @yield('content')
 
@@ -335,8 +343,11 @@
     <span id="scroll-top-value" class="scroll-top-value"></span>
 </div>
 
+
+
 <script src="{{asset('assets/vendors/jquery/jquery-3.7.1.min.js')}}"></script>
 <!-- Sweet Alerts js -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('assets/vendors/bootstrap-select/bootstrap-select.min.js')}}"></script>

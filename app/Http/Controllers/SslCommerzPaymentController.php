@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyPackage;
 use App\Models\Credit;
+use App\Models\Package;
 use App\Models\Transaction;
 use App\Models\UserPlanOwn;
 use DB;
@@ -89,6 +90,7 @@ class SslCommerzPaymentController extends Controller
         if (!Auth::check()) {
             return redirect()->route('front.login');
         }
+
         $post_data = array();
         $package = CompanyPackage::findOrFail($request->package_id);
 
@@ -193,9 +195,15 @@ class SslCommerzPaymentController extends Controller
                             [
                             'user_id'=>$request->input('value_c'),
                             'company_package_id'=>$request->input('value_b'),
-                            'status'=>'active'
+                            'status'=>'active',
+                             'created_at'=> now()
                         ]
                         );
+                         Package::where('user_id', $request->input('value_c'))
+                             ->where('status', '=', 'suspended')
+                             ->update([
+                                 'status' => 'reviewing'
+                             ]);
                      }
                      else{
                          $user = Transaction::where('t_transaction_id',$tran_id)->first();

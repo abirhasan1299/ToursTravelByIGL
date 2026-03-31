@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Company;
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\CompanyPackage;
@@ -21,6 +22,8 @@ class PackageController extends Controller
      */
     public function index()
     {
+        $authController = new AuthController();
+        $authController->Shutdown();
         $data = Package::where('user_id', Auth::user()->id)->get();
 
         return view('admin.package.company_package',compact('data'));
@@ -99,12 +102,38 @@ class PackageController extends Controller
     public function create()
     {
         $userPackage = UserPlanOwn::where('user_id',auth()->user()->id)->first();
-        $dates = explode(' to ',$userPackage->userPackage->p_date_range);
 
-        if (!Carbon::parse($dates[1])->isFuture())
+        //======Check users has any Package available ?? or NOT=================\\
+        if (!empty($userPackage))
         {
+            //======Check The Package Is Expire ?? or NOT=================\\
+            $expiryDate = $userPackage->created_at
+                ->copy()
+                ->addDays((int)$userPackage->userPackage->p_date_range);
 
-            return redirect()->route('company.package.index')->with('error','Your Package is Expired. Buy new package');
+            if (now()->greaterThanOrEqualTo($expiryDate)) {
+                return redirect()
+                    ->route('company.package.index')
+                    ->with('error', 'Your Package is Expired. Buy new packages!');
+            }
+
+            //======Check Existing Post Reached Limit ?? or NOT=================\\
+            $totalPost = Package::where('user_id', auth()->id())->count();
+
+            $limit = (int) $userPackage->userPackage->p_post_limit;
+
+            if ($totalPost >= $limit) {
+                return redirect()
+                    ->route('company.package.index')
+                    ->with('error', 'Post Limit Reached. Buy new packages!');
+            }
+
+
+        }
+        else
+        {
+            return redirect()->route('company.package.index')
+                            ->with('error','You do not have any package');
         }
 
         $postcount = Package::where('user_id',Auth::user()->id)->count();
@@ -153,44 +182,44 @@ class PackageController extends Controller
             'include' => 'required',
             'exclude' => 'required',
             'detail' => 'required',
-            'status' => 'required',
+
             'destination' => 'required',
             'cover_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-       try{
-           if($request->hasFile('cover_img'))
-           {
-               $image = $request->file('cover_img');
-               $imageName = time().'.'.$image->getClientOriginalExtension();
-               $image->storeAs('package', $imageName, 'public');
-           }
-           $model = new Package();
-           $model->title = $request->title;
-           $model->amount = $request->amount;
-           $model->day = $request->day;
-           $model->night = $request->night;
-           $model->tour_type = $request->tour_type;
-           $model->max_people = $request->max_people;
-           $model->start_location = $request->start_location;
-           $model->end_location = $request->end_location;
-           $model->include = $request->include;
-           $model->exclude = $request->exclude;
-           $model->detail = $request->detail;
-           $model->status = $request->status;
-           $model->user_id = auth()->user()->id;
-           $model->cover_img = $imageName;
-           $model->subdestination = json_encode($request->destination);
-           $model->save();
+        try{
+            if($request->hasFile('cover_img'))
+            {
+                $image = $request->file('cover_img');
+                $imageName = time().'.'.$image->getClientOriginalExtension();
+                $image->storeAs('package', $imageName, 'public');
+            }
+            $model = new Package();
+            $model->title = $request->title;
+            $model->amount = $request->amount;
+            $model->day = $request->day;
+            $model->night = $request->night;
+            $model->tour_type = $request->tour_type;
+            $model->max_people = $request->max_people;
+            $model->start_location = $request->start_location;
+            $model->end_location = $request->end_location;
+            $model->include = $request->include;
+            $model->exclude = $request->exclude;
+            $model->detail = $request->detail;
+            $model->status = 'reviewing';
+            $model->user_id = auth()->user()->id;
+            $model->cover_img = $imageName;
+            $model->subdestination = json_encode($request->destination);
+            $model->save();
 
-           return redirect()->route('company.package.index')->with('success','Package added successfully');
+            return redirect()->route('company.package.index')->with('success','Package added successfully');
 
-       }catch (\Exception $e){
+        }catch (\Exception $e){
 
-           Log::error($e->getMessage());
+            Log::error($e->getMessage());
 
-           return redirect()->route('company.package.index')->with('error','Something went wrong');
-       }
+            return redirect()->route('company.package.index')->with('error','Something went wrong');
+        }
 
     }
 
@@ -223,4 +252,5 @@ class PackageController extends Controller
                 ->with('error', 'Something went wrong');
         }
     }
+
 }

@@ -44,10 +44,17 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label fw-semibold">Date Range</label>
-                                        <input type="date" name="p_date_range" id="modal_p_date_range" data-provider="flatpickr"  data-range-date="true" class="form-control">
+                                        <label class="form-label fw-semibold">Days </label>
+                                        <input type="number" name="p_date_range" id="modal_p_date_range"  class="form-control">
                                         <small class="text-danger" id="error_p_date_range"></small>
                                     </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Featured  </label>
+                                        <input type="number" name="p_featured_post" id="modal_p_featured_post"  class="form-control">
+                                        <small class="text-danger" id="error_p_featured_post"></small>
+                                    </div>
+
                                 </div>
 
                                 <div class="row">

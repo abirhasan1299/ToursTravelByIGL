@@ -23,6 +23,7 @@ class PackageController extends Controller
             'p_date_range'=>'required',
             'p_post_limit'=>'required|numeric',
             'p_credit'=>'required|numeric',
+            'p_featured_post'=>'nullable|numeric',
         ]);
 
         CompanyPackage::create([
@@ -34,6 +35,7 @@ class PackageController extends Controller
            'p_post_limit'=>$request->p_post_limit,
             'p_status'=>$request->p_status,
             'p_credit'=>$request->p_credit,
+            'p_featured_post'=>$request->p_featured_post,
         ]);
 
         return redirect()->back()->with('success','Package created successfully');
@@ -52,6 +54,7 @@ class PackageController extends Controller
         $data->p_post_limit = $request->p_post_limit;
         $data->p_status = $request->p_status;
         $data->p_credit = $request->p_credit;
+        $data->p_featured_post = $request->p_featured_post;
         $data->save();
 
         return redirect()->back()->with('success','Package updated successfully');
@@ -69,6 +72,7 @@ class PackageController extends Controller
         $data = CompanyPackage::find($id);
         return response()->json($data);
     }
+
 
 
 }

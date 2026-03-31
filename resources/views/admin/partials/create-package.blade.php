@@ -89,12 +89,25 @@
                                     <!-- Date Range -->
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-semibold">
-                                            Date Range
+                                            Duration (Days)
                                         </label>
-                                        <input type="date" name="p_date_range"
+                                        <input type="number" name="p_date_range"
                                                class="form-control"
-                                               data-provider="flatpickr" value="{{old('p_date_range')}}" data-range-date="true" >
+                                               value="{{old('p_date_range')}}" >
                                         @error('p_date_range')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Featured Post -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">
+                                            Featured Post
+                                        </label>
+                                        <input type="number" name="p_featured_post"
+                                               class="form-control"
+                                               value="{{old('p_featured_post')}}" >
+                                        @error('p_featured_post')
                                         <small class="text-danger">{{$message}}</small>
                                         @enderror
                                     </div>
@@ -111,6 +124,7 @@
                                         <input type="number" name="p_post_limit"
                                                class="form-control"
                                                placeholder="10" value="{{old('p_post_limit')}}">
+
                                         @error('p_post_limit')
                                         <small class="text-danger">{{$message}}</small>
                                         @enderror
