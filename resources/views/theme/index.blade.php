@@ -48,10 +48,10 @@
                                 <!-- Tour Search Form -->
                                 <form class="banner-form__wrapper search-form" id="tourSearchForm" action="{{ route('front.tour-list') }}" method="GET">
                                     <div class="banner-form row gutter-x-30 align-items-center">
-                                        <div class="banner-form__control banner-form__col--1">
+                                        <div class="banner-form__control banner-form__col--1" style="">
                                             <i class="icon icon-location"></i>
                                             <label for="tour_location">Location</label>
-                                            <select id="location" name="location" class="selectpicker select2" id="tour_location">
+                                            <select id="location" name="location" class="selectpicker select2" id="tour_location" style="width: 130px;">
                                                 <option value="">All Locations</option>
                                                 @foreach ($startLocations ?? [] as $s)
                                                     <option value="{{ $s }}">{{ $s }}</option>
@@ -77,13 +77,9 @@
                                             <i class="icon icon-group"></i>
                                             <label for="tour_guests">Travelers</label>
                                             <div class="qty-wrapper">
-                                                <button type="button" class="banner-form__qty-minus sub" data-target="tour_guests">
-                                                    <i class="icon-down-arrow"></i>
-                                                </button>
-                                                <input id="tour_guests" type="number" value="2" name="guests" min="1" max="20">
-                                                <button type="button" class="banner-form__qty-plus add" data-target="tour_guests">
-                                                    <i class="icon-down-arrow"></i>
-                                                </button>
+
+                                                <input id="tour_guests" type="number"  name="guests" min="1" max="20" placeholder="3">
+
                                             </div>
                                         </div>
                                         <div class="banner-form__control banner-form__button banner-form__col--5">
@@ -100,7 +96,7 @@
                                         <div class="banner-form__control banner-form__col--1">
                                             <i class="icon icon-location"></i>
                                             <label for="hotel_location">Location</label>
-                                            <select id="city" name="location" class="selectpicker select2" id="hotel_location">
+                                            <select id="city" name="location" class="selectpicker select2" id="hotel_location" style="width: 130px;">
                                                 <option value="">All Locations</option>
                                                 @foreach ($hotelLocations ?? [] as $location)
                                                     <option value="{{ $location }}">{{ $location }}</option>
@@ -110,24 +106,20 @@
                                         <div class="banner-form__control banner-form__col--2">
                                             <i class="fas fa-calendar-alt"></i>
                                             <label for="check_in">Check-in</label>
-                                            <input type="date" name="check_in" id="check_in" class="date-input" placeholder="Check-in Date">
+                                            <input type="text " name="check_in" id="date" class="date-input" placeholder="CheckIn" >
                                         </div>
                                         <div class="banner-form__control banner-form__col--3">
                                             <i class="fas fa-calendar-alt"></i>
                                             <label for="check_out">Check-out</label>
-                                            <input type="date" name="check_out" id="check_out" class="date-input" placeholder="Check-out Date">
+                                            <input type="text" name="check_out" id="date" class="date-input" placeholder="Check-out">
                                         </div>
                                         <div class="banner-form__control banner-form__col--4">
                                             <i class="icon icon-group"></i>
                                             <label for="hotel_guests">Guests</label>
                                             <div class="qty-wrapper">
-                                                <button type="button" class="banner-form__qty-minus sub" data-target="hotel_guests">
-                                                    <i class="icon-down-arrow"></i>
-                                                </button>
-                                                <input id="hotel_guests" type="number" value="2" name="guests" min="1" max="20">
-                                                <button type="button" class="banner-form__qty-plus add" data-target="hotel_guests">
-                                                    <i class="icon-down-arrow"></i>
-                                                </button>
+
+                                                <input id="hotel_guests" type="number" name="guests" min="1" max="20" placeholder="5">
+
                                             </div>
                                         </div>
                                         <div class="banner-form__control banner-form__button banner-form__col--5">
@@ -744,239 +736,7 @@
         </div><!-- /.about-two__element-one -->
     </section><!-- /.about-two -->
 
-    <section class="destination-filter section-space" id="destination">
-        <div class="container">
-            <div class="destination-filter__top">
-                <div class="sec-title text-center">
-                    <h6 class="sec-title__tagline bw-split-in-right">Popular Destination</h6><!-- /.sec-title__tagline -->
-                    <h3 class="sec-title__title bw-split-in-left">Popular <span> Destinations</span></h3>
-                    <!-- /.sec-title__title -->
-                </div><!-- /.sec-title -->
-                <p class="destination-filter__top__text">The island of Crete offers a rare mix of splendid beaches, amazing
-                    mountain landscap, vibrant towns and cosy villages inhabited by warm-hearted locals, all this spiced</p>
-                <!-- /.destination-filter__top__text -->
-            </div><!-- /.destination-filter__top -->
-            <div class="tabs-box">
-                <div class="destination-filter__btn tab-buttons">
-                    <button data-tab="#itemOne" class="tab-btn gotur-btn">Europe</button>
-                    <button data-tab="#itemTwo" class="tab-btn gotur-btn active-btn">Asia</button>
-                    <button data-tab="#itemThree" class="tab-btn gotur-btn">Africa</button>
-                    <button data-tab="#itemFour" class="tab-btn gotur-btn">South America</button>
-                    <button data-tab="#itemFive" class="tab-btn gotur-btn">Australia</button>
-                </div><!-- /.tab-buttons -->
-                <div class="tabs-content">
-                    <div class="item tab" id="itemOne">
-                        <div class="row gutter-y-20 gutter-x-20">
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='100ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-1.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Bangkok</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='300ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-2.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Tokyo</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='500ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-3.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Kashmir</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='600ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-4.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Indonesia</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                        </div><!-- /.row -->
-                    </div><!-- /.item -->
-                    <div class="item tab active-tab" id="itemTwo">
-                        <div class="row gutter-y-20 gutter-x-20">
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='100ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-1.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Bangkok</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='300ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-2.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Tokyo</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='500ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-3.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Kashmir</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='600ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-4.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Indonesia</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                        </div><!-- /.row -->
-                    </div><!-- /.item -->
-                    <div class="item tab" id="itemThree">
-                        <div class="row gutter-y-20 gutter-x-20">
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='100ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-1.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Bangkok</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                        </div><!-- /.row -->
-                    </div><!-- /.item -->
-                    <div class="item tab" id="itemFour">
-                        <div class="row gutter-y-20 gutter-x-20">
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='100ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-1.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Bangkok</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div>
 
-
-                        </div><!-- /.row -->
-                    </div><!-- /.item -->
-                    <div class="item tab" id="itemFive">
-                        <div class="row gutter-y-20 gutter-x-20">
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='100ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-1.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Bangkok</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div><!-- /.col-xl-3 col-lg-4 col-md-4 col-sm-6 -->
-                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-                                <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms'
-                                    data-wow-delay='300ms'>
-                                    <div class="destination-card-one__thumb">
-                                        <img src="{{ asset('assets/images/destination/destination-1-2.jpg') }}"
-                                            alt="destination">
-                                        <a href="#" class="destination-card-one__overly"></a>
-                                    </div><!-- /.destination-card-one__thumb -->
-                                    <div class="destination-card-one__content">
-                                        <h3 class="destination-card-one__title"><a
-                                                href="destination-details.html">Tokyo</a></h3>
-                                        <!-- /.destination-card-one__title -->
-                                    </div><!-- /.destination-one__content -->
-                                </div><!-- /.destination-one -->
-                            </div>
-                        </div><!-- /.row -->
-                    </div><!-- /.item -->
-                </div><!-- /.tabs-content -->
-            </div><!-- /.tabs-box -->
-        </div><!-- /.container -->
-        <div class="destination-filter__element">
-            <img src="{{ asset('assets/images/shapes/plan.png') }}" alt>
-        </div><!-- /.destination-filter__element -->
-        <div class="destination-filter__element-two">
-            <img src="{{ asset('assets/images/shapes/monjil.png') }}" alt>
-        </div><!-- /.destination-filter__element -->
-    </section><!-- /.destination-filter -->
     <section class="cta-five section-space">
         <div class="cta-five__inner">
             <div class="cta-five__bg wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms"
@@ -1244,6 +1004,13 @@
                 placeholder: "Select",
                 allowClear: true
             });
+        });
+    </script>
+    <script>
+        flatpickr("#date", {
+            // enable time picker
+            minDate: "today",          // disable past dates
+            defaultDate: "today"
         });
     </script>
 @endpush

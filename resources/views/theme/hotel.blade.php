@@ -456,7 +456,7 @@
                         <!-- Location Filter -->
                         <div class="filter-group">
                             <label><i class="fas fa-map-marker-alt"></i> Location</label>
-                            <select id="locationFilter">
+                            <select id="locationFilter" class="select2">
                                 <option value="">All Locations</option>
                                 @php
                                     $locations = $hotels->pluck('location')->unique();
@@ -470,7 +470,7 @@
                         <!-- Address Filter -->
                         <div class="filter-group">
                             <label><i class="fas fa-address-card"></i> Address</label>
-                            <select id="addressFilter">
+                            <select id="addressFilter" class="select2">
                                 <option value="">All Addresses</option>
                                 @php
                                     $addresses = $hotels->pluck('address')->unique();
@@ -756,4 +756,17 @@
             });
         </script>
     @endif
+    <script>
+        $(document).ready(function() {
+            $('#locationFilter').select2({
+                placeholder: "Select Location ",
+                allowClear: true
+            });
+            $('#addressFilter').select2({
+                placeholder: "Select Address",
+                allowClear: true
+            });
+
+        });
+    </script>
 @endpush

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Root\CompanyInfo;
+use App\Http\Controllers\Root\DestinationController;
 use App\Http\Controllers\Root\FacilityController;
 use App\Http\Controllers\Root\FaqController;
 use App\Http\Controllers\Root\GalleryController;
@@ -132,3 +133,23 @@ Route::get('/facility/',[FacilityController::class,'index'])->name('facility.ind
 Route::post('/facility/store',[FacilityController::class,'store'])->name('facility.store');
 
 Route::delete('/facility/destroy/{id}',[FacilityController::class,'destroy'])->name('facility.destroy');
+
+/**
+    |--------------------------------------------------------------------------
+    | Destination Controller
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('/destination',[DestinationController::class,'index'])->name('des.index');
+
+Route::get('/destination/create',[DestinationController::class,'create'])->name('des.create');
+
+Route::post('/destination/store',[DestinationController::class,'store'])->name('des.store');
+
+Route::get('/destination/edit/{id}',[DestinationController::class,'edit'])->name('des.edit');
+
+Route::put('/destination/update/{id}',[DestinationController::class,'update'])->name('des.update');
+
+Route::delete('/destination/destroy/{id}',[DestinationController::class,'destroy'])->name('des.destroy');
+

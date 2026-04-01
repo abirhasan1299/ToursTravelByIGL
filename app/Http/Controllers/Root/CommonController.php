@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Root;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\CompanyPackage;
+use App\Models\Destination;
 use App\Models\Faq;
 use App\Models\Gallery;
 use App\Models\Hotel;
+use App\Models\HotelBooking;
 use App\Models\IpBlock;
 use App\Models\Package;
 use App\Models\Contact;
+use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
@@ -24,6 +27,48 @@ class CommonController extends Controller
         return view('theme.hotel',compact('hotels'));
     }
 
+    public function destination()
+    {
+        $data = Destination::with('images')->inRandomOrder()->get();
+        return view('theme.destination',compact('data'));
+    }
+    public function destinationDetail($id)
+    {
+        $data = Destination::with('images')->findOrFail(base64_decode($id));
+        return view('theme.destination-detail',compact('data'));
+    }
+
+    public function BookingHotel(Request $request)
+    {
+        $data = $request->validate([
+           'hotel_id' => 'required|exists:hotels,id',
+           'booking_range' => 'required',
+           'guest' => 'nullable',
+           'rooms' => 'required|numeric|min:1',
+           'total_price' => 'required',
+           'full_name' => 'nullable',
+           'email' => 'nullable|email|exists:users,email',
+           'phone' => 'nullable|phone|exists:users,phone',
+           'special_request' => 'nullable',
+        ]);
+
+        if(auth()->check())
+        {
+            HotelBooking::create([
+                'hotel_id' => $data['hotel_id'],
+                'booking_range' => $data['booking_range'],
+                'guest' => $data['guest'],
+                'rooms' => $data['rooms'],
+                'total_price' => $data['total_price'],
+                'special_request' => $data['special_request'],
+                'user_id' => auth()->user()->id,
+            ]);
+
+        }else{
+            HotelBooking::create($data);
+        }
+        return redirect()->route('front.hotel-list')->with('success','Hotel Booking Successfully');
+    }
     public function filter(Request $request)
     {
         $query = Hotel::query();
@@ -190,5 +235,11 @@ class CommonController extends Controller
         $data = Gallery::all();
         return view('theme.gallery',compact('data'));
     }
+
+    /**
+     * Hotel Booking OTP Functions
+     */
+
+    //need to code here
 
 }

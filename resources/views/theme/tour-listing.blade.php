@@ -355,7 +355,7 @@
 @endpush
 
 @section('content')
-  
+
 
     <!-- Filter Overlay for Mobile -->
     <div class="filter-overlay" id="filterOverlay"></div>
@@ -373,8 +373,8 @@
                 <!-- Filter Sidebar -->
                 <div class="col-lg-4" id="filterSidebar">
                     <div class="filter-sidebar">
-                        
-                        
+
+
                         <h4 class="filter-title">
                             <i class="fas fa-sliders-h"></i> Filter Tours
                         </h4>
@@ -487,13 +487,13 @@
         const resultsCountSpan = document.getElementById('showingCount');
         const activeFiltersDiv = document.getElementById('activeFilters');
         const loadingOverlay = document.getElementById('loadingOverlay');
-        
+
         // Price Range Elements
         const priceMinSlider = document.getElementById('priceMin');
         const priceMaxSlider = document.getElementById('priceMax');
         const minPriceValue = document.getElementById('minPriceValue');
         const maxPriceValue = document.getElementById('maxPriceValue');
-        
+
         // Mobile Filter Elements
         const showFilterBtn = document.getElementById('showFilterBtn');
         const closeFilterBtn = document.getElementById('closeFilterBtn');
@@ -505,41 +505,41 @@
             function updatePriceRange() {
                 let minVal = parseInt(priceMinSlider.value);
                 let maxVal = parseInt(priceMaxSlider.value);
-                
+
                 if (minVal > maxVal) {
                     [minVal, maxVal] = [maxVal, minVal];
                 }
-                
+
                 minPriceValue.textContent = minVal.toLocaleString();
                 maxPriceValue.textContent = maxVal.toLocaleString();
-                
+
                 priceMinSlider.value = minVal;
                 priceMaxSlider.value = maxVal;
             }
-            
+
             priceMinSlider.addEventListener('input', function() {
                 if (parseInt(this.value) > parseInt(priceMaxSlider.value)) {
                     priceMaxSlider.value = this.value;
                 }
                 updatePriceRange();
             });
-            
+
             priceMaxSlider.addEventListener('input', function() {
                 if (parseInt(this.value) < parseInt(priceMinSlider.value)) {
                     priceMinSlider.value = this.value;
                 }
                 updatePriceRange();
             });
-            
+
             updatePriceRange();
         }
 
         // Duration Filter Logic
         function checkDuration(duration, tourDays) {
             if (!duration) return true;
-            
+
             const [min, max] = duration.split('-');
-            
+
             if (duration === '15+') {
                 return tourDays >= 15;
             } else {
@@ -550,14 +550,14 @@
         // Filter Tours Function
         async function filterTours() {
             loadingOverlay.classList.add('active');
-            
+
             const searchTerm = searchInput ? searchInput.value : '';
             const location = locationFilter ? locationFilter.value : '';
             const tourType = tourTypeFilter ? tourTypeFilter.value : '';
             const duration = durationFilter ? durationFilter.value : '';
             const minPrice = priceMinSlider ? parseInt(priceMinSlider.value) : 0;
             const maxPrice = priceMaxSlider ? parseInt(priceMaxSlider.value) : 0;
-            
+
             const formData = new FormData();
             formData.append('search', searchTerm);
             formData.append('location', location);
@@ -566,15 +566,15 @@
             formData.append('min_price', minPrice);
             formData.append('max_price', maxPrice);
             formData.append('_token', '{{ csrf_token() }}');
-            
+
             try {
                 const response = await fetch('{{ route("front.tour-list.filter") }}', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     toursGrid.innerHTML = data.html;
                     resultsCountSpan.textContent = data.count;
@@ -586,12 +586,12 @@
                 loadingOverlay.classList.remove('active');
             }
         }
-        
+
         // Update Active Filters Display
         function updateActiveFilters(search, location, type, duration, minPrice, maxPrice) {
             activeFiltersDiv.innerHTML = '';
             let filters = [];
-            
+
             if (search) {
                 filters.push({ name: 'Search', value: search, key: 'search' });
             }
@@ -612,19 +612,19 @@
             if (minPrice > 0 || maxPrice < parseInt(priceMaxSlider?.max || 50000)) {
                 filters.push({ name: 'Price', value: `{{config('app.currency')}} ${minPrice.toLocaleString()} - {{config('app.currency')}} ${maxPrice.toLocaleString()}`, key: 'price' });
             }
-            
+
             if (filters.length === 0) {
                 activeFiltersDiv.innerHTML = '<span style="color: var(--gotur-text); font-size: 13px;">No active filters</span>';
                 return;
             }
-            
+
             filters.forEach(filter => {
                 const tag = document.createElement('div');
                 tag.className = 'filter-tag';
                 tag.innerHTML = `${filter.name}: ${filter.value} <i class="fas fa-times" data-key="${filter.key}" data-value="${filter.value}"></i>`;
                 activeFiltersDiv.appendChild(tag);
             });
-            
+
             // Add remove filter functionality
             document.querySelectorAll('.filter-tag i').forEach(icon => {
                 icon.addEventListener('click', function() {
@@ -634,7 +634,7 @@
                 });
             });
         }
-        
+
         // Remove Individual Filter
         function removeFilter(key, value) {
             switch(key) {
@@ -658,7 +658,7 @@
             }
             filterTours();
         }
-        
+
         // Reset All Filters
         function resetFilters() {
             if (searchInput) searchInput.value = '';
@@ -670,14 +670,14 @@
             updatePriceRange();
             filterTours();
         }
-        
+
         // Event Listeners
         if (applyFilterBtn) applyFilterBtn.addEventListener('click', filterTours);
         if (resetFilterBtn) resetFilterBtn.addEventListener('click', resetFilters);
         if (searchInput) searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') filterTours();
         });
-        
+
         // Mobile Filter Toggle
         if (showFilterBtn && filterSidebar && closeFilterBtn && filterOverlay) {
             showFilterBtn.addEventListener('click', () => {
@@ -685,20 +685,20 @@
                 filterOverlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
-            
+
             closeFilterBtn.addEventListener('click', () => {
                 filterSidebar.classList.remove('active');
                 filterOverlay.classList.remove('active');
                 document.body.style.overflow = '';
             });
-            
+
             filterOverlay.addEventListener('click', () => {
                 filterSidebar.classList.remove('active');
                 filterOverlay.classList.remove('active');
                 document.body.style.overflow = '';
             });
         }
-        
+
         // Initialize with any existing filters from URL
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('search')) {
@@ -708,23 +708,37 @@
     });
 </script>
 
-@if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Message',
-        text: "{{ session('success') }}"
-    });
-</script>
-@endif
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                html: `{!! implode('<br>', $errors->all()) !!}`
+            });
+        </script>
 
-@if(session('error'))
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Message',
-        text: "{{ session('error') }}"
-    });
-</script>
-@endif
+    @endif
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Message',
+                text: '{{ session('success') }}',
+                confirmButtonColor: 'rgba(0,83,136,0.71)'
+            });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Message',
+                text: '{{ session('error') }}',
+                confirmButtonColor: 'rgba(255,0,0,0.61)'
+            });
+        </script>
+    @endif
+
 @endpush

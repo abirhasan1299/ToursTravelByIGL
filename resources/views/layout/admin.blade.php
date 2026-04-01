@@ -473,8 +473,14 @@
                         </li>
                         <li class="side-nav-item">
                             <a href="{{route('admin.facility.index')}}" class="side-nav-link">
-                                <span class="menu-icon"><i class="ti ti-check"></i></span>
+                                <span class="menu-icon"><i class="ti ti-building"></i></span>
                                 <span class="menu-text" data-lang="dashboards">Hotel Facility</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.des.index')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-globe"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Destination</span>
                             </a>
                         </li>
                         <li class="side-nav-item">

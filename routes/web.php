@@ -60,6 +60,7 @@ Route::middleware('bot')->group(function () {
 
     Route::get('/hotels', [CommonController::class, 'hotel'])->name('front.hotel-list');
 
+    Route::post('/hotels/booking', [CommonController::class, 'BookingHotel'])->name('front.booking.hotel');
     Route::post('/hotels/filter', [CommonController::class, 'filter'])->name('front.hotel-list.filter');
 
     Route::get('/hotels/about/{id}', [CommonController::class, 'showHotelDetails'])->name('front.hotel.about');
@@ -83,6 +84,8 @@ Route::middleware('bot')->group(function () {
 
     Route::post('/tour-list/filter', [CommonController::class, 'filterTours'])->name('front.tour-list.filter');
 
+    Route::get('destination',[CommonController::class,'destination'])->name('front.des');
+    Route::get('destination/about/{id}',[CommonController::class,'destinationDetail'])->name('front.des.about');
 //------------------- SSLCOMMERZ Start------------------------------------------
 
     Route::post('sslcommerz/pay', [SslCommerzPaymentController::class, 'index'])->name('pay');

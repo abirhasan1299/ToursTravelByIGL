@@ -19,7 +19,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
 
+    <!-- External Links -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-select/bootstrap-select.min.css')}}">
@@ -82,8 +84,8 @@
                         <li class="{{ request()->routeIs('front.hotel-list') ? 'current' : '' }}">
                             <a href="{{route('front.hotel-list')}}">Hotels</a>
                         </li>
-                        <li class="#">
-                            <a href="#">Destinations</a>
+                        <li class="{{ request()->routeIs('front.des') ? 'current' : '' }}">
+                            <a href="{{route('front.des')}}">Destinations</a>
                         </li>
                         <li class="{{ request()->routeIs('front.gallery') ? 'current' : '' }}">
                             <a href="{{route('front.gallery')}}">Gallery</a>
@@ -348,6 +350,8 @@
 <script src="{{asset('assets/vendors/jquery/jquery-3.7.1.min.js')}}"></script>
 <!-- Sweet Alerts js -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('assets/vendors/bootstrap-select/bootstrap-select.min.js')}}"></script>
@@ -381,6 +385,7 @@
 
 <!-- template js -->
 <script src="{{asset('assets/js/gotur.js')}}"></script>
+
 @stack('js')
 </body>
 

@@ -672,13 +672,13 @@
                 <h2><i class="fas fa-calendar-check"></i> Book This Hotel</h2>
                 <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
             </div>
-            <form method="post" class="booking-form" id="bookingForm" action="#">
+            <form method="post" class="booking-form" id="bookingForm" action="{{route('front.booking.hotel')}}">
                 @csrf
                 <div class="form-row ">
                    <div class="input-group">
                        <label><i class="fas fa-clock"></i> Duration</label>
                        <input class="gotur-multi-datepicker" id="date" type="text"
-                              name="date" placeholder="Feb 5 - 5" >
+                              name="booking_range" placeholder="Feb 5 - 5" >
                    </div>
                 </div>
                 <div class="form-row">
@@ -689,7 +689,7 @@
                     </div>
                     <div class="input-group">
                         <label><i class="fas fa-users"></i> Guests</label>
-                        <input type="number" name="guests" id="guestsField" placeholder="Number of guests" min="1" required>
+                        <input type="number" name="guest" id="guestsField" placeholder="Number of guests" min="1" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -699,27 +699,31 @@
                     </div>
                     <div class="input-group">
                         <label><i class="fas fa-money-bill-wave"></i> Total Price</label>
-                        <input type="text" name="total" id="totalField" placeholder="0" disabled>
+                        <input type="text" name="total_price" id="totalField" placeholder="0" readonly>
                     </div>
                 </div>
+                @guest
                 <div class="form-row">
                     <div class="input-group">
                         <label><i class="fas fa-user"></i> Full Name</label>
-                        <input type="text" name="user_name" id="userNameField" placeholder="Enter your full name" required>
+                        <input type="text" name="full_name" id="userNameField" placeholder="Enter your full name" required>
                     </div>
                     <div class="input-group">
                         <label><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" name="user_email" id="userEmailField" placeholder="your@email.com" required>
+                        <input type="email" name="email" id="userEmailField" placeholder="your@email.com" required>
                     </div>
                 </div>
+                @endguest
                 <div class="form-row">
+                    @guest
                     <div class="input-group">
                         <label><i class="fas fa-phone"></i> Phone Number</label>
-                        <input type="tel" name="user_phone" id="userPhoneField" placeholder="+880XXXXXXXXX" required>
+                        <input type="tel" name="phone" id="userPhoneField" placeholder="+880XXXXXXXXX" required>
                     </div>
+                    @endguest
                     <div class="input-group">
                         <label><i class="fas fa-comment"></i> Special Requests</label>
-                        <textarea name="special_requests" id="specialRequestsField" rows="2" placeholder="Any special requests?"></textarea>
+                        <textarea name="special_request" id="specialRequestsField" rows="2" placeholder="Any special requests?"></textarea>
                     </div>
                 </div>
                 <hr>
