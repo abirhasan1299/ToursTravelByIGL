@@ -52,11 +52,7 @@
                                                     <span class="toggle-password pass-field-icon fa fa-fw fa-eye-slash"></span>
                                                 </div>
                                                 <div class="login-page__input-box login-page__input-box--bottom">
-                                                    <div class="login-page__input-box__inner">
-                                                        <input id="remember-policy2" class="login-page__input-box__toggle" type="checkbox">
-                                                        <label class="remember-policy" for="remember-policy2">remember me</label>
-                                                    </div>
-                                                    <a href="#" class="login-page__form__forgot">forgot password?</a>
+
                                                 </div>
                                                 <div class="login-page__input-box">
                                                     <div class="login-page__input-box__btn">
@@ -88,13 +84,7 @@
                                                     <input type="password" name="password" placeholder="password" class="login-page__password">
                                                     <span class="toggle-password pass-field-icon fa fa-fw fa-eye-slash"></span>
                                                 </div>
-                                                <div class="login-page__input-box login-page__input-box--bottom">
-                                                    <div class="login-page__input-box__inner">
-                                                        <input id="remember-policy" class="login-page__input-box__toggle" type="checkbox">
-                                                        <label class="remember-policy" for="remember-policy">remember me</label>
-                                                    </div>
-                                                    <a href="#" class="login-page__form__forgot">forgot password?</a>
-                                                </div>
+
                                                 <div class="login-page__input-box">
                                                     <div class="login-page__input-box__btn">
                                                         <button type="submit" class="gotur-btn">register</button>

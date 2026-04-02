@@ -1,5 +1,5 @@
 @extends('layout.admin')
-@section('title','List Company')
+@section('title','Tour Booking')
 
 @section('content')
 

@@ -519,13 +519,25 @@
                         <li class="side-nav-item">
                             <a href="{{route('company.package.index')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-box"></i></span>
-                                <span class="menu-text" data-lang="dashboards">My Package</span>
+                                <span class="menu-text" data-lang="dashboards">Tour Package</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
                             <a href="{{route('company.booking')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-calendar-check"></i></span>
-                                <span class="menu-text" data-lang="dashboards">Bookings</span>
+                                <span class="menu-text" data-lang="dashboards">Tour Bookings</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('company.hotel.index')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-buildings"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Hotels</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('company.hotel.bookings')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-calendar-check"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Hotel Bookings</span>
                             </a>
                         </li>
                         <li class="side-nav-item">

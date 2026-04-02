@@ -31,6 +31,14 @@ Route::get('hotel/edit/{id}',[HotelController::class,'edit'])->name('hotel.edit'
 Route::put('hotel/update/{id}',[HotelController::class,'update'])->name('hotel.update');
 
 Route::delete('hotel/delete/{id}',[HotelController::class,'destroy'])->name('hotel.destroy');
+
+/*
+========================================================================
+                            Hotel Booking Route
+========================================================================
+*/
+Route::get('hotel/booking',[HotelController::class,'bookings'])->name('hotel.bookings');
+
 /*
 ========================================================================
                             Booking  Route

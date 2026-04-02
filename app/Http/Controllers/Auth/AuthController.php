@@ -179,7 +179,7 @@ class AuthController extends Controller
 
             $flag = false;
 
-            if ($data['is_valid'] && $data['is_disposable']) {
+            if ($data['is_valid'] || $data['is_disposable']) {
                 $flag = true;
             }
         }

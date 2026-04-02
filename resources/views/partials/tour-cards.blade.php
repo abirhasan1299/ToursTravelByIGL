@@ -32,14 +32,6 @@
                         <a href="{{route('front.tour.detail', base64_encode($tour->id))}}">{{ Str::limit($tour->title, 50) }}</a>
                     </h3>
 
-                    <div class="listing-card-four__rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                        <span>({{ rand(10, 50) }} reviews)</span>
-                    </div>
 
                     <div class="listing-card-four__content__btn">
                         <div class="listing-card-four__price">

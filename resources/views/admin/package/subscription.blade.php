@@ -194,7 +194,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5 class="text-muted fs-base text-uppercase" title="Number of Orders">Credit</h5>
+                            <h5 class="text-muted fs-base text-uppercase" title="Number of Orders">Balance</h5>
                             <h3 class="my-3 py-1 fw-semibold">
                                 <span>
                                     {{$credit->c_credit ?? '0'}}
@@ -290,14 +290,15 @@
                                     </div>
                                 </div>
 
-                                <!-- Credit -->
+                                <!-- Duration -->
                                 <div class="col-4">
                                     <div class="bg-light rounded-2 p-2 text-center feature-box">
-                                        <i class="ti ti-crown text-primary d-block" style="font-size: 1.1rem;"></i>
-                                        <span class="text-muted small d-block" style="font-size: 0.65rem;">Credits</span>
-                                        <span class="fw-semibold small">{{ $p->p_credit }}</span>
+                                        <i class="ti ti-buildings text-primary d-block" style="font-size: 1.1rem;"></i>
+                                        <span class="text-muted small d-block" style="font-size: 0.65rem;">Featured Post</span>
+                                        <span class="fw-semibold small">{{$p->p_featured_post}}</span>
                                     </div>
                                 </div>
+
 
                                 <!-- Duration -->
                                 <div class="col-4">
@@ -337,7 +338,7 @@
                                 <input type="hidden" name="package_id" value="{{$p->id}}">
                                 <button type="submit" class="btn btn-outline-primary w-100 py-2 fw-semibold rounded-2 hover-lift d-flex align-items-center justify-content-center" style="font-size: 0.8rem;">
                                     <i class="ti ti-crown me-1"></i>
-                                    Use Credits
+                                    Use Balance
                                 </button>
                             </form>
                         </div>

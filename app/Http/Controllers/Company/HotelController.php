@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hotel;
+use App\Models\HotelBooking;
 use App\Models\HotelFacility;
 use App\Models\HotelImage;
 use Illuminate\Http\Request;
@@ -12,6 +13,15 @@ use Log;
 
 class HotelController extends Controller
 {
+    public function bookings()
+    {
+        $bookings = HotelBooking::whereIn(
+            'hotel_id',
+            Hotel::where('user_id', auth()->user()->id)->pluck('id')
+        )->get();
+
+        return view('admin.booking.hotel_booking',compact('bookings'));
+    }
     public function index()
     {
         $data = Hotel::where('user_id',auth()->user()->id)->latest()->get();
