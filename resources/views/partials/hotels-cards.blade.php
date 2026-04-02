@@ -48,7 +48,7 @@
             <i class="fas fa-hotel"></i>
             <h4>No Hotels Found</h4>
             <p>We couldn't find any hotels matching your criteria. Try adjusting your filters.</p>
-            <button class="gotur-btn" id="resetNoResultsBtn">Clear Filters</button>
+            
         </div>
     </div>
 

@@ -58,9 +58,20 @@ Route::middleware('bot')->group(function () {
 
 //--------------------Frontend Routes------------------------------------------------
 
+    //=======Hotel Booking otp===================
+
+
+    Route::post('/hotels/booking', [\App\Http\Controllers\HotelBooking::class, 'BookingRequest'])->name('front.booking.hotel');
+
+    Route::get('/hotels/booking/otp', [\App\Http\Controllers\HotelBooking::class, 'verificationBooking'])->name('front.hotel.otp');
+
+    Route::post('/hotels/booking/otp/verification', [\App\Http\Controllers\HotelBooking::class, 'OTP_Verify'])->name('front.hotel.otp.verify');
+
+
+    //=======END Hotel Booking otp===================
+
     Route::get('/hotels', [CommonController::class, 'hotel'])->name('front.hotel-list');
 
-    Route::post('/hotels/booking', [CommonController::class, 'BookingHotel'])->name('front.booking.hotel');
     Route::post('/hotels/filter', [CommonController::class, 'filter'])->name('front.hotel-list.filter');
 
     Route::get('/hotels/about/{id}', [CommonController::class, 'showHotelDetails'])->name('front.hotel.about');

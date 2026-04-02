@@ -236,10 +236,6 @@ class CommonController extends Controller
         return view('theme.gallery',compact('data'));
     }
 
-    /**
-     * Hotel Booking OTP Functions
-     */
 
-    //need to code here
 
 }

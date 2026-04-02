@@ -14,7 +14,15 @@ if(!function_exists('settings'))
 
        function mask_phone($phone)
        {
-           return str_repeat('*', strlen($phone) - 2) . substr($phone, -2);
+           $len = strlen($phone);
+
+           if ($len <= 4) {
+               return str_repeat('*', $len);
+           }
+
+           return substr($phone, 0, 2)
+               . str_repeat('*', $len - 4)
+               . substr($phone, -2);
        }
 
        function sendOtp($phone,$message)
