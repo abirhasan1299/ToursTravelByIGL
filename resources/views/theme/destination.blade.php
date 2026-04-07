@@ -1,377 +1,607 @@
 @extends('layout.theme')
 @section('title','Destination')
 @section('content')
-    <section class="destination-one section-space">
+    <section class="destination-section" style="margin-top: -50px;">
         <div class="container">
-            <!-- Section Header -->
-            <div class="destination-header text-center wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
-                <div class="sec-title">
-                    <h6 class="sec-title__tagline bw-split-in-right">Explore the World</h6>
-                    <h3 class="sec-title__title bw-split-in-left">Popular <span>Destinations</span></h3>
-                </div>
-                <p class="destination-description">Discover the most breathtaking destinations around the globe. From pristine beaches to majestic mountains, find your next adventure with us.</p>
-            </div>
-
             <!-- Destination Grid -->
-            <div class="row gutter-y-30 gutter-x-30">
+            <div class="destinations-grid">
                 @foreach($data as $index => $d)
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                        <div class="destination-card-one wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='{{100 + ($index * 100)}}ms'>
-                            <div class="destination-card-one__thumb">
-
-                                <img src="{{asset('storage/'.$d->images->first()?->image_name)}}" alt="{{$d->country}}">
-
-                                <div class="destination-card-one__overlay">
-                                    <div class="overlay-content">
-                                        <a href="{{route('front.des.about',base64_encode($d->id))}}" class="btn-view">
-                                            <i class="fas fa-eye"></i> View Details
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="destination-badge">
-                                    <i class="fas fa-map-marker-alt"></i> {{$d->country}}
-                                </div>
-                            </div>
-                            <div class="destination-card-one__content">
-                                <h3 class="destination-card-one__title">
-                                    <a href="#">{{$d->country}}</a>
-                                </h3>
-                                <div class="destination-card-one__info" style="margin-left:50px;">
-                                </div>
-                                <div class="destination-card-one__footer">
-                                    <a href="{{route('front.des.about',base64_encode($d->id))}}" class="explore-link">
-                                        Explore Now <i class="fas fa-arrow-right"></i>
+                    <div class="destination-card">
+                        <div class="card-image">
+                            <img src="{{asset('storage/'.$d->images->first()?->image_name)}}" alt="{{$d->country}}">
+                            <div class="card-overlay">
+                                <div class="overlay-content">
+                                    <a href="{{route('front.des.about',base64_encode($d->id))}}" class="view-details-btn">
+                                        <i class="fas fa-eye"></i> View Details
                                     </a>
                                 </div>
+                            </div>
+                            <div class="card-badge">
+                                <i class="fas fa-map-marker-alt"></i> {{$d->country}}
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <a href="{{route('front.des.about',base64_encode($d->id))}}">{{$d->country}}</a>
+                                </h3>
+                                <div class="card-rating">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="rating-count">({{rand(50, 200)}} reviews)</span>
+                                </div>
+                            </div>
+
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <div class="stat-info">
+                                        <span class="stat-value">{{rand(5, 30)}}+</span>
+                                        <span class="stat-label">Tours</span>
+                                    </div>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    <div class="stat-info">
+                                        <span class="stat-value">{{rand(1, 5)}}k+</span>
+                                        <span class="stat-label">Travelers</span>
+                                    </div>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div class="stat-info">
+                                        <span class="stat-value">{{rand(3, 14)}}</span>
+                                        <span class="stat-label">Avg Days</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <a href="{{route('front.des.about',base64_encode($d->id))}}" class="explore-btn">
+                                    <span>Explore Destination</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
 
+
         </div>
     </section>
 
     @push('css')
         <style>
-            /* Destination Header Styles */
-            .destination-header {
+            /* Main Section Styles */
+            .destination-section {
+                padding: 100px 0;
+                background: linear-gradient(135deg, #f9faf9 0%, #ffffff 100%);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .destination-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 400px;
+                background: radial-gradient(circle at 0% 0%, rgba(99, 171, 69, 0.05) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            /* Section Header */
+            .section-header {
+                margin-bottom: 60px;
+                position: relative;
+            }
+
+            .section-subtitle {
+                margin-bottom: 15px;
+            }
+
+            .section-subtitle span {
+                display: inline-block;
+                padding: 6px 20px;
+                background: linear-gradient(135deg, rgba(99, 171, 69, 0.1) 0%, rgba(99, 171, 69, 0.05) 100%);
+                color: var(--gotur-base, #63AB45);
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                border-radius: 50px;
+            }
+
+            .section-title {
+                font-size: 42px;
+                font-weight: 800;
+                color: var(--gotur-black, #1D231F);
+                margin-bottom: 20px;
+                line-height: 1.2;
+            }
+
+            .section-title .highlight {
+                color: var(--gotur-base, #63AB45);
+                position: relative;
+                display: inline-block;
+            }
+
+            .section-title .highlight::after {
+                content: '';
+                position: absolute;
+                bottom: 5px;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background: rgba(99, 171, 69, 0.2);
+                border-radius: 4px;
+                z-index: -1;
+            }
+
+            .section-description {
+                max-width: 650px;
+                margin: 0 auto;
+                color: var(--gotur-text, #595959);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            /* Destinations Grid */
+            .destinations-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 30px;
                 margin-bottom: 50px;
             }
 
-            .destination-description {
-                max-width: 700px;
-                margin: 15px auto 0;
-                color: var(--gotur-text, #595959);
-                font-size: 16px;
-                line-height: 1.6;
-            }
-
-            /* Destination Card Styles */
-            .destination-card-one {
-                position: relative;
-                background: var(--gotur-white, #fff);
+            /* Destination Card */
+            .destination-card {
+                background: #ffffff;
                 border-radius: 20px;
                 overflow: hidden;
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                position: relative;
             }
 
-            .destination-card-one:hover {
+            .destination-card:hover {
                 transform: translateY(-10px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 20px 40px rgba(99, 171, 69, 0.15);
             }
 
-            .destination-card-one__thumb {
+            /* Card Image */
+            .card-image {
                 position: relative;
                 overflow: hidden;
-                aspect-ratio: 4/3;
+                height: 280px;
+                background: #f0f0f0;
             }
 
-            .destination-card-one__thumb img {
+            .card-image img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
-            .destination-card-one:hover .destination-card-one__thumb img {
-                transform: scale(1.1);
+            .destination-card:hover .card-image img {
+                transform: scale(1.08);
             }
 
-            /* Overlay Styles */
-            .destination-card-one__overlay {
+            /* Card Overlay */
+            .card-overlay {
                 position: absolute;
                 top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: linear-gradient(135deg, rgba(99, 171, 69, 0.9) 0%, rgba(79, 137, 55, 0.9) 100%);
+                background: linear-gradient(135deg, rgba(99, 171, 69, 0.92) 0%, rgba(79, 137, 55, 0.92) 100%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 opacity: 0;
                 transition: all 0.4s ease;
-                z-index: 2;
+                backdrop-filter: blur(5px);
             }
 
-            .destination-card-one:hover .destination-card-one__overlay {
+            .destination-card:hover .card-overlay {
                 opacity: 1;
             }
 
             .overlay-content {
                 transform: translateY(20px);
                 transition: transform 0.4s ease;
+                text-align: center;
             }
 
-            .destination-card-one:hover .overlay-content {
+            .destination-card:hover .overlay-content {
                 transform: translateY(0);
             }
 
-            .btn-view {
+            .view-details-btn {
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
-                padding: 10px 20px;
-                background: var(--gotur-white, #fff);
+                gap: 12px;
+                padding: 12px 28px;
+                background: #ffffff;
                 color: var(--gotur-base, #63AB45);
                 border-radius: 50px;
                 font-size: 14px;
                 font-weight: 600;
                 text-decoration: none;
                 transition: all 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             }
 
-            .btn-view:hover {
+            .view-details-btn:hover {
                 background: var(--gotur-black, #1D231F);
-                color: var(--gotur-white, #fff);
+                color: #ffffff;
                 transform: translateX(5px);
+                gap: 15px;
             }
 
-            /* Badge Styles */
-            .destination-badge {
+            /* Card Badge */
+            .card-badge {
                 position: absolute;
-                top: 15px;
-                right: 15px;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(5px);
-                color: var(--gotur-white, #fff);
-                padding: 6px 12px;
-                border-radius: 30px;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.75);
+                backdrop-filter: blur(8px);
+                color: #ffffff;
+                padding: 6px 14px;
+                border-radius: 50px;
                 font-size: 12px;
                 font-weight: 500;
                 display: flex;
                 align-items: center;
                 gap: 6px;
-                z-index: 3;
+                z-index: 2;
                 transition: all 0.3s ease;
             }
 
-            .destination-badge i {
-                font-size: 12px;
+            .card-badge i {
                 color: var(--gotur-base, #63AB45);
+                font-size: 11px;
             }
 
-            .destination-card-one:hover .destination-badge {
+            .destination-card:hover .card-badge {
                 background: var(--gotur-base, #63AB45);
                 transform: translateY(-2px);
             }
 
-            .destination-card-one:hover .destination-badge i {
-                color: var(--gotur-white, #fff);
+            .destination-card:hover .card-badge i {
+                color: #ffffff;
             }
 
-            /* Content Styles */
-            .destination-card-one__content {
-                padding: 20px;
-                background: var(--gotur-white, #fff);
-                position: relative;
+            /* Card Content */
+            .card-content {
+                padding: 24px;
+                background: #ffffff;
             }
 
-            .destination-card-one__title {
-                font-size: 20px;
+            .card-header {
+                margin-bottom: 20px;
+            }
+
+            .card-title {
+                font-size: 22px;
                 font-weight: 700;
-                margin-bottom: 12px;
+                margin-bottom: 10px;
                 line-height: 1.3;
             }
 
-            .destination-card-one__title a {
+            .card-title a {
                 color: var(--gotur-black, #1D231F);
                 text-decoration: none;
                 transition: color 0.3s ease;
             }
 
-            .destination-card-one__title a:hover {
+            .card-title a:hover {
                 color: var(--gotur-base, #63AB45);
             }
 
-            /* Info Section */
-            .destination-card-one__info {
+            .card-rating {
                 display: flex;
-                gap: 15px;
-                margin-bottom: 15px;
-                padding-bottom: 15px;
-                border-bottom: 1px solid var(--gotur-border-color, #E5E5E5);
-            }
-
-            .info-item {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 13px;
-                color: var(--gotur-text, #595959);
-            }
-
-            .info-item i {
-                color: var(--gotur-base, #63AB45);
-                font-size: 12px;
-            }
-
-            /* Footer Styles */
-            .destination-card-one__footer {
-                margin-top: 5px;
-            }
-
-            .explore-link {
-                display: inline-flex;
                 align-items: center;
                 gap: 8px;
-                color: var(--gotur-text, #595959);
-                font-size: 13px;
-                font-weight: 500;
-                text-decoration: none;
-                transition: all 0.3s ease;
+                flex-wrap: wrap;
             }
 
-            .explore-link i {
+            .stars {
+                display: flex;
+                gap: 3px;
+            }
+
+            .stars i {
+                color: #FFB800;
                 font-size: 12px;
+            }
+
+            .rating-count {
+                color: var(--gotur-text, #595959);
+                font-size: 12px;
+            }
+
+            /* Card Stats */
+            .card-stats {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 0;
+                margin-bottom: 20px;
+                border-top: 1px solid #E5E7EB;
+                border-bottom: 1px solid #E5E7EB;
+            }
+
+            .stat-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex: 1;
+            }
+
+            .stat-item i {
+                font-size: 18px;
+                color: var(--gotur-base, #63AB45);
+                width: 24px;
+            }
+
+            .stat-info {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .stat-value {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--gotur-black, #1D231F);
+                line-height: 1.2;
+            }
+
+            .stat-label {
+                font-size: 11px;
+                color: var(--gotur-text, #595959);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .stat-divider {
+                width: 1px;
+                height: 30px;
+                background: #E5E7EB;
+            }
+
+            /* Card Footer */
+            .card-footer {
+                margin-top: auto;
+            }
+
+            .explore-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #f8faf7 0%, #ffffff 100%);
+                color: var(--gotur-base, #63AB45);
+                text-decoration: none;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                border: 1px solid rgba(99, 171, 69, 0.2);
+            }
+
+            .explore-btn span {
                 transition: transform 0.3s ease;
             }
 
-            .explore-link:hover {
-                color: var(--gotur-base, #63AB45);
+            .explore-btn i {
+                transition: transform 0.3s ease;
             }
 
-            .explore-link:hover i {
+            .explore-btn:hover {
+                background: var(--gotur-base, #63AB45);
+                color: #ffffff;
+                border-color: transparent;
+                transform: translateY(-2px);
+            }
+
+            .explore-btn:hover span {
+                transform: translateX(-3px);
+            }
+
+            .explore-btn:hover i {
                 transform: translateX(5px);
             }
 
             /* View All Button */
-            .destination-view-all {
-                margin-top: 50px;
+            .view-all-wrapper {
+                margin-top: 20px;
             }
 
-            .gotur-btn--outline {
+            .view-all-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 32px;
                 background: transparent;
                 border: 2px solid var(--gotur-base, #63AB45);
                 color: var(--gotur-base, #63AB45);
-                padding: 12px 30px;
+                border-radius: 50px;
                 font-weight: 600;
+                font-size: 15px;
+                text-decoration: none;
                 transition: all 0.3s ease;
             }
 
-            .gotur-btn--outline:hover {
+            .view-all-btn:hover {
                 background: var(--gotur-base, #63AB45);
-                color: var(--gotur-white, #fff);
+                color: #ffffff;
                 transform: translateY(-3px);
-                box-shadow: 0 10px 20px rgba(99, 171, 69, 0.2);
+                box-shadow: 0 10px 25px rgba(99, 171, 69, 0.2);
+                gap: 15px;
             }
 
-            /* Responsive Adjustments */
+            /* Responsive Design */
+            @media (max-width: 1200px) {
+                .destinations-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 25px;
+                }
+            }
+
             @media (max-width: 991px) {
-                .destination-card-one__title {
-                    font-size: 18px;
+                .destination-section {
+                    padding: 70px 0;
                 }
 
-                .destination-description {
-                    font-size: 14px;
-                    padding: 0 15px;
+                .section-title {
+                    font-size: 36px;
+                }
+
+                .card-image {
+                    height: 250px;
+                }
+
+                .card-title {
+                    font-size: 20px;
                 }
             }
 
             @media (max-width: 768px) {
-                .destination-header {
-                    margin-bottom: 30px;
+                .destination-section {
+                    padding: 50px 0;
                 }
 
-                .destination-card-one__info {
-                    flex-direction: column;
-                    gap: 8px;
+                .section-title {
+                    font-size: 30px;
                 }
 
-                .info-item {
-                    font-size: 12px;
+                .section-description {
+                    font-size: 14px;
+                    padding: 0 15px;
                 }
 
-                .destination-card-one__content {
-                    padding: 15px;
+                .destinations-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
                 }
 
-                .destination-view-all {
-                    margin-top: 30px;
+                .card-image {
+                    height: 230px;
                 }
 
-                .gotur-btn--outline {
-                    padding: 10px 25px;
+                .card-content {
+                    padding: 20px;
+                }
+
+                .card-stats {
+                    padding: 12px 0;
+                }
+
+                .stat-item i {
+                    font-size: 16px;
+                }
+
+                .stat-value {
                     font-size: 14px;
                 }
             }
 
-            /* Loading Animation for Images */
-            .destination-card-one__thumb img {
-                opacity: 0;
-                animation: fadeIn 0.5s ease forwards;
+            @media (max-width: 576px) {
+                .destination-section {
+                    padding: 40px 0;
+                }
+
+                .section-title {
+                    font-size: 26px;
+                }
+
+                .section-subtitle span {
+                    font-size: 11px;
+                    padding: 4px 16px;
+                }
+
+                .card-image {
+                    height: 200px;
+                }
+
+                .card-title {
+                    font-size: 18px;
+                }
+
+                .view-all-btn {
+                    padding: 10px 24px;
+                    font-size: 13px;
+                }
             }
 
-            @keyframes fadeIn {
+            /* Animation */
+            @keyframes fadeInUp {
                 from {
                     opacity: 0;
-                    transform: scale(0.95);
+                    transform: translateY(30px);
                 }
                 to {
                     opacity: 1;
-                    transform: scale(1);
+                    transform: translateY(0);
                 }
             }
 
-            /* Optional: Hover Glow Effect */
-            .destination-card-one {
-                position: relative;
-            }
-
-            .destination-card-one::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border-radius: 20px;
-                background: linear-gradient(135deg, rgba(99, 171, 69, 0.1) 0%, rgba(79, 137, 55, 0.05) 100%);
+            .destination-card {
+                animation: fadeInUp 0.6s ease forwards;
                 opacity: 0;
-                transition: opacity 0.4s ease;
-                pointer-events: none;
-                z-index: 1;
             }
 
-            .destination-card-one:hover::before {
-                opacity: 1;
-            }
+
         </style>
     @endpush
 
     @push('js')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Add lazy loading for images
-                const images = document.querySelectorAll('.destination-card-one__thumb img');
+                // Add intersection observer for cards
+                const cards = document.querySelectorAll('.destination-card');
+
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const cardObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            cardObserver.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                cards.forEach(card => {
+                    cardObserver.observe(card);
+                });
+
+                // Lazy loading for images
+                const images = document.querySelectorAll('.card-image img');
 
                 if ('IntersectionObserver' in window) {
-                    const imageObserver = new IntersectionObserver((entries, observer) => {
+                    const imageObserver = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             if (entry.isIntersecting) {
                                 const img = entry.target;
-                                img.classList.add('loaded');
+                                if (img.dataset.src) {
+                                    img.src = img.dataset.src;
+                                }
                                 imageObserver.unobserve(img);
                             }
                         });
@@ -379,20 +609,7 @@
 
                     images.forEach(img => imageObserver.observe(img));
                 }
-
-                // Add hover effect for cards
-                const cards = document.querySelectorAll('.destination-card-one');
-                cards.forEach(card => {
-                    card.addEventListener('mouseenter', function() {
-                        this.style.transform = 'translateY(-10px)';
-                    });
-
-                    card.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(0)';
-                    });
-                });
             });
         </script>
     @endpush
 @endsection
-

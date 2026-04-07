@@ -1,7 +1,7 @@
 {{-- resources/views/partials/hotel-cards.blade.php --}}
 @if($hotels->count() > 0)
     @foreach($hotels as $hotel)
-        <div class="col-md-6 col-xl-6">
+        <div class="col-md-4 col-xl-4 px-2 py-2">
             <div class="listing-card-four">
                 <div class="listing-card-four__image">
                     {{-- You can replace this with actual hotel image if you have one --}}
@@ -48,7 +48,7 @@
             <i class="fas fa-hotel"></i>
             <h4>No Hotels Found</h4>
             <p>We couldn't find any hotels matching your criteria. Try adjusting your filters.</p>
-            
+
         </div>
     </div>
 

@@ -2,7 +2,7 @@
 @section('title','About Us')
 @section('content')
         <section class="page-header">
-            <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);"></div><!-- /.page-header__bg -->
+            <div class="page-header__bg" style="background-image: url({{asset('assets/images/backgrounds/page-header-bg-1-1.jpg')}});"></div><!-- /.page-header__bg -->
             <div class="container">
                 <div class="page-header__content">
                     <h2 class="page-header__title bw-split-in-right">About us</h2>
@@ -14,7 +14,43 @@
             </div><!-- /.container -->
         </section><!-- /.page-header -->
 
-        <section class="about-one section-space " id="about">
+        <section class="cta-two">
+            <div class="cta-two__bg wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms" style="background-image: url({{asset('assets/images/backgrounds/cta-bg-1-1.jpg')}});"></div><!-- /.cta-two__bg -->
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-lg-6"></div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="cta-two__content wow fadeInRight" data-wow-duration='1500ms' data-wow-delay='400ms'>
+                            <div class="cta-two__content__inner">
+                                <div class="sec-title text-center">
+                                    <h6 class="sec-title__tagline bw-split-in-right">What We’re Offering</h6><!-- /.sec-title__tagline -->
+                                    <h3 class="sec-title__title bw-split-in-left">Get 30% Discount Every Tour</h3><!-- /.sec-title__title -->
+                                </div><!-- /.sec-title -->
+                                <div class="time-wepper" data-leading-zeros="true" data-enable-days="true" data-deadline-date="dynamicDate">
+                                </div>
+                                <div class="cta-two__btn">
+                                    <a href="{{route('front.tour-list')}}" class="gotur-btn gotur-btn--base">Start Booking <span class="icon"><i class="icon-right"></i></span></a>
+                                </div><!-- /.cta-two__btn -->
+                            </div><!-- /.cta-two__content__inner -->
+                        </div><!-- /.cta-two__content -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+            <div class="cta-two__thumb wow fadeInLeft" data-wow-duration='1500ms' data-wow-delay='400ms'>
+                <div class="cta-two__thumb__item">
+                    <img src="{{asset('assets/images/resources/cta-man-1-1.png')}}" alt="cta image">
+                </div><!-- /.cta-two__thumb__item -->
+                <div class="cta-two__thumb__popup">
+                    <img src="{{asset('assets/images/shapes/cta-1-1-popup.png')}}" alt="cta image">
+                </div><!-- /.cta-two__thumb__popup -->
+                <div class="cta-two__thumb__element"></div><!-- /.cta-two__thumb__element -->
+            </div><!-- /.cta-two__thumb -->
+            <div class="cta-two__element">
+                <img src="{{asset('assets/images/shapes/cta-1-1-bg-shape.png')}}" alt>
+            </div><!-- /.cta-two__element -->
+        </section><!-- /.cta-two -->
+
+        <section class="about-one section-space " style="margin-top:-120px;" id="about" >
             <div class="container">
                 <div class="row gutter-y-40">
                     <div class="col-lg-6">
@@ -82,43 +118,7 @@
             </div><!-- /.about-one__element-one -->
         </section><!-- /.about-one -->
 
-        <section class="cta-two">
-            <div class="cta-two__bg wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms" style="background-image: url({{asset('assets/images/backgrounds/cta-bg-1-1.jpg')}});"></div><!-- /.cta-two__bg -->
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-lg-6"></div><!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                        <div class="cta-two__content wow fadeInRight" data-wow-duration='1500ms' data-wow-delay='400ms'>
-                            <div class="cta-two__content__inner">
-                                <div class="sec-title text-center">
-                                    <h6 class="sec-title__tagline bw-split-in-right">What We’re Offering</h6><!-- /.sec-title__tagline -->
-                                    <h3 class="sec-title__title bw-split-in-left">Get 30% Discount Every Tour</h3><!-- /.sec-title__title -->
-                                </div><!-- /.sec-title -->
-                                <div class="time-wepper" data-leading-zeros="true" data-enable-days="true" data-deadline-date="dynamicDate">
-                                </div>
-                                <div class="cta-two__btn">
-                                    <a href="{{route('front.tour-list')}}" class="gotur-btn gotur-btn--base">Start Booking <span class="icon"><i class="icon-right"></i></span></a>
-                                </div><!-- /.cta-two__btn -->
-                            </div><!-- /.cta-two__content__inner -->
-                        </div><!-- /.cta-two__content -->
-                    </div><!-- /.col-lg-6 -->
-                </div><!-- /.row -->
-            </div><!-- /.container -->
-            <div class="cta-two__thumb wow fadeInLeft" data-wow-duration='1500ms' data-wow-delay='400ms'>
-                <div class="cta-two__thumb__item">
-                    <img src="{{asset('assets/images/resources/cta-man-1-1.png')}}" alt="cta image">
-                </div><!-- /.cta-two__thumb__item -->
-                <div class="cta-two__thumb__popup">
-                    <img src="{{asset('assets/images/shapes/cta-1-1-popup.png')}}" alt="cta image">
-                </div><!-- /.cta-two__thumb__popup -->
-                <div class="cta-two__thumb__element"></div><!-- /.cta-two__thumb__element -->
-            </div><!-- /.cta-two__thumb -->
-            <div class="cta-two__element">
-                <img src="{{asset('assets/images/shapes/cta-1-1-bg-shape.png')}}" alt>
-            </div><!-- /.cta-two__element -->
-        </section><!-- /.cta-two -->
-
-        <section class="how-to-work section-space">
+        <section style="margin-top:-220px;" class="how-to-work section-space">
             <div class="container">
                 <div class="sec-title text-center">
                     <h6 class="sec-title__tagline bw-split-in-right">How It Works</h6><!-- /.sec-title__tagline -->

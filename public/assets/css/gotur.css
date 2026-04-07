@@ -756,7 +756,7 @@ h6 {
   height: 100px;
   max-width: 250px;
   max-height: 150px;
-  
+
 }
 
 /* Responsive logo sizes */
@@ -4239,7 +4239,7 @@ body.megamenu-popup-active .mobile-nav__content {
 --------------------------------------------------------------*/
 .page-header {
   position: relative;
-  padding: 220px 0px 130.3px;
+  padding: 20px 0px 20px;
 }
 @media (max-width: 991px) {
   .page-header {
@@ -11811,7 +11811,7 @@ a + .listing-card-four__btns__hover {
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
-  border-radius: 30px;
+  border-radius: 0px;
 }
 .cta-two__thumb {
   position: absolute;
@@ -12307,10 +12307,11 @@ a + .listing-card-four__btns__hover {
   margin-left: auto;
   margin-right: auto;
   padding: 100px 0px;
-  border-radius: 30px;
+    border-radius:30px ;
+
 }
 .cta-five__bg {
-  border-radius: 30px;
+
   position: absolute;
   top: 0;
   left: 0;
@@ -12320,6 +12321,7 @@ a + .listing-card-four__btns__hover {
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
+    border-radius:30px ;
 }
 .cta-five__bg::after {
   content: "";
@@ -17867,7 +17869,7 @@ a + .listing-card-four__btns__hover {
   justify-content: space-between;
   padding-top: 88px;
   padding-bottom: 51px;
-  border-bottom: 1px solid rgba(var(--gotur-border-color-rgb, 229, 229, 229), 0.2);
+
 }
 @media (max-width: 991px) {
   .main-footer__top__inner {
@@ -18477,11 +18479,11 @@ body.boxed-wrapper .testimonials-three__inner {
         margin-bottom: 50px;
         padding: 0 15px;
     }
-    
+
     .main-slider-one__form.centered-form {
         max-width: 100%;
     }
-    
+
     .banner-form__wrapper {
         border-radius: 30px;
         padding: 25px;
@@ -18493,12 +18495,12 @@ body.boxed-wrapper .testimonials-three__inner {
         margin-top: 40px;
         margin-bottom: 40px;
     }
-    
+
     .banner-form__wrapper {
         border-radius: 20px;
         padding: 20px;
     }
-    
+
     .banner-form .banner-form__control {
         margin-bottom: 15px;
     }
@@ -18509,16 +18511,16 @@ body.boxed-wrapper .testimonials-three__inner {
         margin-top: 30px;
         margin-bottom: 30px;
     }
-    
+
     .banner-form__wrapper {
         padding: 20px 15px;
         border-radius: 15px;
     }
-    
+
     .banner-form__control {
         padding-left: 35px;
     }
-    
+
     .banner-form__control .icon {
         font-size: 18px;
     }
@@ -18532,13 +18534,13 @@ body.boxed-wrapper .testimonials-three__inner {
     .banner-form .banner-form__col--4 {
         width: 24%;
     }
-    
+
     .banner-form .banner-form__col--5 {
         width: 100%;
         margin-top: 15px;
         padding-left: 0;
     }
-    
+
     .banner-form__button .gotur-btn {
         width: 100%;
         text-align: center;
@@ -18550,7 +18552,7 @@ body.boxed-wrapper .testimonials-three__inner {
     .main-slider-one__form.centered-form {
         max-width: 1200px;
     }
-    
+
     .banner-form__wrapper {
         padding: 32px 40px;
     }
@@ -18911,7 +18913,7 @@ body.boxed-wrapper .testimonials-three__inner {
         padding: 8px 16px;
         font-size: 14px;
     }
-    
+
     .main-header__right {
         gap: 12px;
     }
@@ -18921,24 +18923,24 @@ body.boxed-wrapper .testimonials-three__inner {
     .main-header__nav-wrapper {
         display: none;
     }
-    
+
     .mobile-nav__btn {
         display: flex;
     }
-    
+
     .logo-img {
         height: 55px;
     }
-    
+
     .main-header__inner {
         padding: 10px 0;
     }
-    
+
     .main-header__btn {
         padding: 8px 20px !important;
         font-size: 13px !important;
     }
-    
+
     .main-header__info__item,
     .main-header__btn-popup {
         width: 38px;
@@ -18951,25 +18953,25 @@ body.boxed-wrapper .testimonials-three__inner {
     .logo-img {
         height: 48px;
     }
-    
+
     .main-header__btn span {
         display: none;
     }
-    
+
     .main-header__btn {
         padding: 8px 14px !important;
         border-radius: 40px !important;
     }
-    
+
     .main-header__btn i {
         margin: 0;
         font-size: 15px;
     }
-    
+
     .main-header__right {
         gap: 10px;
     }
-    
+
     .main-header__info__item,
     .main-header__btn-popup {
         width: 36px;
@@ -18982,11 +18984,11 @@ body.boxed-wrapper .testimonials-three__inner {
     .logo-img {
         height: 42px;
     }
-    
+
     .main-header__inner {
         padding: 8px 0;
     }
-    
+
     .main-header__info__item,
     .main-header__btn-popup {
         width: 34px;
@@ -19003,9 +19005,9 @@ body.boxed-wrapper .testimonials-three__inner {
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        var(--gotur-base, #63AB45) 20%, 
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--gotur-base, #63AB45) 20%,
         var(--gotur-primary, #F7921E) 50%,
         var(--gotur-base, #63AB45) 80%,
         transparent 100%);

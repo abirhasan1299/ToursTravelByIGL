@@ -14,6 +14,7 @@ use App\Models\IpBlock;
 use App\Models\Package;
 use App\Models\Contact;
 use Cache;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
@@ -153,13 +154,55 @@ class CommonController extends Controller
     ]);
 }
 
-    public function TourList()
+    public function TourList(Request $request)
     {
-        $tours = Package::where('status', 'active')
-            ->inRandomOrder()
-            ->get();
+        $query = Package::where('status', 'active');
 
-        return view('theme.tour-listing',compact('tours'));
+        // Apply filters from URL parameters
+
+        if ($request->filled('location')) {
+
+            $location = strtolower(trim($request->input('location')));
+
+            $parts = preg_split('/\s+to\s+/', $location);
+
+            if (count($parts) === 2) {
+                [$start_loc, $end] = $parts;
+
+                $query->where('start_location', $start_loc);
+                $query->where('end_location', $end);
+            }
+        }
+
+        if ($request->filled('tour_type')) {
+            $query->where('tour_type', $request->tour_type);
+        }
+
+
+        if ($request->filled('duration')) {
+            $duration = $request->duration;
+            if ($duration == '1-3') {
+                $query->whereBetween('day', [1, 3]);
+            } elseif ($duration == '4-7') {
+                $query->whereBetween('day', [4, 7]);
+            } elseif ($duration == '8-14') {
+                $query->whereBetween('day', [8, 14]);
+            } elseif ($duration == '15+') {
+                $query->where('day', '>=', 15);
+            }
+        }
+
+        if ($request->filled('guests')) {
+            $query->where('max_people', '>=', $request->guests);
+        }
+
+        // Get filtered tours (IMPORTANT: Use the query, not a new query)
+        $tours = $query->inRandomOrder()->get();
+
+        // Get max price for the slider
+        $maxPrice = Package::max('amount') ?? 50000;
+
+        return view('theme.tour-listing', compact('tours', 'maxPrice'));
     }
 
     public function TourDetails($id)

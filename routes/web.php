@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CommonController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\UserBooking;
 use App\Models\About;
@@ -15,9 +16,9 @@ Route::middleware('bot')->group(function () {
 
         $about = About::where('id',1)->first();
 
-        $startLocations = Package::select('start_location')
+        $startLocations = Package::select('start_location','end_location')
                         ->distinct()
-                        ->pluck('start_location');
+                        ->get();
 
         $tourTypes = Package::select('tour_type')
                     ->distinct()
@@ -32,6 +33,21 @@ Route::middleware('bot')->group(function () {
     Route::get('/404', function () {
         return view('theme.404');
     })->name('404');
+
+//-------------------Google Route---------------------------------------------------
+    Route::controller(SocialiteController::class)->group(function () {
+
+        Route::get('/google/auth','googleLogin')->name('google.auth');
+
+        Route::get('/google/callback','googleCallback')->name('google.callback');
+
+        Route::get('/github/auth','redirect')->name('github.auth');
+
+        Route::get('/github/callback','callback')->name('github.callback');
+    });
+
+
+
 
 //--------------------Package Booking Route-----------------------------------------
     Route::post('package/store',[UserBooking::class,'BookingRequest'])->name('package.booking');
@@ -97,6 +113,7 @@ Route::middleware('bot')->group(function () {
 
     Route::get('destination',[CommonController::class,'destination'])->name('front.des');
     Route::get('destination/about/{id}',[CommonController::class,'destinationDetail'])->name('front.des.about');
+
 //------------------- SSLCOMMERZ Start------------------------------------------
 
     Route::post('sslcommerz/pay', [SslCommerzPaymentController::class, 'index'])->name('pay');

@@ -6,13 +6,13 @@
     .gallery-page {
         background: var(--gotur-white, #fff);
     }
-    
+
     /* Filter Buttons */
     .gallery-filter {
         margin-bottom: 50px;
         text-align: center;
     }
-    
+
     .filter-btn {
         display: inline-flex;
         align-items: center;
@@ -28,12 +28,12 @@
         transition: all 0.3s ease;
         font-family: var(--gotur-font, "Plus Jakarta Sans", sans-serif);
     }
-    
+
     .filter-btn i {
         margin-right: 8px;
         font-size: 14px;
     }
-    
+
     .filter-btn:hover,
     .filter-btn.active {
         background: var(--gotur-base, #63AB45);
@@ -41,7 +41,7 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(99, 171, 69, 0.3);
     }
-    
+
     /* Gallery Card Enhancement */
     .gallery-page__card {
         position: relative;
@@ -51,12 +51,12 @@
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
         transition: all 0.4s ease;
     }
-    
+
     .gallery-page__card:hover {
         transform: translateY(-10px);
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
-    
+
     .gallery-page__card img {
         width: 100%;
         height: 320px;
@@ -64,11 +64,11 @@
         display: block;
         transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    
+
     .gallery-page__card:hover img {
         transform: scale(1.1);
     }
-    
+
     /* Overlay Styles */
     .gallery-page__card__hover {
         position: absolute;
@@ -85,13 +85,13 @@
         transition: all 0.4s ease;
         transform: scale(0.8);
     }
-    
+
     .gallery-page__card:hover .gallery-page__card__hover {
         opacity: 1;
         visibility: visible;
         transform: scale(1);
     }
-    
+
     /* Icon Styles */
     .gallery-page__card__icon {
         width: 60px;
@@ -104,14 +104,14 @@
         transition: all 0.3s ease;
         cursor: pointer;
     }
-    
+
     .gallery-page__card__icon__item {
         position: relative;
         width: 24px;
         height: 24px;
         display: block;
     }
-    
+
     .gallery-page__card__icon__item::before,
     .gallery-page__card__icon__item::after {
         content: '';
@@ -119,7 +119,7 @@
         background: var(--gotur-base, #63AB45);
         transition: all 0.3s ease;
     }
-    
+
     .gallery-page__card__icon__item::before {
         width: 2px;
         height: 100%;
@@ -127,7 +127,7 @@
         top: 0;
         transform: translateX(-50%);
     }
-    
+
     .gallery-page__card__icon__item::after {
         width: 100%;
         height: 2px;
@@ -135,17 +135,17 @@
         top: 50%;
         transform: translateY(-50%);
     }
-    
+
     .gallery-page__card__icon:hover {
         transform: rotate(90deg);
         background: var(--gotur-primary, #F7921E);
     }
-    
+
     .gallery-page__card__icon:hover .gallery-page__card__icon__item::before,
     .gallery-page__card__icon:hover .gallery-page__card__icon__item::after {
         background: var(--gotur-white, #fff);
     }
-    
+
     /* Card Info Overlay (Optional) */
     .gallery-card-info {
         position: absolute;
@@ -157,46 +157,46 @@
         transform: translateY(100%);
         transition: transform 0.4s ease;
     }
-    
+
     .gallery-page__card:hover .gallery-card-info {
         transform: translateY(0);
     }
-    
+
     .gallery-card-info h4 {
         color: var(--gotur-white, #fff);
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 5px;
     }
-    
+
     .gallery-card-info p {
         color: rgba(255,255,255,0.8);
         font-size: 13px;
         margin: 0;
     }
-    
+
     /* Lightbox Customization */
     .mfp-figure figure {
         margin: 0;
     }
-    
+
     .mfp-title {
         font-size: 14px;
         text-align: center;
         padding: 10px 0;
     }
-    
+
     /* Masonry Layout Enhancement */
     .masonry-layout {
         position: relative;
     }
-    
+
     /* Load More Button */
     .load-more-wrapper {
         text-align: center;
         margin-top: 60px;
     }
-    
+
     .load-more-btn {
         display: inline-flex;
         align-items: center;
@@ -211,22 +211,22 @@
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .load-more-btn i {
         transition: transform 0.3s ease;
     }
-    
+
     .load-more-btn:hover {
         background: var(--gotur-base, #63AB45);
         color: var(--gotur-white, #fff);
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(99, 171, 69, 0.3);
     }
-    
+
     .load-more-btn:hover i {
         transform: translateX(5px);
     }
-    
+
     /* Empty State */
     .gallery-empty {
         text-align: center;
@@ -234,62 +234,62 @@
         background: var(--gotur-gray, #F3F8F6);
         border-radius: 20px;
     }
-    
+
     .gallery-empty i {
         font-size: 64px;
         color: var(--gotur-base, #63AB45);
         margin-bottom: 20px;
         display: block;
     }
-    
+
     .gallery-empty h3 {
         font-size: 24px;
         margin-bottom: 10px;
     }
-    
+
     .gallery-empty p {
         color: var(--gotur-text, #595959);
     }
-    
+
     /* Responsive Adjustments */
     @media (max-width: 1199px) {
         .gallery-page__card img {
             height: 280px;
         }
     }
-    
+
     @media (max-width: 768px) {
         .filter-btn {
             padding: 6px 18px;
             font-size: 13px;
         }
-        
+
         .gallery-page__card img {
             height: 240px;
         }
-        
+
         .load-more-btn {
             padding: 12px 28px;
             font-size: 14px;
         }
     }
-    
+
     @media (max-width: 576px) {
         .gallery-filter {
             margin-bottom: 30px;
         }
-        
+
         .filter-btn {
             padding: 5px 14px;
             font-size: 12px;
             margin: 3px;
         }
-        
+
         .gallery-page__card img {
             height: 200px;
         }
     }
-    
+
     /* Animation for Gallery Items */
     @keyframes fadeInUp {
         from {
@@ -301,12 +301,12 @@
             transform: translateY(0);
         }
     }
-    
+
     .gallery-page__card {
         animation: fadeInUp 0.6s ease forwards;
         opacity: 0;
     }
-    
+
     .gallery-page__card:nth-child(1) { animation-delay: 0.1s; }
     .gallery-page__card:nth-child(2) { animation-delay: 0.2s; }
     .gallery-page__card:nth-child(3) { animation-delay: 0.3s; }
@@ -329,17 +329,13 @@
         <div class="container">
             <div class="page-header__content">
                 <h2 class="page-header__title bw-split-in-right">Our Gallery</h2>
-                <ul class="gotur-breadcrumb list-unstyled">
-                    <li><a href="{{route('home')}}">Home</a></li>
-                    <li><span>Our Gallery</span></li>
-                </ul>
             </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    <section class="gallery-page section-space">
-        <div class="container">
+    <section class="gallery-page section-space" >
+        <div class="container" style="margin-top: -100px;">
             <!-- Filter Buttons (Optional - Add categories if you have them) -->
             <div class="gallery-filter wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
                 <button class="filter-btn active" data-filter="all">
@@ -359,7 +355,7 @@
                     </button>
                 @endforeach
             </div>
-            
+
             <!-- Gallery Grid -->
             @if(count($data) > 0)
                 <div class="row masonry-layout gutter-y-30 gutter-x-30" id="galleryGrid">
@@ -367,14 +363,14 @@
                         <div class="col-md-6 col-lg-4 gallery-item" data-category="{{ isset($d->category) ? strtolower(str_replace(' ', '-', $d->category)) : 'all' }}">
                             <div class="gallery-page__card wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="{{ 200 + ($index * 100) }}ms">
                                 <img src="{{asset('storage/gallery/'.$d->img_name)}}" alt="{{$d->title ?? 'Gallery Image'}}">
-                                
-                            
+
+
                             </div>
                         </div>
                     @endforeach
                 </div>
-                
-               
+
+
             @else
                 <!-- Empty State -->
                 <div class="gallery-empty wow fadeInUp" data-wow-duration="1500ms">
@@ -396,16 +392,16 @@
         // Filter functionality
         const filterBtns = document.querySelectorAll('.filter-btn');
         const galleryItems = document.querySelectorAll('.gallery-item');
-        
+
         if (filterBtns.length > 0 && galleryItems.length > 0) {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     // Update active state
                     filterBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    
+
                     const filterValue = this.getAttribute('data-filter');
-                    
+
                     // Filter items with animation
                     galleryItems.forEach((item, index) => {
                         if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
@@ -422,7 +418,7 @@
                 });
             });
         }
-        
+
         // Lightbox/Gallery Popup
         if (typeof $.fn.magnificPopup !== 'undefined') {
             $('.img-popup').magnificPopup({
@@ -448,20 +444,20 @@
                 }
             });
         }
-        
-       
+
+
         // Add hover effect enhancement
         const galleryCards = document.querySelectorAll('.gallery-page__card');
         galleryCards.forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-10px)';
             });
-            
+
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0)';
             });
         });
-        
+
         // Lazy loading for images (optional)
         if ('IntersectionObserver' in window) {
             const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -477,7 +473,7 @@
                     }
                 });
             });
-            
+
             document.querySelectorAll('.gallery-page__card img').forEach(img => {
                 if (img.getAttribute('data-src')) {
                     imageObserver.observe(img);

@@ -14,8 +14,9 @@
                 </div><!-- /.page-header__content -->
             </div><!-- /.container -->
         </section><!-- /.page-header -->
-<section class="faq-page section-space tabs-box">
-            <div class="container">
+
+<section class="faq-page section-space tabs-box" style="margin-top: -120px;">
+
                 <div class="tabs-box">
                     <div class="row gutter-y-30">
                         <div class="col-lg-4">
@@ -66,7 +67,7 @@
                     </div><!-- /.row -->
                 </div><!-- /.tabs-box -->
 
-            </div><!-- /.container -->
+
         </section><!-- /.faq-page -->
 
 @endsection

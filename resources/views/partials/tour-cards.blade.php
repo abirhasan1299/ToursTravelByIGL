@@ -1,6 +1,6 @@
 @if(count($tours) > 0)
     @foreach($tours as $tour)
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-4 px-2 py-2">
             <div class="listing-card-four wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='100ms'>
                 <div class="listing-card-four__image">
                     <img src="{{asset('storage/package/'.$tour->cover_img)}}" alt="{{$tour->title}}">
@@ -39,7 +39,7 @@
                             <span class="listing-card-four__price__number">{{config('app.currency')." ".number_format($tour->amount)}}</span>
                         </div>
                         <a href="{{route('front.tour.detail', base64_encode($tour->id))}}" class="listing-card-four__btn gotur-btn">
-                            Book Now <span class="icon"><i class="icon-right"></i></span>
+                            Book <span class="icon"><i class="icon-right"></i></span>
                         </a>
                     </div>
                 </div>

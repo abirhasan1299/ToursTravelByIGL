@@ -46,6 +46,9 @@ class AuthController extends Controller
                 $this->Shutdown();
 
                 return redirect()->route('company.dashboard');
+            }elseif (Auth::user()->role==3)
+            {
+                return redirect()->route('front.login')->with('success',Auth::user()->name.' Logged In Successfully');
             }
 
         }
@@ -56,7 +59,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         session()->flush();
-        return redirect()->route('login');
+        return redirect()->route('home')->with('success','Logged Out Successfully');
     }
 
     public function Shutdown()
@@ -164,7 +167,8 @@ class AuthController extends Controller
             'useremail' => 'required|unique:users,email',
             'phone' => 'required|unique:users,phone',
             'password' => 'required',
-            'profilephoto' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'profilephoto' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'role'=>'required|in:user,company',
         ]);
 
         //check if User email is really exist or not
@@ -195,11 +199,21 @@ class AuthController extends Controller
         $user->email = $request->useremail;
         $user->password = Hash::make($request->password);
         $user->phone = $request->phone;
-        $user->role = 2;
-        $user->status = 'pending';
-        $user->company_id = random_int(100000, 999999);
-        $user->save();
 
+        if($request->role=='user')
+        {
+            $user->role = 3;
+            $user->status = 'active';
+
+        }elseif ($request->role=='company'){
+            $user->role = 2;
+            $user->status = 'pending';
+            $user->company_id = random_int(100000, 999999);
+        }else{
+            return redirect()->route('front.login')->with('error', 'Something Went Wrong');
+        }
+
+        $user->save();
 
         return redirect()->route('front.login')->with('success', 'Registration successfully done');
 

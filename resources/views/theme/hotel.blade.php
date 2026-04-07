@@ -1,8 +1,93 @@
-{{-- resources/views/hotels/index.blade.php --}}
 @extends('layout.theme')
 @section('title', 'Hotel List')
 @push('css')
     <style>
+        /* Make Select2 match other input fields */
+        .filter-group .select2-container {
+            width: 100% !important;
+        }
+
+        .filter-group .select2-container--default .select2-selection--single {
+            height: 48px;
+            padding: 0 15px;
+            border: 1px solid var(--gotur-border-color, #E5E5E5);
+            border-radius: 12px;
+            background: var(--gotur-white, #fff);
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-group .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 46px;
+            color: var(--gotur-text, #595959);
+            font-size: 14px;
+            padding-left: 0;
+        }
+
+        .filter-group .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: var(--gotur-text-muted, #999);
+        }
+
+        .filter-group .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 46px;
+            right: 12px;
+        }
+
+        .filter-group .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: var(--gotur-base, #63AB45) transparent transparent transparent;
+        }
+
+        .filter-group .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+            border-color: transparent transparent var(--gotur-base, #63AB45) transparent;
+        }
+
+        /* Focus state - match input focus */
+        .filter-group .select2-container--default.select2-container--focus .select2-selection--single,
+        .filter-group .select2-container--default.select2-container--open .select2-selection--single {
+            border-color: var(--gotur-base, #63AB45);
+            box-shadow: 0 0 0 3px rgba(99, 171, 69, 0.1);
+            outline: none;
+        }
+
+        /* Hover state */
+        .filter-group .select2-container--default .select2-selection--single:hover {
+            border-color: var(--gotur-base, #63AB45);
+        }
+
+        /* Dropdown styling */
+        .select2-dropdown {
+            border: 1px solid var(--gotur-border-color, #E5E5E5);
+            border-radius: 12px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .select2-container--default .select2-results__option {
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: var(--gotur-base, #63AB45);
+            color: #fff;
+        }
+
+        .select2-container--default .select2-results__option[aria-selected="true"] {
+            background-color: var(--gotur-gray, #F3F8F6);
+            color: var(--gotur-base, #63AB45);
+        }
+
+        /* Search input inside dropdown */
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            border: 1px solid var(--gotur-border-color, #E5E5E5);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .select2-container--default .select2-search--dropdown .select2-search__field:focus {
+            border-color: var(--gotur-base, #63AB45);
+            outline: none;
+        }
         .listing-card-four {
             height: 100%;
             display: flex;
@@ -123,7 +208,16 @@
             transform: translateY(-2px);
         }
 
-        /* Filter Sidebar Styles */
+        /* Make the parent row align items start for sticky to work */
+        .row.gutter-y-30 {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: -15px;
+            margin-right: -15px;
+            align-items: flex-start;
+        }
+
+        /* Filter Sidebar Styles - Sticky */
         .filter-sidebar {
             background: var(--gotur-white, #fff);
             border-radius: 20px;
@@ -132,6 +226,13 @@
             border: 1px solid var(--gotur-border-color, #E5E5E5);
             position: sticky;
             top: 100px;
+            z-index: 10;
+        }
+
+        /* Ensure the filter column doesn't break sticky */
+        #filterSidebar {
+            position: relative;
+            height: 100%;
         }
 
         .filter-title {
@@ -303,12 +404,64 @@
             color: var(--gotur-base, #63AB45);
         }
 
+        /* Hotels Grid - 3 cards per row with scrollable container */
+        .hotels-grid-container {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        /* Custom scrollbar styling */
+        .hotels-grid-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .hotels-grid-container::-webkit-scrollbar-track {
+            background: var(--gotur-gray, #F3F8F6);
+            border-radius: 10px;
+        }
+
+        .hotels-grid-container::-webkit-scrollbar-thumb {
+            background: var(--gotur-base, #63AB45);
+            border-radius: 10px;
+        }
+
+        .hotels-grid-container::-webkit-scrollbar-thumb:hover {
+            background: var(--gotur-base2, #4f9234);
+        }
+
+        /* Firefox support */
+        .hotels-grid-container {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gotur-base, #63AB45) var(--gotur-gray, #F3F8F6);
+        }
+
+        /* Smooth scrolling */
+        .hotels-grid-container {
+            scroll-behavior: smooth;
+        }
+
+        /* Hotel card item - 3 per row */
+        .hotel-card-item {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-bottom: 30px;
+        }
+
         /* No Results */
         .no-results {
             text-align: center;
             padding: 60px 20px;
             background: var(--gotur-gray, #F3F8F6);
             border-radius: 20px;
+            width: 100%;
         }
 
         .no-results i {
@@ -370,6 +523,33 @@
             margin-bottom: 20px;
         }
 
+        /* Responsive Design */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .hotel-card-item {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .col-lg-4 {
+                width: 33.333333%;
+            }
+
+            .col-lg-8 {
+                width: 66.666667%;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hotel-card-item {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .col-lg-4, .col-lg-8 {
+                width: 100%;
+            }
+        }
+
         @media (max-width: 991px) {
             .filter-sidebar {
                 position: fixed;
@@ -387,6 +567,7 @@
 
             .filter-sidebar.active {
                 left: 0;
+                position: fixed;
             }
 
             .filter-overlay {
@@ -421,6 +602,11 @@
                 cursor: pointer;
                 color: var(--gotur-text, #595959);
             }
+
+            .hotels-grid-container {
+                max-height: none;
+                overflow-y: visible;
+            }
         }
     </style>
 @endpush
@@ -429,7 +615,7 @@
     <!-- Filter Overlay for Mobile -->
     <div class="filter-overlay" id="filterOverlay"></div>
 
-    <section class="tour-listing-page section-space">
+    <section class="tour-listing-page section-space" style="margin-top:-100px; padding-top: 100px;">
         <div class="container">
             <!-- Mobile Filter Toggle -->
             <div class="filter-toggle">
@@ -440,9 +626,9 @@
 
             <div class="row gutter-y-30">
                 <!-- Filter Sidebar -->
-                <div class="col-lg-4" id="filterSidebar">
+                <div class="col-lg-3" id="filterSidebar">
                     <div class="filter-sidebar">
-                        <button class="filter-close d-lg-none" id="closeFilterBtn" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px;">&times;</button>
+
                         <h4 class="filter-title">
                             <i class="fas fa-sliders-h"></i> Filter Hotels
                         </h4>
@@ -450,7 +636,7 @@
                         <!-- Search by Name -->
                         <div class="filter-group">
                             <label><i class="fas fa-hotel"></i> Search Hotel</label>
-                            <input type="text" id="searchInput" placeholder="Search by hotel name..." autocomplete="off">
+                            <input type="text" id="searchInput" placeholder="Search by hotel name..." autocomplete="off" value="{{ request('search') }}">
                         </div>
 
                         <!-- Location Filter -->
@@ -462,7 +648,7 @@
                                     $locations = $hotels->pluck('location')->unique();
                                 @endphp
                                 @foreach($locations as $location)
-                                    <option value="{{ $location }}">{{ $location }}</option>
+                                    <option value="{{ $location }}" {{ request('location') == $location ? 'selected' : '' }}>{{ $location }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -476,7 +662,7 @@
                                     $addresses = $hotels->pluck('address')->unique();
                                 @endphp
                                 @foreach($addresses as $address)
-                                    <option value="{{ $address }}">{{ Str::limit($address, 40) }}</option>
+                                    <option value="{{ $address }}" {{ request('address') == $address ? 'selected' : '' }}>{{ Str::limit($address, 40) }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -486,12 +672,12 @@
                             <label><i class="fas fa-dollar-sign"></i> Price Range (per night)</label>
                             <div class="price-range">
                                 <div class="price-range-slider">
-                                    <input type="range" id="priceMin" min="0" max="{{ $maxPrice ?? 50000 }}" value="0" step="500">
-                                    <input type="range" id="priceMax" min="0" max="{{ $maxPrice ?? 50000 }}" value="{{ $maxPrice ?? 50000 }}" step="500">
+                                    <input type="range" id="priceMin" min="0" max="{{ $maxPrice ?? 50000 }}" value="{{ request('min_price', 0) }}" step="500">
+                                    <input type="range" id="priceMax" min="0" max="{{ $maxPrice ?? 50000 }}" value="{{ request('max_price', $maxPrice ?? 50000) }}" step="500">
                                 </div>
                                 <div class="price-values">
-                                    <span>Min: {{config('app.currency', '$')}} <span id="minPriceValue">0</span></span>
-                                    <span>Max: {{config('app.currency', '$')}} <span id="maxPriceValue">{{ number_format($maxPrice ?? 50000) }}</span></span>
+                                    <span>Min: {{config('app.currency', '$')}} <span id="minPriceValue">{{ request('min_price', 0) }}</span></span>
+                                    <span>Max: {{config('app.currency', '$')}} <span id="maxPriceValue">{{ request('max_price', number_format($maxPrice ?? 50000)) }}</span></span>
                                 </div>
                             </div>
                         </div>
@@ -505,7 +691,7 @@
                 </div>
 
                 <!-- Results Column -->
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <!-- Results Count -->
                     <div class="results-count" id="resultsCount">
                         Showing <strong id="showingCount">{{ $hotels->count() }}</strong> hotels
@@ -514,8 +700,8 @@
                     <!-- Active Filters Display -->
                     <div class="active-filters" id="activeFilters"></div>
 
-                    <!-- Hotels Grid -->
-                    <div class="row gutter-y-30 align-items-stretch" id="hotelsGrid">
+                    <!-- Hotels Grid - Scrollable Container -->
+                    <div class="hotels-grid-container" id="hotelsGrid">
                         @include('partials.hotels-cards', ['hotels' => $hotels])
                     </div>
                 </div>
@@ -555,6 +741,9 @@
             const filterSidebar = document.getElementById('filterSidebar');
             const filterOverlay = document.getElementById('filterOverlay');
 
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+
             // Price Range Logic
             if (priceMinSlider && priceMaxSlider) {
                 function updatePriceRange() {
@@ -590,7 +779,7 @@
             }
 
             // Filter Hotels Function
-            async function filterHotels() {
+            async function filterHotels(updateUrl = true) {
                 loadingOverlay.classList.add('active');
 
                 const searchTerm = searchInput ? searchInput.value : '';
@@ -619,12 +808,30 @@
                         hotelsGrid.innerHTML = data.html;
                         resultsCountSpan.textContent = data.count;
                         updateActiveFilters(searchTerm, location, address, minPrice, maxPrice);
+
+                        if (updateUrl) {
+                            updateURLParameters(searchTerm, location, address, minPrice, maxPrice);
+                        }
                     }
                 } catch (error) {
                     console.error('Error filtering hotels:', error);
                 } finally {
                     loadingOverlay.classList.remove('active');
                 }
+            }
+
+            // Update URL with current filter parameters
+            function updateURLParameters(search, location, address, minPrice, maxPrice) {
+                const params = new URLSearchParams();
+
+                if (search) params.set('search', search);
+                if (location) params.set('location', location);
+                if (address) params.set('address', address);
+                if (minPrice > 0) params.set('min_price', minPrice);
+                if (maxPrice < (priceMaxSlider?.max || 50000)) params.set('max_price', maxPrice);
+
+                const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                window.history.pushState({}, '', newUrl);
             }
 
             // Update Active Filters Display
@@ -695,14 +902,19 @@
                 if (priceMinSlider) priceMinSlider.value = 0;
                 if (priceMaxSlider) priceMaxSlider.value = priceMaxSlider.max;
                 updatePriceRange();
+
+                // Clear URL parameters
+                const newUrl = window.location.pathname;
+                window.history.pushState({}, '', newUrl);
+
                 filterHotels();
             }
 
             // Event Listeners
-            if (applyFilterBtn) applyFilterBtn.addEventListener('click', filterHotels);
+            if (applyFilterBtn) applyFilterBtn.addEventListener('click', () => filterHotels(true));
             if (resetFilterBtn) resetFilterBtn.addEventListener('click', resetFilters);
             if (searchInput) searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') filterHotels();
+                if (e.key === 'Enter') filterHotels(true);
             });
 
             // Mobile Filter Toggle
@@ -728,11 +940,29 @@
                 });
             }
 
-            // Initialize with any existing filters from URL
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('search')) {
-                if (searchInput) searchInput.value = urlParams.get('search');
-                filterHotels();
+            // Auto-apply filters from URL parameters on page load
+            if (urlParams.toString()) {
+                if (urlParams.has('search') && searchInput) {
+                    searchInput.value = urlParams.get('search');
+                }
+                if (urlParams.has('location') && locationFilter) {
+                    locationFilter.value = urlParams.get('location');
+                }
+                if (urlParams.has('address') && addressFilter) {
+                    addressFilter.value = urlParams.get('address');
+                }
+                if (urlParams.has('min_price') && priceMinSlider) {
+                    priceMinSlider.value = urlParams.get('min_price');
+                }
+                if (urlParams.has('max_price') && priceMaxSlider) {
+                    priceMaxSlider.value = urlParams.get('max_price');
+                }
+
+                updatePriceRange();
+
+                setTimeout(() => {
+                    filterHotels(false);
+                }, 500);
             }
         });
     </script>
@@ -756,17 +986,19 @@
             });
         </script>
     @endif
+
     <script>
         $(document).ready(function() {
             $('#locationFilter').select2({
-                placeholder: "Select Location ",
-                allowClear: true
+                placeholder: "Select Location",
+                allowClear: true,
+                width: '100%'
             });
             $('#addressFilter').select2({
                 placeholder: "Select Address",
-                allowClear: true
+                allowClear: true,
+                width: '100%'
             });
-
         });
     </script>
 @endpush
