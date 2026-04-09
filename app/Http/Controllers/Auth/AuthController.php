@@ -102,10 +102,11 @@ class AuthController extends Controller
                 return redirect()->route('login')->with('error','Two Many OTP Request, Try again after '.$seconds.' second(s)');
             }
 
-            RateLimiter::hit($key,240); // (4 Min ===240 seconds)
+
+            RateLimiter::hit($key,240);   // (4 Min ===240 seconds)
 
             $otp = random_int(100000,999999);
-            $message="Password Reset  OTP: ".$otp." \n(IGL Tour)";
+            $message="Password Reset  OTP: ".$otp." \n (IGL Tour)";
 
             sendOtp($user->phone,$message);
 

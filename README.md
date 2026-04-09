@@ -1,59 +1,232 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+  <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+  <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<h1 align="center">🌍 WanderWise Travel Platform</h1>
+<h3 align="center">Enterprise-Grade Tour & Travel Management System</h3>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-2.0.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/PHP-8.2+-purple" alt="PHP Version">
+  <img src="https://img.shields.io/badge/Laravel-11.x-red" alt="Laravel Version">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✈️ About WanderWise
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+WanderWise is a comprehensive, enterprise-ready travel and tourism platform built on Laravel. Designed for travel agencies, tour operators, and hospitality businesses, it provides a seamless experience for both administrators and travelers—from browsing destinations to booking complete travel packages with integrated payment processing.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🎯 Why WanderWise?
 
-## Laravel Sponsors
+Traditional travel booking systems are often rigid, expensive, and disconnected. WanderWise solves this by offering:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Unified Dashboard** — Manage tours, bookings, customers, and analytics from a single interface
+- **Seamless Booking Experience** — Multi-step booking wizard with real-time availability
+- **Smart Pricing Engine** — Dynamic pricing based on seasons, group sizes, and promotions
+- **Integrated Payment Gateway** — Support for Stripe, PayPal, and bank transfers
+- **Multi-language & Multi-currency** — Ready for global operations
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🧭 Core Features
 
-## Contributing
+### For Travelers
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Feature | Description |
+|---------|-------------|
+| 🔍 **Advanced Search** | Filter tours by destination, date, price, duration, and category |
+| 📅 **Real-time Availability** | Check live availability before booking |
+| 💳 **Secure Checkout** | Multiple payment options with SSL encryption |
+| 👤 **Customer Dashboard** | View booking history, invoices, and travel documents |
+| ⭐ **Reviews & Ratings** | Share experiences and read authentic traveler reviews |
+| 📱 **Mobile Optimized** | Fully responsive design for booking on any device |
 
-## Code of Conduct
+### For Administrators
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Feature | Description |
+|---------|-------------|
+| 📊 **Analytics Dashboard** | Real-time revenue, bookings, and customer insights |
+| 🗺️ **Tour Management** | Create and manage unlimited tours with detailed itineraries |
+| 📆 **Booking Management** | Full CRUD operations with status tracking and email notifications |
+| 💰 **Pricing Configuration** | Set base prices, seasonal rates, group discounts, and promo codes |
+| 👥 **User Management** | Role-based access control (Admin, Agent, Customer) |
+| 📧 **Automated Emails** | Booking confirmations, reminders, and follow-up sequences |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🛠️ Technology Stack
 
-## License
+| Layer | Technologies |
+|-------|-------------|
+| **Backend** | Laravel 11.x, PHP 8.2+, MySQL 8.0 |
+| **Frontend** | Blade Templates, Alpine.js, Tailwind CSS, Livewire |
+| **Real-time** | Laravel Reverb, Pusher |
+| **Payments** | Stripe SDK, PayPal REST API |
+| **Queue & Jobs** | Redis, Laravel Horizon |
+| **Caching** | Redis, Laravel Cache |
+| **Search** | Laravel Scout, Meilisearch |
+| **File Storage** | Laravel Flysystem, AWS S3 |
+| **Testing** | Pest PHP, Laravel Dusk |
+| **Monitoring** | Laravel Telescope, Sentry |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- PHP >= 8.2
+- Composer 2.x
+- MySQL 8.0+ / MariaDB 10.6+
+- Node.js 18+ & NPM
+- Redis (optional, for caching & queues)
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/wanderwise-travel.git
+cd wanderwise-travel
+
+# Install PHP dependencies
+composer install
+
+# Install and compile frontend assets
+npm install && npm run build
+
+# Configure environment
+cp .env.example .env
+php artisan key:generate
+
+# Configure your database in .env, then:
+php artisan migrate --seed
+
+# Link storage for media files
+php artisan storage:link
+
+# Start the development server
+php artisan serve
+
+
+# Build and start containers
+docker-compose up -d
+
+# Run migrations
+docker-compose exec app php artisan migrate --seed
+
+# Application
+APP_NAME="WanderWise Travel"
+APP_URL=https://yourdomain.com
+
+# Database
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=wanderwise
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Mail (SMTP)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailgun.org
+MAIL_PORT=587
+MAIL_USERNAME=postmaster@yourdomain.com
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+
+# Payment Gateways
+STRIPE_KEY=pk_live_xxxxxxxxxxxx
+STRIPE_SECRET=sk_live_xxxxxxxxxxxx
+PAYPAL_CLIENT_ID=xxxxxxxxxxxx
+PAYPAL_SECRET=xxxxxxxxxxxx
+
+# Redis (for caching & queues)
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+# Scout Search Driver
+SCOUT_DRIVER=meilisearch
+MEILISEARCH_HOST=http://127.0.0.1:7700
+MEILISEARCH_KEY=masterKey
+
+
+app/
+├── Console/
+│   └── Commands/
+│       ├── SendBookingReminders.php
+│       └── UpdateTourAvailability.php
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/
+│   │   │   ├── DashboardController.php
+│   │   │   ├── TourController.php
+│   │   │   └── BookingController.php
+│   │   ├── Frontend/
+│   │   │   ├── HomeController.php
+│   │   │   ├── TourController.php
+│   │   │   └── CheckoutController.php
+│   │   └── Api/
+│   │       └── V1/
+│   ├── Middleware/
+│   └── Requests/
+├── Models/
+│   ├── Tour.php
+│   ├── Booking.php
+│   ├── Customer.php
+│   ├── Destination.php
+│   └── Payment.php
+├── Services/
+│   ├── PaymentGateway.php
+│   ├── PricingEngine.php
+│   └── AvailabilityChecker.php
+└── Mail/
+    ├── BookingConfirmation.php
+    └── PaymentReceipt.php
+
+database/
+├── migrations/
+├── seeders/
+│   ├── TourSeeder.php
+│   └── DestinationSeeder.php
+└── factories/
+
+resources/
+├── views/
+│   ├── frontend/
+│   │   ├── tours/
+│   │   ├── checkout/
+│   │   └── dashboard/
+│   ├── admin/
+│   └── components/
+└── js/
+    ├── Components/
+    └── Pages/
+
+routes/
+├── web.php          # Public & authenticated web routes
+├── admin.php        # Admin panel routes
+├── api.php          # REST API endpoints
+└── channels.php     # Broadcasting channels
+
+
+# Run all tests
+php artisan test
+
+# Run specific test suites
+php artisan test --testsuite=Feature
+php artisan test --testsuite=Unit
+
+# Run tests in parallel
+php artisan test --parallel
+
+# Generate code coverage report
+php artisan test --coverage-html coverage/

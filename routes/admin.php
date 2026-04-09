@@ -6,6 +6,7 @@ use App\Http\Controllers\Root\FacilityController;
 use App\Http\Controllers\Root\FaqController;
 use App\Http\Controllers\Root\GalleryController;
 use App\Http\Controllers\Root\PostController;
+use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
@@ -14,6 +15,20 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
+/*
+    |--------------------------------------------------------------------------
+    | SEO Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('seo',[SeoController::class,'index'])->name('seo.index');
+Route::post('seo/store',[SeoController::class,'store'])->name('seo.store');
+Route::get('seo/edit/{id}',[SeoController::class,'edit'])->name('seo.edit');
+Route::put('seo/update/{id}',[SeoController::class,'update'])->name('seo.update');
+Route::delete('seo/destroy/{id}',[SeoController::class,'destroy'])->name('seo.destroy');
+
 
 
 /*

@@ -48,24 +48,24 @@
         <div class="container-fluid topbar-menu">
             <div class="d-flex align-items-center gap-2">
                 <!-- Topbar Brand Logo -->
-                <div class="logo-topbar">
+                <div class="logo-topbar" >
                     <!-- Logo light -->
                     <a href="#" class="logo-light">
                                 <span class="logo-lg">
-                                    <img src="{{ asset('assets/images/igl.png') }}" alt="logo" />
+                                    <img  src="{{ asset('assets/images/igl.png') }}" alt="logo" />
                                 </span>
                         <span class="logo-sm">
-                                    <img src="{{ asset('assets/images/igl.png') }}" alt="small logo" />
+                                    <img  src="{{ asset('assets/images/igl.png') }}" alt="small logo" />
                                 </span>
                     </a>
 
                     <!-- Logo Dark -->
                     <a href="#" class="logo-dark">
                                 <span class="logo-lg">
-                                    <img src="{{ asset('assets/images/igl.png') }}" alt="dark logo" />
+                                    <img  src="{{ asset('assets/images/igl.png') }}" alt="dark logo" />
                                 </span>
                         <span class="logo-sm">
-                                    <img src="{{ asset('assets/images/igl.png') }}" alt="small logo" />
+                                    <img  src="{{ asset('assets/images/igl.png') }}" alt="small logo" />
                                 </span>
                     </a>
                 </div>
@@ -506,6 +506,12 @@
                             <a href="{{route('admin.faqs')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-message-question"></i></span>
                                 <span class="menu-text" data-lang="dashboards">FAQ</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.seo.index')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-search"></i></span>
+                                <span class="menu-text" data-lang="dashboards">SEO</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
@@ -1216,6 +1222,12 @@
 <script src="{{asset('assets/plugins/select2/select2.min.js')}}"></script>
 
 <script src="{{asset('assets/js/pages/form-select2.js')}}"></script>
+
+
+<!-- Choices Demo Js-->
+<script src="{{asset('assets/js/pages/form-choice.js')}}"></script>
+
+
 @stack('js')
 </body>
 </html>

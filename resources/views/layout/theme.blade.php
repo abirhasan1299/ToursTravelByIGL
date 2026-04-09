@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="IGL TOUR">
-    <meta name="description" content="IGL TOUR LTD">
+
+    <!-- Basic SEO -->
+    <meta name="description" content="@yield('meta_description', 'Default description')">
+    <meta name="keywords" content="@yield('meta_keywords', 'default, keywords')">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+
+    <!-- Favicon -->
+    <link rel="icon" href="@yield('favicon', asset('favicon.ico'))" type="image/x-icon">
+
+    <!-- Open Graph (Facebook) -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'Default Title')">
+    <meta property="og:description" content="@yield('meta_description', 'Default description')">
+    <meta property="og:image" content="@yield('meta_image', asset('default.jpg'))">
+
+    <!-- Optional image details -->
+    <meta property="og:image:width" content="@yield('og_width', '1200')">
+    <meta property="og:image:height" content="@yield('og_height', '630')">
+
+    <!-- Twitter SEO -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Default Title')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Default description')">
+    <meta name="twitter:image" content="@yield('meta_image', asset('default.jpg'))">
+
     <title>@yield('title')</title>
 
     <!-- favicons Icons -->
