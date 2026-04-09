@@ -9,8 +9,8 @@
 @section('og_type', $seo->og_type??"")
 @section('og_title', $seo->og_title??"")
 @section('og_description', $seo->og_description??"")
-@section('og_width', $seo->og_width??"")
-@section('og_height', $seo->og_height??"")
+@section('og_width', $seo->og_width??"1200")
+@section('og_height', $seo->og_height??"630")
 @section('meta_image', asset('storage/'.$seo->og_image??asset('assets/images/igl.png')))
 
 @section('twitter_title', $seo->twitter_title??"")
