@@ -8,6 +8,7 @@ use App\Http\Controllers\UserBooking;
 use App\Models\About;
 use App\Models\Hotel;
 use App\Models\Package;
+use App\Models\Seo;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('bot')->group(function () {
@@ -15,7 +16,7 @@ Route::middleware('bot')->group(function () {
     Route::get('/', function () {
 
         $about = About::where('id',1)->first();
-
+        $seo = Seo::where('page_name','/')->first();
         $startLocations = Package::select('start_location','end_location')
                         ->distinct()
                         ->get();
@@ -26,7 +27,7 @@ Route::middleware('bot')->group(function () {
         $hotelLocations = Hotel::distinct()->pluck('location')->toArray();
 
 
-        return view('theme.index',compact('about','startLocations','tourTypes','hotelLocations'));
+        return view('theme.index',compact('about','startLocations','tourTypes','hotelLocations','seo'));
 
     })->name('home');
 

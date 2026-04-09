@@ -175,6 +175,7 @@ class SeoController extends Controller
                 'action' => $route->getActionName(),
             ];
         }
+
         return $routeData;
     }
 

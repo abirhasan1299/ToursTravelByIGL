@@ -13,6 +13,7 @@ use App\Models\HotelBooking;
 use App\Models\IpBlock;
 use App\Models\Package;
 use App\Models\Contact;
+use App\Models\Seo;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,14 +25,17 @@ class CommonController extends Controller
     public function hotel()
     {
         $hotels = Hotel::with('images')->inRandomOrder()->get();
+        $seo = Seo::where('page_name','hotels')->first();
 
-        return view('theme.hotel',compact('hotels'));
+        return view('theme.hotel',compact('hotels','seo'));
     }
 
     public function destination()
     {
         $data = Destination::with('images')->inRandomOrder()->get();
-        return view('theme.destination',compact('data'));
+        $seo = Seo::where('page_name','destination')->first();
+
+        return view('theme.destination',compact('data','seo'));
     }
     public function destinationDetail($id)
     {
@@ -157,7 +161,7 @@ class CommonController extends Controller
     public function TourList(Request $request)
     {
         $query = Package::where('status', 'active');
-
+        $seo = Seo::where('page_name','tour-list')->first();
         // Apply filters from URL parameters
 
         if ($request->filled('location')) {
@@ -202,7 +206,7 @@ class CommonController extends Controller
         // Get max price for the slider
         $maxPrice = Package::max('amount') ?? 50000;
 
-        return view('theme.tour-listing', compact('tours', 'maxPrice'));
+        return view('theme.tour-listing', compact('tours', 'maxPrice','seo'));
     }
 
     public function TourDetails($id)
@@ -226,12 +230,14 @@ class CommonController extends Controller
 
     public function Contact()
     {
-        return view('theme.contact');
+        $seo = Seo::where('page_name','contact')->first();
+        return view('theme.contact',compact('seo'));
     }
 
     public function Login()
     {
-        return view('theme.login');
+        $seo = Seo::where('page_name','login')->first();
+        return view('theme.login',compact('seo'));
     }
 
     public function Pricing()
@@ -243,7 +249,8 @@ class CommonController extends Controller
 
     public function About()
     {
-        return view('theme.about');
+        $seo = Seo::where('page_name','about-us')->first();
+        return view('theme.about',compact('seo'));
     }
 
 
@@ -270,13 +277,15 @@ class CommonController extends Controller
     public function Faq()
     {
         $data = Faq::where('status','active')->orderBy('id','desc')->get();
-        return view('theme.faq',compact('data'));
+        $seo = Seo::where('page_name','faq')->first();
+        return view('theme.faq',compact('data','seo'));
     }
 
     public function gallery()
     {
         $data = Gallery::all();
-        return view('theme.gallery',compact('data'));
+        $seo = Seo::where('page_name','gallery')->first();
+        return view('theme.gallery',compact('data','seo'));
     }
 
 

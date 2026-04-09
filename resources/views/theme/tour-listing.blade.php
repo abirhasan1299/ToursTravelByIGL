@@ -1,5 +1,22 @@
 @extends('layout.theme')
 @section('title', 'Tour List')
+
+@section('meta_description', $seo->description??"IGL Web Ltd")
+@section('meta_keywords', $seo->keywords??"")
+@section('meta_robots', $seo->robots??"")
+@section('favicon', asset('storage/'.$seo->icon??asset('assets/images/favicons/favicon-16x16.png')))
+
+@section('og_type', $seo->og_type??"")
+@section('og_title', $seo->og_title??"")
+@section('og_description', $seo->og_description??"")
+@section('og_width', $seo->og_width??"")
+@section('og_height', $seo->og_height??"")
+@section('meta_image', asset('storage/'.$seo->og_image??asset('assets/images/igl.png')))
+
+@section('twitter_title', $seo->twitter_title??"")
+@section('twitter_meta_description', $seo->twitter_description??"")
+@section('twitter_meta_image', asset('storage/'.$seo->twitter_image??asset('assets/images/igl.png')))
+
 @push('css')
     <style>
         /* Make tours grid scrollable */

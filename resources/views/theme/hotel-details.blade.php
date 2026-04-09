@@ -1,6 +1,24 @@
 {{-- resources/views/hotels/show.blade.php --}}
 @extends('layout.theme')
 @section('title', $hotel->name ?? 'Hotel Details')
+
+@section('meta_description', $hotel->description)
+@section('meta_image', asset('storage/'.$hotel->images[0]))
+@section('meta_robots', $seo->robots??'index, follow')
+
+@section('favicon', '')
+
+@section('og_type', 'website')
+@section('og_title', $hotel->name)
+@section('og_description', $hotel->description)
+@section('og_width', '1200')
+@section('og_height', '630')
+
+@section('twitter_title', $hotel->name)
+@section('twitter_meta_description', $hotel->description)
+@section('twitter_meta_image', $hotel->images[0])
+
+
 @push('css')
     <style>
         /* Modal Styles - Enhanced */

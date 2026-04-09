@@ -25,9 +25,9 @@
 
     <!-- Twitter SEO -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('title', 'Default Title')">
-    <meta name="twitter:description" content="@yield('meta_description', 'Default description')">
-    <meta name="twitter:image" content="@yield('meta_image', asset('default.jpg'))">
+    <meta name="twitter:title" content="@yield('twitter_title', 'Default Title')">
+    <meta name="twitter:description" content="@yield('twitter_meta_description', 'Default description')">
+    <meta name="twitter:image" content="@yield('twitter_meta_image', asset('default.jpg'))">
 
     <title>@yield('title')</title>
 
