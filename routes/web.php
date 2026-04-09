@@ -17,6 +17,7 @@ Route::middleware('bot')->group(function () {
 
         $about = About::where('id',1)->first();
         $seo = Seo::where('page_name','/')->first();
+
         $startLocations = Package::select('start_location','end_location')
                         ->distinct()
                         ->get();
@@ -24,10 +25,12 @@ Route::middleware('bot')->group(function () {
         $tourTypes = Package::select('tour_type')
                     ->distinct()
                     ->pluck('tour_type');
+
         $hotelLocations = Hotel::distinct()->pluck('location')->toArray();
 
+        $tours = Package::inRandomOrder()->limit(3)->get();
 
-        return view('theme.index',compact('about','startLocations','tourTypes','hotelLocations','seo'));
+        return view('theme.index',compact('about','startLocations','tourTypes','hotelLocations','seo','tours'));
 
     })->name('home');
 

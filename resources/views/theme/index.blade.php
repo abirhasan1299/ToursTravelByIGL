@@ -384,6 +384,392 @@
             .hero-stat { padding: 0 12px; }
         }
     </style>
+
+    <style>
+        /* Current Tours Section Styles */
+        .current-tours {
+            background: linear-gradient(180deg, #ffffff 0%, #f8faf7 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-tours::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="2" fill="%2363AB45" opacity="0.05"/><circle cx="90" cy="90" r="2" fill="%2363AB45" opacity="0.05"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Tour Card */
+        .tour-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(99, 171, 69, 0.08);
+        }
+
+        .tour-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(99, 171, 69, 0.12);
+            border-color: rgba(99, 171, 69, 0.2);
+        }
+
+        /* Tour Card Image */
+        .tour-card__image {
+            position: relative;
+            overflow: hidden;
+            padding-top: 70%;
+        }
+
+        .tour-card__img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .tour-card:hover .tour-card__img {
+            transform: scale(1.08);
+        }
+
+        /* Tour Type Badge */
+        .tour-card__badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #63AB45 0%, #4f9234 100%);
+            color: #ffffff;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(99, 171, 69, 0.3);
+            z-index: 2;
+            backdrop-filter: blur(4px);
+        }
+
+        .tour-card__badge i {
+            margin-right: 5px;
+            font-size: 11px;
+        }
+
+        /* Price Tag */
+        .tour-card__price {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 10px 18px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            z-index: 2;
+            border: 1px solid rgba(99, 171, 69, 0.15);
+        }
+
+        .tour-card__price-label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 2px;
+        }
+
+        .tour-card__price-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #63AB45;
+            line-height: 1;
+        }
+
+        .tour-card__price-per {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* Tour Card Content */
+        .tour-card__content {
+            padding: 24px 22px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Location */
+        .tour-card__location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tour-card__location i {
+            color: #63AB45;
+            font-size: 14px;
+        }
+
+        .tour-card__location span {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Title */
+        .tour-card__title {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 15px;
+        }
+
+        .tour-card__title a {
+            color: #1a1a1a;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .tour-card__title a:hover {
+            color: #63AB45;
+        }
+
+        /* Meta Info */
+        .tour-card__meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(99, 171, 69, 0.1);
+        }
+
+        .tour-card__meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tour-card__meta-item i {
+            color: #63AB45;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .tour-card__meta-item span {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .tour-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        /* Rating */
+        .tour-card__rating {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tour-card__rating .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .tour-card__rating .stars i {
+            color: #FFB800;
+            font-size: 12px;
+        }
+
+        .tour-card__rating .stars i.inactive {
+            color: #DDD;
+        }
+
+        .tour-card__rating .rating-text {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* View Details Button */
+        .tour-card__btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(99, 171, 69, 0.08);
+            color: #63AB45;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .tour-card__btn i {
+            font-size: 11px;
+            transition: transform 0.3s ease;
+        }
+
+        .tour-card__btn:hover {
+            background: #63AB45;
+            color: #ffffff;
+            border-color: #63AB45;
+            transform: translateX(2px);
+        }
+
+        .tour-card__btn:hover i {
+            transform: translateX(3px);
+        }
+
+        /* View All Button */
+        .gotur-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gotur-btn--primary {
+            background: linear-gradient(135deg, #63AB45 0%, #4f9234 100%);
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(99, 171, 69, 0.25);
+            border: none;
+        }
+
+        .gotur-btn--primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .gotur-btn--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 171, 69, 0.35);
+            color: #ffffff;
+        }
+
+        .gotur-btn--primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .gotur-btn--primary i {
+            transition: transform 0.3s ease;
+        }
+
+        .gotur-btn--primary:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Sec Title Enhancement */
+        .sec-title__tagline {
+            color: #63AB45;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .sec-title__title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .sec-title__title span {
+            color: #63AB45;
+            position: relative;
+            display: inline-block;
+        }
+
+        .sec-title__title span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(99, 171, 69, 0.15);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .current-tours {
+                padding-top: 50px;
+                padding-bottom: 50px;
+            }
+
+            .tour-card__content {
+                padding: 20px 18px 18px;
+            }
+
+            .tour-card__title {
+                font-size: 18px;
+            }
+
+            .tour-card__price {
+                padding: 8px 14px;
+            }
+
+            .tour-card__price-amount {
+                font-size: 20px;
+            }
+
+            .tour-card__footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .tour-card__btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tour-card__meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -541,6 +927,105 @@
                     <div class="hero-stat__num"><span class="counter" data-target="98">0</span><sup>%</sup></div>
                     <div class="hero-stat__lbl">Satisfaction</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Top Tours --}}
+    <section class="current-tours section-space" style="margin-top: 50px;">
+        <div class="container">
+            {{-- Section Header --}}
+            <div class="sec-title text-center wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
+                <h6 class="sec-title__tagline bw-split-in-right">Featured Tours</h6>
+                <h3 class="sec-title__title bw-split-in-left">
+                    Explore Our <span>Current</span> Tours
+                </h3>
+                <p class="sec-title__desc" style="max-width: 600px; margin: 15px auto 0; color: #666;">
+                    Discover handpicked adventures waiting for you. Book now and create unforgettable memories.
+                </p>
+            </div>
+
+            {{-- Tours Grid --}}
+            <div class="row gutter-y-30">
+                @forelse($tours ?? [] as $tour)
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="tour-card wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="{{ $loop->index * 100 + 300 }}ms">
+                            {{-- Image Wrapper --}}
+                            <div class="tour-card__image">
+                                <a href="{{ route('front.tour.detail', base64_encode($tour->id)) }}">
+                                    <img src="{{ asset('storage/package/' . ($tour->cover_img ?? 'defaults/tour-default.jpg')) }}"
+                                         alt="{{ $tour->title ?? 'Tour' }}"
+                                         class="tour-card__img">
+                                </a>
+
+                                {{-- Tour Type Badge --}}
+                                <span class="tour-card__badge">
+                                <i class="fas fa-tag"></i> {{ strtoupper($tour->tour_type) ?? 'Adventure' }}
+                            </span>
+
+                                {{-- Price Tag --}}
+                                <div class="tour-card__price">
+                                    <span class="tour-card__price-amount">BDT {{ number_format($tour->amount ?? 0) }}</span>
+                                    <span class="tour-card__price-per">/ person</span>
+                                </div>
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="tour-card__content">
+                                {{-- Location --}}
+                                <div class="tour-card__location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ $tour->start_location." to ".$tour->end_location }}</span>
+                                </div>
+
+                                {{-- Title --}}
+                                <h4 class="tour-card__title">
+                                    <a href="{{ route('front.tour.detail', base64_encode($tour->id)) }}">
+                                        {{ $tour->title ?? 'Amazing Tour Package' }}
+                                    </a>
+                                </h4>
+
+                                {{-- Meta Info --}}
+                                <div class="tour-card__meta">
+                                    <div class="tour-card__meta-item">
+                                        <i class="far fa-clock"></i>
+                                        <span>{{ $tour->day." Days, ".$tour->night." Night"}}</span>
+                                    </div>
+                                    <div class="tour-card__meta-item">
+                                        <i class="far fa-user"></i>
+                                        <span>{{ $tour->max_people ?? '10' }} People</span>
+                                    </div>
+                                </div>
+
+                                {{-- Rating & Button --}}
+                                <div class="tour-card__footer">
+                                    <div class="tour-card__rating">
+                                        <div class="stars">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <i class="fas fa-star{{ $i <= ($tour->rating ?? 5) ? '' : ' inactive' }}"></i>
+                                            @endfor
+                                        </div>
+                                        <span class="rating-text">({{ $tour->reviews_count ?? '24' }} reviews)</span>
+                                    </div>
+
+                                    <a href="{{ route('front.tour.detail', base64_encode($tour->id)) }}" class="tour-card__btn">
+                                        View Details <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <h4>No Tourse Exist</h4>
+                @endforelse
+            </div>
+
+            {{-- View All Button --}}
+            <div class="text-center mt-5 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="600ms">
+                <a href="{{ route('front.tour-list') }}" class="gotur-btn gotur-btn--primary">
+                    <span>View All Tours</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>

@@ -1,5 +1,22 @@
 @extends('layout.theme')
 @section('title', $tour->title ?? 'Tour Details')
+
+@section('meta_description', $tour->detail??"IGL Web Ltd")
+@section('meta_keywords', $seo->keywords??"")
+@section('meta_robots', $seo->robots??"")
+@section('favicon', asset('storage/'.$seo->icon??asset('assets/images/favicons/favicon-16x16.png')))
+
+@section('og_type', $seo->og_type??"")
+@section('og_title', $seo->og_title??"")
+@section('og_description', $seo->og_description??"")
+@section('og_width', $seo->og_width??"")
+@section('og_height', $seo->og_height??"")
+@section('meta_image', asset('storage/'.$seo->og_image??asset('assets/images/igl.png')))
+
+@section('twitter_title', $seo->twitter_title??"")
+@section('twitter_meta_description', $seo->twitter_description??"")
+@section('twitter_meta_image', asset('storage/'.$seo->twitter_image??asset('assets/images/igl.png')))
+
 @push('css')
 <style>
     /* Modal Styles - Enhanced */
@@ -377,20 +394,20 @@
             flex-direction: column;
             gap: 15px;
         }
-        
+
         .tour-listing-details__list ul,
         .tour-listing-details__amenities__inner ul {
             grid-template-columns: 1fr;
         }
-        
+
         .tour-listing-details__title {
             font-size: 24px;
         }
-        
+
         .tour-listing-details__info-area__info {
             flex-wrap: wrap;
         }
-        
+
         .tour-listing-details__info-area__info li {
             flex: calc(50% - 15px);
             min-width: 180px;
@@ -469,7 +486,7 @@
     </section>
 
     <!-- Tour Details Section -->
-    <section class="tour-listing-details section-space">
+    <section class="tour-listing-details section-space" style="margin-top: -80px">
         <div class="container">
             <!-- Destination Info -->
             <div class="tour-listing-details__destination wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
@@ -529,9 +546,9 @@
                         </div>
                         @if($tour->gallery_images)
                             @foreach(json_decode($tour->gallery_images, true) as $image)
-                                <div class="item">
+                                <div class="item" >
                                     <div class="destination-carousel__item">
-                                        <img src="{{asset('storage/package/'.$image)}}" alt="{{$tour->title}}">
+                                        <img style="height: 100px;" src="{{asset('storage/package/'.$image)}}" alt="{{$tour->title}}">
                                     </div>
                                 </div>
                             @endforeach
@@ -708,14 +725,14 @@
                 let qty = parseInt(qtyInput.value) || 0;
                 let total = qty * ticketPrice;
                 totalInput.value = total.toFixed(2);
-                
+
                 // Highlight effect
                 totalInput.style.backgroundColor = '#e8f5e9';
                 setTimeout(() => {
                     totalInput.style.backgroundColor = '';
                 }, 200);
             }
-            
+
             qtyInput.addEventListener('input', calculateTotal);
             if (qtyInput.value) calculateTotal();
         }
@@ -748,13 +765,13 @@
         });
 
         if (closeBtn) closeBtn.addEventListener('click', closeModal);
-        
+
         if (modalOverlay) {
             modalOverlay.addEventListener('click', function(e) {
                 if (e.target === modalOverlay) closeModal();
             });
         }
-        
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
                 closeModal();
