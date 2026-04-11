@@ -3,7 +3,8 @@
 @section('title', $hotel->name ?? 'Hotel Details')
 
 @section('meta_description', $hotel->description)
-@section('meta_image', asset('storage/'.$hotel->images[0]))
+
+@section('meta_image', asset('storage/'.$hotel->images[0]->cover_img??""))
 @section('meta_robots', $seo->robots??'index, follow')
 
 @section('favicon', '')
@@ -16,7 +17,7 @@
 
 @section('twitter_title', $hotel->name)
 @section('twitter_meta_description', $hotel->description)
-@section('twitter_meta_image', $hotel->images[0])
+@section('twitter_meta_image', $hotel->images[0]->cover_img??"")
 
 
 @push('css')

@@ -113,7 +113,7 @@
 
                                         @if($seo->icon)
                                             <div class="mt-2">
-                                                <img src="{{ asset('storage/' . $seo->icon) }}" alt="Favicon" class="border rounded p-1" width="32" height="32">
+                                                <img src="{{ asset($seo->icon)}}" alt="Favicon" class="border rounded p-1" width="32" height="32">
                                                 <div class="form-check mt-2">
                                                     <input type="checkbox" name="remove_icon" value="1" class="form-check-input" id="removeIcon">
                                                     <label class="form-check-label text-danger small" for="removeIcon">Remove current favicon</label>
@@ -156,7 +156,7 @@
                                         <input type="file" name="og_image" class="form-control" accept="image/*">
                                         @if($seo->og_image)
                                             <div class="mt-2">
-                                                <img src="{{ asset('storage/' . $seo->og_image) }}" alt="OG Image" class="border rounded" style="max-width:200px;">
+                                                <img src="{{ asset($seo->icon)}}" alt="OG Image" class="border rounded" style="max-width:200px;">
                                                 <div class="form-check mt-2">
                                                     <input type="checkbox" name="remove_og_image" value="1" class="form-check-input" id="removeOgImage">
                                                     <label class="form-check-label text-danger small" for="removeOgImage">Remove current image</label>
@@ -209,7 +209,7 @@
                                         <input type="file" name="twitter_image" class="form-control" accept="image/*">
                                         @if($seo->twitter_image)
                                             <div class="mt-2">
-                                                <img src="{{ asset('storage/' . $seo->twitter_image) }}" alt="Twitter Image" class="border rounded" style="max-width:200px;">
+                                                <img src="{{ asset($seo->icon)}}" alt="Twitter Image" class="border rounded" style="max-width:200px;">
                                                 <div class="form-check mt-2">
                                                     <input type="checkbox" name="remove_twitter_image" value="1" class="form-check-input" id="removeTwitterImage">
                                                     <label class="form-check-label text-danger small" for="removeTwitterImage">Remove current image</label>

@@ -116,47 +116,50 @@ class CommonController extends Controller
     }
 
     public function filterTours(Request $request)
-{
-    $query = Package::where('status','active')->query();
+    {
+        $query = Package::where('status', 'active');
 
-    if ($request->search) {
-        $query->where('title', 'like', '%' . $request->search . '%');
-    }
-
-    if ($request->location) {
-        $query->where('end_location', $request->location);
-    }
-
-    if ($request->tour_type) {
-        $query->where('tour_type', $request->tour_type);
-    }
-
-    if ($request->min_price) {
-        $query->where('amount', '>=', $request->min_price);
-    }
-
-    if ($request->max_price) {
-        $query->where('amount', '<=', $request->max_price);
-    }
-
-    if ($request->duration) {
-        if ($request->duration == '15+') {
-            $query->where('day', '>=', 15);
-        } else {
-            $range = explode('-', $request->duration);
-            $query->whereBetween('day', [$range[0], $range[1]]);
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
+
+        if ($request->filled('location')) {
+            $query->where('end_location', $request->location);
+        }
+
+        if ($request->filled('tour_type')) {
+            $query->where('tour_type', $request->tour_type);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('amount', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('amount', '<=', $request->max_price);
+        }
+
+        if ($request->filled('duration')) {
+            if ($request->duration == '15+') {
+                $query->where('day', '>=', 15);
+            } else {
+                $range = explode('-', $request->duration);
+                if (count($range) == 2) {
+                    $query->whereBetween('day', [(int)$range[0], (int)$range[1]]);
+                }
+            }
+        }
+
+        $tours = $query->latest()->get();
+
+        $html = view('partials.tour-cards', compact('tours'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'count' => $tours->count()
+        ]);
     }
-
-    $tours = $query->get();
-    $html = view('partials.tour-cards', compact('tours'))->render();
-
-    return response()->json([
-        'success' => true,
-        'html' => $html,
-        'count' => $tours->count()
-    ]);
-}
 
     public function TourList(Request $request)
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Root\BookingController;
 use App\Http\Controllers\Root\CompanyInfo;
 use App\Http\Controllers\Root\DestinationController;
 use App\Http\Controllers\Root\FacilityController;
@@ -15,6 +16,19 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
+/*
+    |--------------------------------------------------------------------------
+    | Booking Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('booking',[BookingController::class,'index'])->name('booking');
+
+Route::get('booking/data/{id}',[BookingController::class,'EditStatus'])->name('booking.info');
+
+Route::put('booking/update/{id}',[BookingController::class,'UpdateStatus'])->name('booking.update.status');
 
 /*
     |--------------------------------------------------------------------------
@@ -80,7 +94,7 @@ Route::post('/settings/store',[CompanyInfo::class,'StoreSetting'])->name('settin
 
 /*
     |--------------------------------------------------------------------------
-    | Comapany Routes
+    | Company Routes
     |--------------------------------------------------------------------------
     |
 */

@@ -682,11 +682,11 @@
                                             </div>
                                         </div>
                                         <div class="dropdown-items">
-                                            <a href="#" class="dropdown-item">
+                                            <a href="{{route('user.profile')}}" class="dropdown-item">
                                                 <i class="fas fa-user-circle"></i>
                                                 <span>My Profile</span>
                                             </a>
-                                            <a href="#" class="dropdown-item">
+                                            <a href="{{route('user.bookings')}}" class="dropdown-item">
                                                 <i class="fas fa-ticket-alt"></i>
                                                 <span>My Bookings</span>
                                             </a>

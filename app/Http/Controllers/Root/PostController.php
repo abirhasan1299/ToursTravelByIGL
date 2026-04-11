@@ -57,37 +57,39 @@ class PostController extends Controller
             'include' => 'required',
             'exclude' => 'required',
             'detail' => 'required',
-            'destination' => 'required',
+            'destination' => 'required|array',
             'cover_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-            if($request->hasFile('cover_img'))
-            {
-                $image = $request->file('cover_img');
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $image->storeAs('package', $imageName, 'public');
-            }
+        $imageName = null;
 
-            $model = new Package();
-            $model->title = $request->title;
-            $model->amount = $request->amount;
-            $model->day = $request->day;
-            $model->night = $request->night;
-            $model->tour_type = $request->tour_type;
-            $model->max_people = $request->max_people;
-            $model->start_location = $request->start_location;
-            $model->end_location = $request->end_location;
-            $model->include = $request->include;
-            $model->exclude = $request->exclude;
-            $model->detail = $request->detail;
-            $model->status = 'active';
-            $model->user_id = auth()->user()->id;
-            $model->cover_img = $imageName;
-            $model->subdestination = json_encode($request->destination);
-            $model->save();
+        if ($request->hasFile('cover_img')) {
+            $image = $request->file('cover_img');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('package', $imageName, 'public');
+        }
 
-            return redirect()->route('admin.post.index')->with('success','Package added successfully');
+        Package::create([
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'day' => $request->day,
+            'night' => $request->night,
+            'tour_type' => $request->tour_type,
+            'max_people' => $request->max_people,
+            'start_location' => $request->start_location,
+            'end_location' => $request->end_location,
+            'include' => $request->include,
+            'exclude' => $request->exclude,
+            'detail' => $request->detail,
+            'status' => 'active',
+            'user_id' => auth()->id(), // safer
+            'cover_img' => $imageName,
+            'subdestination' => json_encode($request->destination),
+        ]);
 
+        return redirect()
+            ->route('admin.post.index')
+            ->with('success', 'Package added successfully');
     }
 
     public function ActivateStatus($id)

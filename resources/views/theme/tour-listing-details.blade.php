@@ -1,24 +1,73 @@
 @extends('layout.theme')
 @section('title', $tour->title ?? 'Tour Details')
 
-@section('meta_description', $tour->detail??"IGL Web Ltd")
-@section('meta_keywords', $seo->keywords??"")
-@section('meta_robots', $seo->robots??"")
-@section('favicon', asset('storage/'.$seo->icon??asset('assets/images/favicons/favicon-16x16.png')))
-
-@section('og_type', $seo->og_type??"")
-@section('og_title', $seo->og_title??"")
-@section('og_description', $seo->og_description??"")
-@section('og_width', $seo->og_width??"1200")
-@section('og_height', $seo->og_height??"630")
-@section('meta_image', asset('storage/'.$seo->og_image??asset('assets/images/igl.png')))
-
-@section('twitter_title', $seo->twitter_title??"")
-@section('twitter_meta_description', $seo->twitter_description??"")
-@section('twitter_meta_image', asset('storage/'.$seo->twitter_image??asset('assets/images/igl.png')))
-
 @push('css')
 <style>
+    /* Carousel Image Height Fix */
+    .destination-carousel__item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        max-height: 500px; /* Adjust this value as needed */
+    }
+
+    .destination-carousel__item img {
+        width: 100%;
+        height: 500px; /* Fixed height */
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.5s ease;
+    }
+
+    .destination-carousel__item:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Owl Carousel Item Height */
+    .destination-carousel .owl-item .item {
+        height: 500px;
+    }
+
+    .destination-carousel__inner .item {
+        height: 500px;
+    }
+
+    /* Gallery image specific - remove inline height style */
+    .destination-carousel__inner .item .destination-carousel__item img[style*="height"] {
+        height: 500px !important;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .destination-carousel__item,
+        .destination-carousel__item img,
+        .destination-carousel .owl-item .item,
+        .destination-carousel__inner .item {
+            height: 400px;
+            max-height: 400px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .destination-carousel__item,
+        .destination-carousel__item img,
+        .destination-carousel .owl-item .item,
+        .destination-carousel__inner .item {
+            height: 300px;
+            max-height: 300px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .destination-carousel__item,
+        .destination-carousel__item img,
+        .destination-carousel .owl-item .item,
+        .destination-carousel__inner .item {
+            height: 250px;
+            max-height: 250px;
+        }
+    }
+
     /* Modal Styles - Enhanced */
     .modal-overlay {
         position: fixed;
@@ -424,7 +473,7 @@
                 <h2><i class="fas fa-calendar-check"></i> Book This Tour</h2>
                 <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
             </div>
-            <form method="post" class="booking-form" id="bookingForm" action="{{route('package.booking')}}">
+            <form method="post" class="booking-form" id="bookingForm" action="@guest {{route('package.booking')}} @endguest @auth {{route('package.booking.user')}} @endauth">
                 @csrf
                 <div class="form-row">
                     <div class="input-group">
@@ -442,24 +491,30 @@
                         <label><i class="fas fa-money-bill-wave"></i> Total (BDT)</label>
                         <input type="text" name="total" id="totalField" placeholder="0" disabled>
                     </div>
+                    @guest
                     <div class="input-group">
                         <label><i class="fas fa-user"></i> Full Name</label>
                         <input type="text" name="user_name" id="userNameField" placeholder="Enter your full name" required>
                     </div>
+                    @endguest
                 </div>
+                @guest
                 <div class="form-row">
+
                     <div class="input-group">
                         <label><i class="fas fa-envelope"></i> Email Address</label>
                         <input type="email" name="user_email" id="userEmailField" placeholder="your@email.com" required>
                     </div>
+
                     <div class="input-group">
                         <label><i class="fas fa-phone"></i> Phone Number</label>
                         <input type="tel" name="user_phone" id="userPhoneField" placeholder="+880XXXXXXXXX" required>
                     </div>
                 </div>
+                @endguest
                 <div class="input-group full-width">
                     <label><i class="fas fa-map-marker-alt"></i> Address</label>
-                    <input type="text" name="user_address" id="userAddressField" placeholder="Your full address" required>
+                    <input type="text" name="user_address" id="userAddressField" placeholder="Your full address" >
                 </div>
                 <hr>
                 <button type="submit" class="confirm-btn">
@@ -529,16 +584,16 @@
             <div class="tour-listing-details__carousel wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='400ms'>
                 <div class="destination-carousel">
                     <div class="destination-carousel__inner gotur-owl__carousel gotur-owl__carousel--basic-nav owl-carousel owl-theme" data-owl-options='{
-                        "items": 1,
-                        "margin": 30,
-                        "loop": true,
-                        "smartSpeed": 700,
-                        "nav": true,
-                        "navText": ["<span class=\"icon-arrow-left\"></span>","<span class=\"icon-arrow-right\"></span>"],
-                        "dots": false,
-                        "autoplay": true,
-                        "autoplayTimeout": 5000
-                    }'>
+            "items": 1,
+            "margin": 30,
+            "loop": true,
+            "smartSpeed": 700,
+            "nav": true,
+            "navText": ["<span class=\"icon-arrow-left\"></span>","<span class=\"icon-arrow-right\"></span>"],
+            "dots": false,
+            "autoplay": true,
+            "autoplayTimeout": 5000
+        }'>
                         <div class="item">
                             <div class="destination-carousel__item">
                                 <img src="{{asset('storage/package/'.$tour->cover_img)}}" alt="{{$tour->title}}">
@@ -546,9 +601,10 @@
                         </div>
                         @if($tour->gallery_images)
                             @foreach(json_decode($tour->gallery_images, true) as $image)
-                                <div class="item" >
+                                <div class="item">
                                     <div class="destination-carousel__item">
-                                        <img style="height: 100px;" src="{{asset('storage/package/'.$image)}}" alt="{{$tour->title}}">
+                                        {{-- Removed inline height style --}}
+                                        <img src="{{asset('storage/package/'.$image)}}" alt="{{$tour->title}}">
                                     </div>
                                 </div>
                             @endforeach

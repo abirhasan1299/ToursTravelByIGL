@@ -60,6 +60,9 @@ Route::middleware('bot')->group(function () {
 
     Route::post('package/verify/otp/check',[UserBooking::class,'OTP_Verify'])->name('package.otp.verify');
 
+    //========For login user=================
+    Route::post('package/store/users',[UserBooking::class,'bookingForUser'])->name('package.booking.user');
+
 //--------------------Auth Route----------------------------------------------------
     Route::get('auth/login',[AuthController::class,'AdminLogin'])->name('login');
 
@@ -77,6 +80,13 @@ Route::middleware('bot')->group(function () {
 
 
 //--------------------Frontend Routes------------------------------------------------
+
+    //=======User Routes=======================
+    Route::get('users/profile',[UserBooking::class,'profile'])->name('user.profile');
+    Route::get('users/bookings',[UserBooking::class,'userBookings'])->name('user.bookings');
+    Route::put('users/bookings/cancel/{id}',[UserBooking::class,'cancelBooking'])->name('user.booking.cancel');
+    Route::put('users/password/update',[UserBooking::class,'updatePassword'])->name('users.password.update');
+    Route::put('users/profile/update',[UserBooking::class,'updateProfile'])->name('user.profile.update');
 
     //=======Hotel Booking otp===================
 

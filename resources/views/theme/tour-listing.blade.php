@@ -4,21 +4,167 @@
 @section('meta_description', $seo->description??"IGL Web Ltd")
 @section('meta_keywords', $seo->keywords??"")
 @section('meta_robots', $seo->robots??"")
-@section('favicon', asset('storage/'.$seo->icon??asset('assets/images/favicons/favicon-16x16.png')))
+@section('favicon', asset($seo->icon)??asset('assets/images/favicons/favicon-16x16.png'))
 
 @section('og_type', $seo->og_type??"")
 @section('og_title', $seo->og_title??"")
 @section('og_description', $seo->og_description??"")
 @section('og_width', $seo->og_width??"")
 @section('og_height', $seo->og_height??"")
-@section('meta_image', asset('storage/'.$seo->og_image??asset('assets/images/igl.png')))
+@section('meta_image', asset($seo->og_image)??asset('assets/images/igl.png'))
 
 @section('twitter_title', $seo->twitter_title??"")
 @section('twitter_meta_description', $seo->twitter_description??"")
-@section('twitter_meta_image', asset('storage/'.$seo->twitter_image??asset('assets/images/igl.png')))
+@section('twitter_meta_image', asset($seo->twitter_image)??asset('assets/images/igl.png'))
 
 @push('css')
+    {{-- Select2 CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    {{-- noUiSlider CSS for dual handle range slider --}}
+    <link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" rel="stylesheet">
+
     <style>
+        .select2-container--default .select2-selection--single {
+            height: 48px !important;
+            border: 1px solid var(--gotur-border-color, #E5E5E5) !important;
+            border-radius: 12px !important;
+            background: var(--gotur-white, #fff) !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 48px !important;
+            padding-left: 15px !important;
+            color: #333 !important;  /* FIXED: Dark text color */
+            font-size: 14px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 48px !important;
+            right: 12px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: var(--gotur-base, #63AB45) transparent transparent transparent !important;
+        }
+
+        .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+            border-color: transparent transparent var(--gotur-base, #63AB45) transparent !important;
+        }
+
+        /* Placeholder color */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #888 !important;  /* FIXED: Placeholder color */
+        }
+
+        /* ============================================ */
+        /* DROPDOWN - Main Container */
+        /* ============================================ */
+        .select2-dropdown {
+            border: 1px solid var(--gotur-border-color, #E5E5E5) !important;
+            border-radius: 12px !important;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
+            background: #fff !important;  /* FIXED: White background */
+        }
+
+        /* ============================================ */
+        /* DROPDOWN OPTIONS - THIS IS THE KEY FIX */
+        /* ============================================ */
+        .select2-results__option {
+            padding: 10px 15px !important;
+            font-size: 14px !important;
+            color: #333 !important;  /* FIXED: Dark text color for all options */
+            background: #fff !important;  /* FIXED: White background */
+        }
+
+        /* Hover state */
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background: var(--gotur-base, #63AB45) !important;
+            color: #fff !important;  /* FIXED: White text on green background */
+        }
+
+        /* Selected state */
+        .select2-container--default .select2-results__option[aria-selected=true] {
+            background: rgba(99, 171, 69, 0.1) !important;
+            color: #333 !important;  /* FIXED: Dark text */
+        }
+
+        /* Disabled option */
+        .select2-container--default .select2-results__option[aria-disabled=true] {
+            color: #999 !important;  /* FIXED: Gray text for disabled */
+        }
+
+        /* ============================================ */
+        /* SEARCH BOX INSIDE DROPDOWN */
+        /* ============================================ */
+        .select2-search--dropdown {
+            padding: 10px !important;
+        }
+
+        .select2-search--dropdown .select2-search__field {
+            padding: 10px 15px !important;
+            border: 1px solid var(--gotur-border-color, #E5E5E5) !important;
+            border-radius: 8px !important;
+            background: #fff !important;  /* FIXED: White background */
+            color: #333 !important;  /* FIXED: Dark text */
+            font-size: 14px !important;
+        }
+
+        .select2-search--dropdown .select2-search__field:focus {
+            outline: none !important;
+            border-color: var(--gotur-base, #63AB45) !important;
+        }
+
+        .select2-search--dropdown .select2-search__field::placeholder {
+            color: #888 !important;  /* FIXED: Placeholder color */
+        }
+
+        /* ============================================ */
+        /* NO RESULTS MESSAGE */
+        /* ============================================ */
+        .select2-results__message {
+            color: #888 !important;  /* FIXED: Gray text */
+            padding: 10px 15px !important;
+            background: #fff !important;  /* FIXED: White background */
+        }
+
+        /* ============================================ */
+        /* LOADING INDICATOR */
+        /* ============================================ */
+        .select2-results__option.loading-results {
+            color: #888 !important;  /* FIXED: Gray text */
+        }
+
+        /* ============================================ */
+        /* SELECT2 CONTAINER WHEN OPEN */
+        /* ============================================ */
+        .select2-container--default.select2-container--open .select2-selection--single {
+            border-color: var(--gotur-base, #63AB45) !important;
+            box-shadow: 0 0 0 3px rgba(99, 171, 69, 0.1) !important;
+        }
+
+        /* ============================================ */
+        /* CLEAR BUTTON (X) */
+        /* ============================================ */
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            color: #888 !important;
+            margin-right: 25px !important;
+            font-size: 18px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__clear:hover {
+            color: #ff4444 !important;
+        }
+
+        /* ============================================ */
+        /* RESPONSIVE FIXES */
+        /* ============================================ */
+        @media (max-width: 768px) {
+            .select2-dropdown {
+                max-width: 90vw !important;
+            }
+        }
         /* Make tours grid scrollable */
         #toursGrid {
             max-height: 800px;
@@ -42,11 +188,11 @@
             border-radius: 10px;
         }
 
-
         /* Optional: Add smooth scrolling */
         #toursGrid {
             scroll-behavior: smooth;
         }
+
         /* Your existing CSS styles */
         .listing-card-four {
             height: 100%;
@@ -157,75 +303,135 @@
             box-shadow: 0 0 0 3px rgba(99, 171, 69, 0.1);
         }
 
-        /* Price Range Slider */
+        /* Select2 Custom Styling */
+        .select2-container--default .select2-selection--single {
+            height: 48px !important;
+            border: 1px solid var(--gotur-border-color, #E5E5E5) !important;
+            border-radius: 12px !important;
+            background: var(--gotur-white, #fff) !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 48px !important;
+            padding-left: 15px !important;
+            color: var(--gotur-text, #595959) !important;
+            font-size: 14px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 48px !important;
+            right: 12px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: var(--gotur-base, #63AB45) transparent transparent transparent !important;
+        }
+
+        .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+            border-color: transparent transparent var(--gotur-base, #63AB45) transparent !important;
+        }
+
+        .select2-dropdown {
+            border: 1px solid var(--gotur-border-color, #E5E5E5) !important;
+            border-radius: 12px !important;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .select2-results__option {
+            padding: 10px 15px !important;
+            font-size: 14px !important;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background: var(--gotur-base, #63AB45) !important;
+        }
+
+        .select2-container--default .select2-results__option[aria-selected=true] {
+            background: rgba(99, 171, 69, 0.1) !important;
+        }
+
+        .select2-search--dropdown .select2-search__field {
+            padding: 10px 15px !important;
+            border: 1px solid var(--gotur-border-color, #E5E5E5) !important;
+            border-radius: 8px !important;
+        }
+
+        .select2-search--dropdown .select2-search__field:focus {
+            outline: none !important;
+            border-color: var(--gotur-base, #63AB45) !important;
+        }
+
+        /* Price Range Slider - Single Range with Dual Handles */
         .price-range {
-            padding: 10px 0;
+            padding: 10px 0 5px;
         }
 
         .price-range-slider {
-            width: 100%;
-            margin: 20px 0;
+            margin: 25px 0 20px;
+            padding: 0 5px;
         }
 
-        .price-range-slider input {
-            width: 100%;
-            margin: 5px 0;
+        /* noUiSlider Custom Styling */
+        .noUi-target {
+            background: var(--gotur-gray, #F3F8F6) !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 6px !important;
+            border-radius: 10px !important;
+        }
+
+        .noUi-connect {
+            background: var(--gotur-base, #63AB45) !important;
+        }
+
+        .noUi-handle {
+            width: 22px !important;
+            height: 22px !important;
+            border-radius: 50% !important;
+            background: var(--gotur-base, #63AB45) !important;
+            border: 3px solid #fff !important;
+            box-shadow: 0 2px 8px rgba(99, 171, 69, 0.3) !important;
+            cursor: pointer !important;
+            top: -8px !important;
+            right: -11px !important;
+        }
+
+        .noUi-handle:before,
+        .noUi-handle:after {
+            display: none !important;
+        }
+
+        .noUi-handle:hover {
+            transform: scale(1.1);
+        }
+
+        .noUi-handle:focus {
+            outline: none !important;
+        }
+
+        .noUi-tooltip {
+            display: none !important;
         }
 
         .price-values {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 14px;
             color: var(--gotur-text, #595959);
         }
 
         .price-values span {
             background: var(--gotur-gray, #F3F8F6);
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 500;
         }
 
-        /* Checkbox & Radio Styles */
-        .checkbox-group,
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .checkbox-item,
-        .radio-item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .checkbox-item input,
-        .radio-item input {
-            width: auto;
-            margin-right: 10px;
-            cursor: pointer;
-            accent-color: var(--gotur-base, #63AB45);
-        }
-
-        .checkbox-item label,
-        .radio-item label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 400;
-            font-size: 14px;
-            color: var(--gotur-text, #595959);
-        }
-
-        .checkbox-item .count,
-        .radio-item .count {
-            margin-left: auto;
-            font-size: 12px;
-            color: var(--gotur-text, #595959);
-            background: var(--gotur-gray, #F3F8F6);
-            padding: 2px 8px;
-            border-radius: 20px;
+        .price-values span strong {
+            color: var(--gotur-base, #63AB45);
+            font-weight: 700;
         }
 
         /* Filter Actions */
@@ -494,10 +700,10 @@
                         <!-- Location Filter -->
                         <div class="filter-group">
                             <label><i class="fas fa-map-marker-alt"></i> Location</label>
-                            <select id="locationFilter">
+                            <select id="locationFilter" class="select2-filter">
                                 <option value="">All Locations</option>
                                 @php
-                                    $locations = $tours->pluck('end_location')->unique();
+                                    $locations = $tours->pluck('end_location')->unique()->filter()->values();
                                 @endphp
                                 @foreach($locations as $location)
                                     <option value="{{ $location }}" {{ request('location') == $location ? 'selected' : '' }}>{{ $location }}</option>
@@ -508,7 +714,7 @@
                         <!-- Tour Type Filter -->
                         <div class="filter-group">
                             <label><i class="fas fa-tag"></i> Tour Type</label>
-                            <select id="tourTypeFilter">
+                            <select id="tourTypeFilter" class="select2-filter">
                                 <option value="">All Types</option>
                                 <option value="adventure" {{ request('tour_type') == 'adventure' ? 'selected' : '' }}>Adventure</option>
                                 <option value="honeymoon" {{ request('tour_type') == 'honeymoon' ? 'selected' : '' }}>Honeymoon</option>
@@ -517,17 +723,14 @@
                             </select>
                         </div>
 
-                        <!-- Price Range Filter -->
+                        <!-- Price Range Filter - Single Range with Dual Handles -->
                         <div class="filter-group">
                             <label><i class="fas fa-dollar-sign"></i> Price Range</label>
                             <div class="price-range">
-                                <div class="price-range-slider">
-                                    <input type="range" id="priceMin" min="0" max="{{ $maxPrice ?? 50000 }}" value="{{ request('min_price', 0) }}" step="500">
-                                    <input type="range" id="priceMax" min="0" max="{{ $maxPrice ?? 50000 }}" value="{{ request('max_price', $maxPrice ?? 50000) }}" step="500">
-                                </div>
+                                <div class="price-range-slider" id="priceRangeSlider"></div>
                                 <div class="price-values">
-                                    <span>Min: {{config('app.currency')}} <span id="minPriceValue">{{ request('min_price', 0) }}</span></span>
-                                    <span>Max: {{config('app.currency')}} <span id="maxPriceValue">{{ request('max_price', number_format($maxPrice ?? 50000)) }}</span></span>
+                                    <span>Min: {{config('app.currency')}} <strong id="minPriceValue">{{ request('min_price', 0) }}</strong></span>
+                                    <span>Max: {{config('app.currency')}} <strong id="maxPriceValue">{{ request('max_price', number_format($maxPrice ?? 50000)) }}</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -535,7 +738,7 @@
                         <!-- Duration Filter -->
                         <div class="filter-group">
                             <label><i class="fas fa-clock"></i> Duration (Days)</label>
-                            <select id="durationFilter">
+                            <select id="durationFilter" class="select2-filter">
                                 <option value="">Any Duration</option>
                                 <option value="1-3" {{ request('duration') == '1-3' ? 'selected' : '' }}>1 - 3 Days</option>
                                 <option value="4-7" {{ request('duration') == '4-7' ? 'selected' : '' }}>4 - 7 Days</option>
@@ -578,6 +781,12 @@
 @endsection
 
 @push('js')
+    {{-- Select2 JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    {{-- noUiSlider JS for dual handle range slider --}}
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get URL parameters
@@ -596,16 +805,57 @@
             const loadingOverlay = document.getElementById('loadingOverlay');
 
             // Price Range Elements
-            const priceMinSlider = document.getElementById('priceMin');
-            const priceMaxSlider = document.getElementById('priceMax');
             const minPriceValue = document.getElementById('minPriceValue');
             const maxPriceValue = document.getElementById('maxPriceValue');
+            const priceRangeSlider = document.getElementById('priceRangeSlider');
 
             // Mobile Filter Elements
             const showFilterBtn = document.getElementById('showFilterBtn');
             const closeFilterBtn = document.getElementById('closeFilterBtn');
             const filterSidebar = document.getElementById('filterSidebar');
             const filterOverlay = document.getElementById('filterOverlay');
+
+            // Initialize Select2
+            $('.select2-filter').select2({
+                width: '100%',
+                placeholder: 'Select an option',
+                allowClear: true
+            });
+
+            // Initialize noUiSlider - Single Range with Dual Handles
+            const maxPrice = {{ $maxPrice ?? 50000 }};
+            let priceSlider = null;
+
+            if (priceRangeSlider) {
+                noUiSlider.create(priceRangeSlider, {
+                    start: [
+                        {{ request('min_price', 0) }},
+                        {{ request('max_price', $maxPrice ?? 50000) }}
+                    ],
+                    connect: true,
+                    range: {
+                        'min': 0,
+                        'max': maxPrice
+                    },
+                    step: 500,
+                    format: {
+                        to: function(value) {
+                            return Math.round(value);
+                        },
+                        from: function(value) {
+                            return Number(value);
+                        }
+                    }
+                });
+
+                priceSlider = priceRangeSlider.noUiSlider;
+
+                // Update price display when slider changes
+                priceSlider.on('update', function(values) {
+                    minPriceValue.textContent = parseInt(values[0]).toLocaleString();
+                    maxPriceValue.textContent = parseInt(values[1]).toLocaleString();
+                });
+            }
 
             // Parse date range from URL parameter (format: "5 Apr 26 - 13 Apr 26")
             function parseDateRange(dateString) {
@@ -621,16 +871,42 @@
                 return null;
             }
 
-            // Filter Tours Function (supports both manual and URL parameters)
+            // Show loading overlay
+            function showLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.style.visibility = 'visible';
+                    loadingOverlay.style.opacity = '1';
+                    loadingOverlay.classList.add('active');
+                }
+            }
+
+            // Hide loading overlay
+            function hideLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.style.visibility = 'hidden';
+                    loadingOverlay.style.opacity = '0';
+                    loadingOverlay.classList.remove('active');
+                }
+            }
+
+            // Filter Tours Function
             async function filterTours(updateUrl = true) {
-                loadingOverlay.classList.add('active');
+                // Show loading
+                showLoading();
 
                 const searchTerm = searchInput ? searchInput.value : '';
                 const location = locationFilter ? locationFilter.value : '';
                 const tourType = tourTypeFilter ? tourTypeFilter.value : '';
                 const duration = durationFilter ? durationFilter.value : '';
-                const minPrice = priceMinSlider ? parseInt(priceMinSlider.value) : 0;
-                const maxPrice = priceMaxSlider ? parseInt(priceMaxSlider.value) : 0;
+
+                let minPrice = 0;
+                let maxPriceValue_ = maxPrice;
+
+                if (priceSlider) {
+                    const values = priceSlider.get();
+                    minPrice = parseInt(values[0]);
+                    maxPriceValue_ = parseInt(values[1]);
+                }
 
                 // Get date from URL if exists
                 const dateParam = urlParams.get('date');
@@ -639,13 +915,14 @@
                 // Get guests from URL if exists
                 const guests = urlParams.get('guests') || '';
 
+                // Build form data
                 const formData = new FormData();
                 formData.append('search', searchTerm);
                 formData.append('location', location);
                 formData.append('tour_type', tourType);
                 formData.append('duration', duration);
                 formData.append('min_price', minPrice);
-                formData.append('max_price', maxPrice);
+                formData.append('max_price', maxPriceValue_);
                 if (dateRange) {
                     formData.append('travel_date_start', dateRange.start);
                     formData.append('travel_date_end', dateRange.end);
@@ -655,33 +932,73 @@
                 }
                 formData.append('_token', '{{ csrf_token() }}');
 
+                // Debug: Log form data
+                console.log('Filtering with:', {
+                    search: searchTerm,
+                    location: location,
+                    tour_type: tourType,
+                    duration: duration,
+                    min_price: minPrice,
+                    max_price: maxPriceValue_
+                });
+
                 try {
                     const response = await fetch('{{ route("front.tour-list.filter") }}', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
                     });
 
+                    console.log('Response status:', response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
                     const data = await response.json();
+                    console.log('Response data:', data);
 
                     if (data.success) {
-                        toursGrid.innerHTML = data.html;
-                        resultsCountSpan.textContent = data.count;
-                        updateActiveFilters(searchTerm, location, tourType, duration, minPrice, maxPrice, dateRange, guests);
+                        // Update the grid with new HTML
+                        if (toursGrid) {
+                            toursGrid.innerHTML = data.html;
+                        }
+
+                        // Update count
+                        if (resultsCountSpan) {
+                            resultsCountSpan.textContent = data.count;
+                        }
+
+                        // Update active filters display
+                        updateActiveFilters(searchTerm, location, tourType, duration, minPrice, maxPriceValue_, dateRange, guests);
 
                         // Update URL parameters if needed
                         if (updateUrl) {
-                            updateURLParameters(searchTerm, location, tourType, duration, minPrice, maxPrice, dateRange, guests);
+                            updateURLParameters(searchTerm, location, tourType, duration, minPrice, maxPriceValue_, dateRange, guests);
                         }
+
+                        // Re-initialize any Wow animations if needed
+                        if (typeof WOW !== 'undefined') {
+                            new WOW().init();
+                        }
+                    } else {
+                        console.error('Server returned error:', data.message || 'Unknown error');
+                        alert(data.message || 'An error occurred while filtering tours.');
                     }
                 } catch (error) {
                     console.error('Error filtering tours:', error);
+                    alert('Failed to load tours. Please check console for details.');
                 } finally {
-                    loadingOverlay.classList.remove('active');
+                    // Always hide loading
+                    hideLoading();
                 }
             }
 
             // Update URL with current filter parameters
-            function updateURLParameters(search, location, tourType, duration, minPrice, maxPrice, dateRange, guests) {
+            function updateURLParameters(search, location, tourType, duration, minPrice, maxPriceVal, dateRange, guests) {
                 const params = new URLSearchParams();
 
                 if (search) params.set('search', search);
@@ -689,7 +1006,7 @@
                 if (tourType) params.set('tour_type', tourType);
                 if (duration) params.set('duration', duration);
                 if (minPrice > 0) params.set('min_price', minPrice);
-                if (maxPrice < (priceMaxSlider?.max || 50000)) params.set('max_price', maxPrice);
+                if (maxPriceVal < maxPrice) params.set('max_price', maxPriceVal);
                 if (dateRange && dateRange.start && dateRange.end) params.set('date', `${dateRange.start} - ${dateRange.end}`);
                 if (guests) params.set('guests', guests);
 
@@ -698,7 +1015,9 @@
             }
 
             // Update Active Filters Display
-            function updateActiveFilters(search, location, type, duration, minPrice, maxPrice, dateRange, guests) {
+            function updateActiveFilters(search, location, type, duration, minPrice, maxPriceVal, dateRange, guests) {
+                if (!activeFiltersDiv) return;
+
                 activeFiltersDiv.innerHTML = '';
                 let filters = [];
 
@@ -725,8 +1044,8 @@
                     else if (duration === '15+') durationText = '15+ Days';
                     filters.push({ name: 'Duration', value: durationText, key: 'duration' });
                 }
-                if (minPrice > 0 || maxPrice < parseInt(priceMaxSlider?.max || 50000)) {
-                    filters.push({ name: 'Price', value: `{{config('app.currency')}} ${minPrice.toLocaleString()} - {{config('app.currency')}} ${maxPrice.toLocaleString()}`, key: 'price' });
+                if (minPrice > 0 || maxPriceVal < {{ $maxPrice ?? 50000 }}) {
+                    filters.push({ name: 'Price', value: `{{config('app.currency')}} ${minPrice.toLocaleString()} - {{config('app.currency')}} ${maxPriceVal.toLocaleString()}`, key: 'price' });
                 }
                 if (dateRange && dateRange.start && dateRange.end) {
                     filters.push({ name: 'Travel Date', value: `${dateRange.start} to ${dateRange.end}`, key: 'date' });
@@ -764,21 +1083,29 @@
                         if (searchInput) searchInput.value = '';
                         break;
                     case 'location':
-                        if (locationFilter) locationFilter.value = '';
+                        if (locationFilter) {
+                            locationFilter.value = '';
+                            $(locationFilter).trigger('change');
+                        }
                         break;
                     case 'type':
-                        if (tourTypeFilter) tourTypeFilter.value = '';
+                        if (tourTypeFilter) {
+                            tourTypeFilter.value = '';
+                            $(tourTypeFilter).trigger('change');
+                        }
                         break;
                     case 'duration':
-                        if (durationFilter) durationFilter.value = '';
+                        if (durationFilter) {
+                            durationFilter.value = '';
+                            $(durationFilter).trigger('change');
+                        }
                         break;
                     case 'price':
-                        if (priceMinSlider) priceMinSlider.value = 0;
-                        if (priceMaxSlider) priceMaxSlider.value = priceMaxSlider.max;
-                        updatePriceRange();
+                        if (priceSlider) {
+                            priceSlider.set([0, maxPrice]);
+                        }
                         break;
                     case 'date':
-                        // Remove date parameter from URL
                         const url = new URL(window.location.href);
                         url.searchParams.delete('date');
                         window.history.pushState({}, '', url);
@@ -795,12 +1122,21 @@
             // Reset All Filters
             function resetFilters() {
                 if (searchInput) searchInput.value = '';
-                if (locationFilter) locationFilter.value = '';
-                if (tourTypeFilter) tourTypeFilter.value = '';
-                if (durationFilter) durationFilter.value = '';
-                if (priceMinSlider) priceMinSlider.value = 0;
-                if (priceMaxSlider) priceMaxSlider.value = priceMaxSlider.max;
-                updatePriceRange();
+                if (locationFilter) {
+                    locationFilter.value = '';
+                    $(locationFilter).trigger('change');
+                }
+                if (tourTypeFilter) {
+                    tourTypeFilter.value = '';
+                    $(tourTypeFilter).trigger('change');
+                }
+                if (durationFilter) {
+                    durationFilter.value = '';
+                    $(durationFilter).trigger('change');
+                }
+                if (priceSlider) {
+                    priceSlider.set([0, maxPrice]);
+                }
 
                 // Clear URL parameters
                 const newUrl = window.location.pathname;
@@ -809,46 +1145,29 @@
                 filterTours();
             }
 
-            // Price Range Logic
-            if (priceMinSlider && priceMaxSlider) {
-                function updatePriceRange() {
-                    let minVal = parseInt(priceMinSlider.value);
-                    let maxVal = parseInt(priceMaxSlider.value);
-
-                    if (minVal > maxVal) {
-                        [minVal, maxVal] = [maxVal, minVal];
-                    }
-
-                    minPriceValue.textContent = minVal.toLocaleString();
-                    maxPriceValue.textContent = maxVal.toLocaleString();
-
-                    priceMinSlider.value = minVal;
-                    priceMaxSlider.value = maxVal;
-                }
-
-                priceMinSlider.addEventListener('input', function() {
-                    if (parseInt(this.value) > parseInt(priceMaxSlider.value)) {
-                        priceMaxSlider.value = this.value;
-                    }
-                    updatePriceRange();
+            // Event Listeners
+            if (applyFilterBtn) {
+                applyFilterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    filterTours(true);
                 });
-
-                priceMaxSlider.addEventListener('input', function() {
-                    if (parseInt(this.value) < parseInt(priceMinSlider.value)) {
-                        priceMinSlider.value = this.value;
-                    }
-                    updatePriceRange();
-                });
-
-                updatePriceRange();
             }
 
-            // Event Listeners
-            if (applyFilterBtn) applyFilterBtn.addEventListener('click', () => filterTours(true));
-            if (resetFilterBtn) resetFilterBtn.addEventListener('click', resetFilters);
-            if (searchInput) searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') filterTours(true);
-            });
+            if (resetFilterBtn) {
+                resetFilterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    resetFilters();
+                });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        filterTours(true);
+                    }
+                });
+            }
 
             // Mobile Filter Toggle
             if (showFilterBtn && filterSidebar && closeFilterBtn && filterOverlay) {
@@ -878,30 +1197,35 @@
                 // Set filter values from URL
                 if (urlParams.has('location') && locationFilter) {
                     locationFilter.value = urlParams.get('location');
+                    $(locationFilter).trigger('change');
                 }
                 if (urlParams.has('tour_type') && tourTypeFilter) {
                     tourTypeFilter.value = urlParams.get('tour_type');
+                    $(tourTypeFilter).trigger('change');
                 }
                 if (urlParams.has('duration') && durationFilter) {
                     durationFilter.value = urlParams.get('duration');
+                    $(durationFilter).trigger('change');
                 }
                 if (urlParams.has('search') && searchInput) {
                     searchInput.value = urlParams.get('search');
                 }
-                if (urlParams.has('min_price') && priceMinSlider) {
-                    priceMinSlider.value = urlParams.get('min_price');
-                }
-                if (urlParams.has('max_price') && priceMaxSlider) {
-                    priceMaxSlider.value = urlParams.get('max_price');
+
+                // Set price range from URL
+                if (priceSlider && (urlParams.has('min_price') || urlParams.has('max_price'))) {
+                    const minPriceVal = urlParams.has('min_price') ? parseInt(urlParams.get('min_price')) : 0;
+                    const maxPriceVal = urlParams.has('max_price') ? parseInt(urlParams.get('max_price')) : maxPrice;
+                    priceSlider.set([minPriceVal, maxPriceVal]);
                 }
 
-                updatePriceRange();
-
-                // Apply filters automatically
+                // Apply filters automatically (without updating URL again)
                 setTimeout(() => {
                     filterTours(false);
                 }, 500);
             }
+
+            // Hide loading on page load (just in case)
+            hideLoading();
         });
     </script>
 
