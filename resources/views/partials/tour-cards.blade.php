@@ -53,6 +53,10 @@
                             <i class="fas fa-users"></i>
                             <span>Max {{$tour->max_people}}</span>
                         </div>
+                        <div class="meta-item">
+                            <i class="fas fa-bus"></i>
+                            <span>Available Seats: {{\App\Models\Bus::find($tour->bus->id)->getAvailableSeatsCount($tour->id)}}</span>
+                        </div>
                     </div>
 
                     {{-- Price and Action --}}

@@ -466,64 +466,6 @@
 @endpush
 
 @section('content')
-    <!-- Booking Modal -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h2><i class="fas fa-calendar-check"></i> Book This Tour</h2>
-                <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
-            </div>
-            <form method="post" class="booking-form" id="bookingForm" action="@guest {{route('package.booking')}} @endguest @auth {{route('package.booking.user')}} @endauth">
-                @csrf
-                <div class="form-row">
-                    <div class="input-group">
-                        <label><i class="fas fa-calendar-alt"></i> Travel Date</label>
-                        <input type="date" name="date" id="dateField" required>
-                    </div>
-                    <div class="input-group">
-                        <label><i class="fas fa-users"></i> Quantity</label>
-                        <input type="hidden" name="package_id" value="{{$tour->id}}">
-                        <input type="number" name="quantity" id="quantityField" placeholder="Number of travelers" min="1" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="input-group">
-                        <label><i class="fas fa-money-bill-wave"></i> Total (BDT)</label>
-                        <input type="text" name="total" id="totalField" placeholder="0" disabled>
-                    </div>
-                    @guest
-                    <div class="input-group">
-                        <label><i class="fas fa-user"></i> Full Name</label>
-                        <input type="text" name="user_name" id="userNameField" placeholder="Enter your full name" required>
-                    </div>
-                    @endguest
-                </div>
-                @guest
-                <div class="form-row">
-
-                    <div class="input-group">
-                        <label><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" name="user_email" id="userEmailField" placeholder="your@email.com" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label><i class="fas fa-phone"></i> Phone Number</label>
-                        <input type="tel" name="user_phone" id="userPhoneField" placeholder="+880XXXXXXXXX" required>
-                    </div>
-                </div>
-                @endguest
-                <div class="input-group full-width">
-                    <label><i class="fas fa-map-marker-alt"></i> Address</label>
-                    <input type="text" name="user_address" id="userAddressField" placeholder="Your full address" >
-                </div>
-                <hr>
-                <button type="submit" class="confirm-btn">
-                    <span>Confirm Booking</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
 
     <!-- Page Header -->
     <section class="page-header">
@@ -554,15 +496,6 @@
                                 <p class="tour-listing-details__destination__posted-text">
                                     {{$tour->start_location}} → {{$tour->end_location}}
                                 </p>
-                            </div>
-                            <div class="tour-listing-details__destination__posted">
-                                @foreach(json_decode($tour->subdestination, true) as $des)
-                                    <i class="icon-pin1"></i>
-                                    {{$des}}
-                                    @if (!$loop->last)
-                                        <i class="icon-arrow-right"></i>
-                                    @endif
-                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -724,9 +657,9 @@
                                 </span>
                                 <span style="display: block; font-size: 14px; color: var(--gotur-text);">per person</span>
                             </div>
-                            <button type="button" class="gotur-btn open-modal-btn" id="openModalBtn" style="width: 100%;">
+                            <a href="{{ url('bus/layout') }}?bus_id={{ base64_encode($tour->bus->id) }}&package_id={{ base64_encode($tour->id) }}"  class="gotur-btn"  style="width: 100%;">
                                 Book Now <i class="icon-right"></i>
-                            </button>
+                            </a>
                             <div class="booking-info" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--gotur-border-color);">
                                 <p style="font-size: 13px; color: var(--gotur-text); margin-bottom: 8px;">
                                     <i class="fas fa-check-circle" style="color: var(--gotur-base); margin-right: 8px;"></i>

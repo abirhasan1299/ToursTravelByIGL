@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bus;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -24,23 +25,16 @@ class PostController extends Controller
 
     public function getState()
     {
-        $response = Http::withHeaders([
-            'X-CSCAPI-KEY' => 'fd6394ac8fc2d21c0a473ee0be18f033fefa1ea0c07b92e598c7cebe983d1c51'
-        ])->get('https://api.countrystatecity.in/v1/states');
+        $response = Http::get('https://bdapis.com/api/v1.2/districts');
 
         return  $response->json();
     }
 
     public function create()
     {
-        $response = Http::withHeaders([
-            'X-CSCAPI-KEY' => 'fd6394ac8fc2d21c0a473ee0be18f033fefa1ea0c07b92e598c7cebe983d1c51'
-        ])->get('https://api.countrystatecity.in/v1/countries');
-
-        $data = $response->json();
+        $bus = Bus::where('status','active')->orderBy('id','desc')->get();
         $state = $this->getState();
-
-        return view('admin.post.create',compact('data','state'));
+        return view('admin.post.create',compact('state','bus'));
     }
 
     public function store(Request $request)
@@ -54,10 +48,11 @@ class PostController extends Controller
             'max_people' => 'required|integer',
             'start_location' => 'required',
             'end_location' => 'required',
-            'include' => 'required',
-            'exclude' => 'required',
-            'detail' => 'required',
-            'destination' => 'required|array',
+            'include' => 'required|min:5',
+            'exclude' => 'required|min:5',
+            'bus_id' => 'required',
+            'detail' => 'required|min:5',
+            'destination' => 'nullable|array',
             'cover_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
@@ -84,7 +79,7 @@ class PostController extends Controller
             'status' => 'active',
             'user_id' => auth()->id(), // safer
             'cover_img' => $imageName,
-            'subdestination' => json_encode($request->destination),
+            'bus_id' => $request->bus_id
         ]);
 
         return redirect()

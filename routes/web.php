@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Bus\BusController;
 use App\Http\Controllers\Root\CommonController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\SslCommerzPaymentController;
@@ -11,7 +12,7 @@ use App\Models\Package;
 use App\Models\Seo;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('bot')->group(function () {
+
 
     Route::get('/', function () {
 
@@ -49,6 +50,25 @@ Route::middleware('bot')->group(function () {
 
         Route::get('/github/callback','callback')->name('github.callback');
     });
+
+
+/*
+ * Bus Route Selection
+ */
+
+Route::controller(BusController::class)->group(function () {
+
+    Route::get('bus/layout', 'layout')->name('bus.layout');
+
+    Route::get('bus/checkout', 'checkout')->name('bus.checkout');
+
+    Route::post('bus/booking', 'booking')->name('bus.store');
+
+
+    Route::match(['get', 'post'], '/bkash/pay', 'Bkashpay')->name('bkash.pay');
+
+    Route::match(['get', 'post'], '/bkash/callback', 'callback')->name('bkash.callback');
+});
 
 
 
@@ -145,4 +165,4 @@ Route::middleware('bot')->group(function () {
 //-------------------- SSLCOMMERZ END --------------------------------
 
 
-});
+

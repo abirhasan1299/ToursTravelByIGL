@@ -910,17 +910,17 @@
                 <div class="hero-stat-sep"></div>
                 <div class="hero-stat">
                     <div class="hero-stat__num"><span class="counter" data-target="340">0</span><sup>+</sup></div>
-                    <div class="hero-stat__lbl">Hotels</div>
+                    <div class="hero-stat__lbl">City</div>
                 </div>
                 <div class="hero-stat-sep"></div>
                 <div class="hero-stat">
                     <div class="hero-stat__num"><span class="counter" data-target="50">0</span><sup>K+</sup></div>
-                    <div class="hero-stat__lbl">Travelers</div>
+                    <div class="hero-stat__lbl">Passengers</div>
                 </div>
                 <div class="hero-stat-sep"></div>
                 <div class="hero-stat">
-                    <div class="hero-stat__num"><span class="counter" data-target="98">0</span><sup>%</sup></div>
-                    <div class="hero-stat__lbl">Satisfaction</div>
+                    <div class="hero-stat__num"><span class="counter" data-target="98">0</span><sup>K+</sup></div>
+                    <div class="hero-stat__lbl">Guest</div>
                 </div>
             </div>
         </div>

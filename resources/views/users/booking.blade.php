@@ -760,14 +760,18 @@
                         <tr>
                             <th>Tour Details</th>
                             <th>Booking Date</th>
-                            <th>Travelers</th>
+                            <th>Seats</th>
                             <th>Total Amount</th>
                             <th>Status</th>
-                            <th>Actions</th>
+
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($bookings as $booking)
+                            @php
+                                $seatCodes = json_decode($booking->seat_code, true) ?? [];
+                            @endphp
+
                             <tr class="booking-row" data-status="{{ $booking->status ?? 'confirmed' }}">
                                 <td>
                                     <div class="tour-info">
@@ -782,31 +786,55 @@
                                                 </a>
                                             </h5>
                                             <span class="booking-id">
-                                                    <i class="far fa-file-alt"></i> Booking #{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}
-                                                </span>
+                        <i class="far fa-file-alt"></i>
+                        Booking #{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}
+                    </span>
                                         </div>
                                     </div>
                                 </td>
+
+                                {{-- Booking Date --}}
                                 <td>
                                     <div style="display: flex; flex-direction: column;">
-                                        <span><i class="far fa-calendar-alt" style="color: #63AB45; margin-right: 6px;"></i>{{ date('M d, Y', strtotime($booking->date)) }}</span>
+                <span>
+                    <i class="far fa-calendar-alt" style="color: #63AB45; margin-right: 6px;"></i>
+                    {{ $booking->created_at->format('M d, Y') }}
+                </span>
                                         <small style="color: #888; font-size: 11px; margin-top: 4px;">
                                             <i class="far fa-clock"></i> {{ $booking->created_at->format('h:i A') }}
                                         </small>
                                     </div>
                                 </td>
+
+                                {{-- Seats --}}
                                 <td>
-                                        <span style="font-weight: 500;">
-                                            <i class="fas fa-user" style="color: #63AB45; margin-right: 6px;"></i>
-                                            {{ $booking->quantity }} {{ Str::plural('Person', $booking->quantity) }}
-                                        </span>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                        @foreach($seatCodes as $seat)
+                                            <span style="
+                        background:#63AB45;
+                        color:white;
+                        padding:4px 10px;
+                        border-radius:20px;
+                        font-size:11px;
+                        font-weight:600;">
+                        {{ $seat }}
+                    </span>
+                                        @endforeach
+                                    </div>
+                                    <small style="color:#888;">
+                                        {{ count($seatCodes) }} {{ Str::plural('Seat', count($seatCodes)) }}
+                                    </small>
                                 </td>
+
+                                {{-- Total Amount --}}
                                 <td>
                                     <div class="booking-amount">
-                                        BDT {{ number_format($booking->quantity*$booking->package->amount) }}
+                                        BDT {{ number_format($booking->total_amount) }}
                                         <small>/ total</small>
                                     </div>
                                 </td>
+
+                                {{-- Status --}}
                                 <td>
                                     @php
                                         $status = $booking->status ?? 'confirmed';
@@ -818,24 +846,11 @@
                                         ][$status] ?? 'info-circle';
                                     @endphp
                                     <span class="status-badge {{ $status }}">
-                                            <i class="fas fa-{{ $statusIcon }}"></i>
-                                            {{ ucfirst($status) }}
-                                        </span>
+                <i class="fas fa-{{ $statusIcon }}"></i>
+                {{ ucfirst($status) }}
+            </span>
                                 </td>
-                                <td>
-                                    <div class="booking-actions">
-                                        @if(!in_array($booking->status, ['cancelled', 'completed']))
-                                            <form action="{{route('user.booking.cancel',$booking->id)}}" method="post">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn-icon cancel" title="Cancel Booking">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </form>
 
-                                        @endif
-                                    </div>
-                                </td>
                             </tr>
                         @endforeach
                         </tbody>

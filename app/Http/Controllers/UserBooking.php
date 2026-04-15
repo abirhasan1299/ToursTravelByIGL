@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -36,18 +37,30 @@ class UserBooking extends Controller
     public function userBookings()
     {
         $user = auth()->user();
-        $bookings = Booking::with('package')
+
+        // Get paginated seat bookings
+        $bookings = Seat::with('package')
             ->where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        // Stats calculation
         $stats = [
             'total' => $bookings->total(),
-            'confirmed' => Booking::where('user_id', $user->id)->where('status', 'confirmed')->count(),
-            'pending' => Booking::where('user_id', $user->id)->where('status', 'pending')->count(),
-            'total_amount' => Booking::where('user_id', $user->id)->sum('total')
+
+            'confirmed' => Seat::where('user_id', $user->id)
+                ->where('status', 'confirmed')
+                ->count(),
+
+            'pending' => Seat::where('user_id', $user->id)
+                ->where('status', 'pending')
+                ->count(),
+
+            'total_amount' => Seat::where('user_id', $user->id)
+                ->sum('total_amount') // FIXED column name
         ];
-        return view('users.booking',compact('bookings', 'stats'));
+
+        return view('users.booking', compact('bookings', 'stats'));
     }
     public function cancelBooking(Request $request,$id)
     {

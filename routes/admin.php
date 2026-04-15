@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Root\BookingController;
+use App\Http\Controllers\Bus\BusController;
 use App\Http\Controllers\Root\CompanyInfo;
 use App\Http\Controllers\Root\DestinationController;
 use App\Http\Controllers\Root\FacilityController;
@@ -9,13 +10,25 @@ use App\Http\Controllers\Root\GalleryController;
 use App\Http\Controllers\Root\PostController;
 use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Root\CompanyController;
 use App\Http\Controllers\Root\PackageController;
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
+/*
+    |--------------------------------------------------------------------------
+    | Bus Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+Route::get('bus',[BusController::class,'index'])->name('bus.index');
+Route::get('bus/create',[BusController::class,'create'])->name('bus.create');
+Route::get('bus/edit/{id}',[BusController::class,'edit'])->name('bus.edit');
+Route::put('bus/update/{id}',[BusController::class,'update'])->name('bus.update');
+Route::post('bus/store',[BusController::class,'store'])->name('bus.store');
+Route::delete('bus/destroy/{id}',[BusController::class,'destroy'])->name('bus.destroy');
 
 /*
     |--------------------------------------------------------------------------
@@ -79,7 +92,7 @@ Route::delete('faqs/destroy/{id}',[FaqController::class,'destroy'])->name('faqs.
 
 /*
     |--------------------------------------------------------------------------
-    | Website Informations Routes
+    | Website Information Routes
     |--------------------------------------------------------------------------
     |
 */

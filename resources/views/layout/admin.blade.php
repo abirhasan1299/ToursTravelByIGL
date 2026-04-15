@@ -272,13 +272,19 @@
                     <li class="side-nav-item">
                         <a href="{{route('admin.package.index')}}" class="side-nav-link">
                             <span class="menu-icon"><i class="ti ti-box"></i></span>
-                            <span class="menu-text" data-lang="dashboards">Package</span>
+                            <span class="menu-text" data-lang="dashboards">Company Pricing</span>
                         </a>
                     </li>
                         <li class="side-nav-item">
                             <a href="{{route('admin.post.index')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-box"></i></span>
-                                <span class="menu-text" data-lang="dashboards">Post</span>
+                                <span class="menu-text" data-lang="dashboards">Tour Package</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('admin.bus.index')}}" class="side-nav-link">
+                                <span class="menu-icon"><i class="ti ti-bus"></i></span>
+                                <span class="menu-text" data-lang="dashboards">Bus</span>
                             </a>
                         </li>
                         <li class="side-nav-item">

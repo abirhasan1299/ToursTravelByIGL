@@ -48,7 +48,7 @@ class AuthController extends Controller
                 return redirect()->route('company.dashboard');
             }elseif (Auth::user()->role==3)
             {
-                return redirect()->route('front.login')->with('success',Auth::user()->name.' Logged In Successfully');
+                return redirect()->route('home')->with('success',Auth::user()->name.' Logged In Successfully');
             }
 
         }
