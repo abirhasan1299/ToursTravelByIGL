@@ -61,9 +61,20 @@
                                             {{ucfirst($d->status)}}
                                         </span>
                                 </td>
-                                <td class="d-flex justify-content-center">
+                                <td class="d-flex justify-content-around">
                                     <a href="{{route('admin.post.show',base64_encode($d->id))}}" class="btn btn-sm btn-outline-primary" role="button">
                                         <i class="ti ti-eye"></i>
+                                    </a>
+                                    <a href="{{ route('admin.post.edit', base64_encode($d->id)) }}" class="btn btn-sm btn-outline-warning" role="button">
+                                        <i class="ti ti-pencil"></i>
+                                    </a>
+
+                                    <a href="{{route('admin.post.activity',base64_encode($d->id))}}" class="btn btn-sm btn-outline-info" role="button">
+                                        <i class="ti ti-calendar-plus"></i>
+                                    </a>
+
+                                    <a href="{{route('admin.post.persons',base64_encode($d->id))}}" class="btn btn-sm btn-outline-secondary" role="button">
+                                        <i class="ti ti-user-circle"></i>
                                     </a>
 
                                     <form class="delete-form" action="{{route('admin.post.destroy',$d->id)}}" method="post">

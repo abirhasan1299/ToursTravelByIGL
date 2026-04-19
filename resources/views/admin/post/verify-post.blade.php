@@ -95,6 +95,123 @@
             color: #6c757d;
             text-transform: uppercase;
         }
+
+        /* Tour Plan Accordion Styles */
+        .plan-accordion {
+            margin-top: 1rem;
+        }
+
+        .plan-accordion .accordion-item {
+            border: 1px solid #e9ecef;
+            border-radius: 12px !important;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .plan-accordion .accordion-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-color: #667eea;
+        }
+
+        .plan-accordion .accordion-header {
+            margin: 0;
+        }
+
+        .plan-accordion .accordion-button {
+            padding: 18px 25px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #212529;
+            background-color: #fff;
+            border-radius: 12px !important;
+            transition: all 0.3s ease;
+            box-shadow: none !important;
+        }
+
+        .plan-accordion .accordion-button:not(.collapsed) {
+            color: #667eea;
+            background: linear-gradient(to right, #f8f9ff, #ffffff);
+            border-bottom: 2px solid #667eea;
+        }
+
+        .plan-accordion .accordion-button:focus {
+            border-color: #667eea;
+            box-shadow: none;
+        }
+
+        .plan-accordion .accordion-button::after {
+            background-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .plan-accordion .accordion-button:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23667eea'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+
+        .plan-accordion .accordion-body {
+            padding: 25px;
+            background-color: #fff;
+            color: #595959;
+            line-height: 1.7;
+        }
+
+        .plan-accordion .accordion-body ul,
+        .plan-accordion .accordion-body ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .plan-accordion .accordion-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .plan-day-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .no-plans-message {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            color: #6c757d;
+        }
+
+        .no-plans-message i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Animation for accordion */
+        .plan-accordion .accordion-collapse {
+            transition: all 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .plan-accordion .accordion-collapse.show .accordion-body {
+            animation: slideDown 0.3s ease;
+        }
     </style>
 @endpush
 
@@ -193,6 +310,63 @@
                     </div>
                 </div>
 
+                <!-- Tour Plan Accordion Section -->
+                <div class="card info-card">
+                    <div class="card-header">
+                        <i class="fas fa-map-signs me-2"></i> Tour Plan / Itinerary
+                        @if($package->activities && count($package->activities) > 0)
+                            <span class="badge bg-primary ms-2">{{ count($package->activities) }} Days</span>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        @if($package->activities && count($package->activities) > 0)
+                            <div class="plan-accordion">
+                                <div class="accordion" id="tourPlanAccordion">
+                                    @foreach($package->activities as $index => $activity)
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading{{ $index }}">
+                                                <button class="accordion-button {{ $index !== 0 ? 'collapsed' : '' }}"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse{{ $index }}"
+                                                        aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"
+                                                        aria-controls="collapse{{ $index }}">
+                                                    <i class="fas fa-calendar-day me-3" style="color: #667eea;"></i>
+                                                    {{ $activity->title }}
+                                                    <span class="plan-day-badge">Day {{ $index + 1 }}</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{ $index }}"
+                                                 class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}"
+                                                 aria-labelledby="heading{{ $index }}"
+                                                 data-bs-parent="#tourPlanAccordion">
+                                                <div class="accordion-body">
+                                                    {!! $activity->detail !!}
+
+                                                    @if(isset($activity->time) && $activity->time)
+                                                        <div class="mt-3 pt-3 border-top">
+                                                            <small class="text-muted">
+                                                                <i class="far fa-clock me-1"></i>
+                                                                Estimated Time: {{ $activity->time }}
+                                                            </small>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @else
+                            <div class="no-plans-message">
+                                <i class="fas fa-map"></i>
+                                <h5 class="mt-2">No Tour Plan Available</h5>
+                                <p class="mb-0">This package doesn't have a detailed itinerary yet.</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
                 <!-- Sub Destinations -->
                 @php
                     $subdestinations = is_string($package->subdestination) ? json_decode($package->subdestination, true) : $package->subdestination;
@@ -205,8 +379,8 @@
                         <div class="card-body">
                             @foreach($subdestinations as $dest)
                                 <span class="subdestination-badge">
-                            <i class="fas fa-map-pin me-1"></i> {{ $dest }}
-                        </span>
+                                    <i class="fas fa-map-pin me-1"></i> {{ $dest }}
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -314,6 +488,24 @@
 
 @push('js')
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth animation when accordion items collapse/expand
+            const accordionItems = document.querySelectorAll('.plan-accordion .accordion-item');
 
+            accordionItems.forEach(item => {
+                const button = item.querySelector('.accordion-button');
+                const collapse = item.querySelector('.accordion-collapse');
+
+                if (button && collapse) {
+                    collapse.addEventListener('show.bs.collapse', function() {
+                        button.style.backgroundColor = '#f8f9ff';
+                    });
+
+                    collapse.addEventListener('hide.bs.collapse', function() {
+                        button.style.backgroundColor = '';
+                    });
+                }
+            });
+        });
     </script>
 @endpush

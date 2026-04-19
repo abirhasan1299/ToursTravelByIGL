@@ -290,7 +290,7 @@
                         <li class="side-nav-item">
                             <a href="{{route('admin.booking')}}" class="side-nav-link">
                                 <span class="menu-icon"><i class="ti ti-calendar-check"></i></span>
-                                <span class="menu-text" data-lang="dashboards">Bookings</span>
+                                <span class="menu-text" data-lang="dashboards">Hotel Bookings</span>
                             </a>
                         </li>
                         <li class="side-nav-item">

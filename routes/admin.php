@@ -43,6 +43,8 @@ Route::get('booking/data/{id}',[BookingController::class,'EditStatus'])->name('b
 
 Route::put('booking/update/{id}',[BookingController::class,'UpdateStatus'])->name('booking.update.status');
 
+Route::post('/paid/confirm/{id}',[PostController::class,'CashOnDelivery'])->name('package.confirm');
+
 /*
     |--------------------------------------------------------------------------
     | SEO Routes
@@ -150,6 +152,13 @@ Route::get('/package/getData/{id}',[PackageController::class,'getData'])->name('
 
 Route::get('/post/',[PostController::class,'index'])->name('post.index');
 
+Route::get('/post/activity/{id}',[PostController::class,'Activity'])->name('post.activity');
+
+Route::post('/post/activity/store',[PostController::class,'ActivityStore'])->name('post.activity.store');
+
+
+
+
 Route::get('/post/create',[PostController::class,'create'])->name('post.create');
 
 Route::post('/post/store',[PostController::class,'store'])->name('post.store');
@@ -161,6 +170,11 @@ Route::get('/post/active/{id}',[PostController::class,'ActivateStatus'])->name('
 Route::get('/post/suspend/{id}',[PostController::class,'SuspendedStatus'])->name('post.suspend');
 
 Route::delete('/post/destroy/{id}',[PostController::class,'destroy'])->name('post.destroy');
+
+Route::get('/post/persons/{id}',[PostController::class,'persons'])->name('post.persons');
+
+Route::get('post/edit/{id}', [PostController::class, 'edit'])->name('post.edit');
+Route::put('post/update/{id}', [PostController::class, 'update'])->name('post.update');
 
 
 /*

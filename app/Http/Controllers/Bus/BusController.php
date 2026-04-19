@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Bus;
 use App\Models\Package;
+use App\Models\Payment;
 use App\Models\Seat;
 use App\Services\BkashService;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class BusController extends Controller
     {
         return view('bus.create');
     }
+
     public function edit($id)
     {
         $bus = Bus::findOrFail($id);
@@ -133,176 +135,95 @@ class BusController extends Controller
 
     /*
      * ====================================
-     * Bus Booking Confirmation Function
-     * ====================================
-     */
-
-    public function booking(Request $request)
-    {
-        if(!Auth::check())
-        {
-            return redirect()->route('front.login')->with('error','Please Login First');
-        }
-
-        // Start timing for lock timeout handling
-        $startTime = microtime(true);
-        $maxWaitTime = 10; // Maximum wait time in seconds
-
-        try {
-            DB::beginTransaction();
-
-            // Parse the seats data
-            $seats = json_decode($request->seats, true);
-
-            if (empty($seats)) {
-                return redirect()->back()->with('error', 'No seats selected!');
-            }
-
-            // Extract seat codes and numbers
-            $seatCodes = is_array($request->seat_codes) ? $request->seat_codes : explode(',', $request->seat_codes);
-            $seatNumbers = is_array($request->seat_numbers) ? $request->seat_numbers : explode(',', $request->seat_numbers);
-
-            $busId = $request->bus_id;
-            $packageId = $request->package_id;
-            $userId = auth()->id() ?? 20;
-
-            // ================================================
-            // PESSIMISTIC LOCKING - Check if seats are available
-            // ================================================
-
-            // Get all existing bookings for this bus and package
-            // Using lockForUpdate() to prevent concurrent modifications
-            $existingBookings = Seat::where('bus_id', $busId)
-                ->where('package_id', $packageId)
-                ->where('status', '!=', 'cancelled')
-                ->lockForUpdate()
-                ->get();
-
-            // Collect all already booked seat codes
-            $bookedSeatCodes = [];
-            foreach ($existingBookings as $booking) {
-                $bookingSeats = explode(',', $booking->seat_code);
-                $bookedSeatCodes = array_merge($bookedSeatCodes, $bookingSeats);
-            }
-            $bookedSeatCodes = array_unique($bookedSeatCodes);
-
-            // Check if any selected seat is already booked
-            $conflictingSeats = array_intersect($seatCodes, $bookedSeatCodes);
-
-            if (!empty($conflictingSeats)) {
-                DB::rollBack();
-                $conflictList = implode(', ', $conflictingSeats);
-                return redirect()->back()->with('error', "Sorry, seats {$conflictList} were just booked by someone else. Please select different seats.");
-            }
-
-            // ================================================
-            // DOUBLE-CHECK WITH DATABASE QUERY (Atomic Check)
-            // ================================================
-
-            // Build a query to check each seat individually
-            $seatCheckQuery = Seat::where('bus_id', $busId)
-                ->where('package_id', $packageId)
-                ->where('status', '!=', 'cancelled')
-                ->where(function($query) use ($seatCodes) {
-                    foreach ($seatCodes as $code) {
-                        $query->orWhereRaw("FIND_IN_SET(?, seat_code)", [$code]);
-                    }
-                });
-
-            $conflictingBookings = $seatCheckQuery->lockForUpdate()->get();
-
-            if ($conflictingBookings->count() > 0) {
-                DB::rollBack();
-
-                // Get the conflicting seat codes
-                $conflictCodes = [];
-                foreach ($conflictingBookings as $booking) {
-                    $bookingSeats = explode(',', $booking->seat_code);
-                    $conflictCodes = array_merge($conflictCodes, array_intersect($seatCodes, $bookingSeats));
-                }
-                $conflictList = implode(', ', array_unique($conflictCodes));
-
-                return redirect()->back()->with('error', "Sorry, seats {$conflictList} were just booked. Please try again.");
-            }
-
-            // ================================================
-            // CALCULATE TOTAL AMOUNT
-            // ================================================
-            $busInfo = Bus::find($busId);
-            $pricePerSeat = $busInfo->price_per_seat ?? 0;
-            $totalAmount = count($seatCodes) * $pricePerSeat;
-
-            // ================================================
-            // CREATE BOOKING WITH UNIQUE CONSTRAINT CHECK
-            // ================================================
-
-            $seatCodesString = implode(',', $seatCodes);
-            $seatNumbersString = implode(',', $seatNumbers);
-
-
-            // Create the booking record
-            $booking = Seat::create([
-                'bus_id' => $busId,
-                'package_id' => $packageId,
-                'user_id' => $userId,
-                'seat_code' => $seatCodesString,
-                'seat_no' => $seatNumbersString,
-                'total_amount' => $totalAmount,
-                'status' => 'confirmed',
-            ]);
-
-            // ================================================
-            // VERIFY BOOKING WAS CREATED SUCCESSFULLY
-            // ================================================
-
-            if (!$booking) {
-                throw new \Exception('Failed to create booking record');
-            }
-
-            DB::commit();
-
-            // Log successful booking
-            Log::info('Seat booking successful', [
-                'booking_id' => $booking->id,
-                'user_id' => $userId,
-                'bus_id' => $busId,
-                'seats' => $seatCodesString,
-                'amount' => $totalAmount
-            ]);
-
-            return redirect()->route('front.tour-list')
-                ->with('success', 'Seats booked successfully!');
-
-        } catch (\Exception $exception) {
-
-            DB::rollBack();
-
-            Log::error('Seat booking failed', [
-                'error' => $exception->getMessage(),
-                'user_id' => auth()->id() ?? 'guest',
-                'bus_id' => $request->bus_id ?? null,
-                'seats' => $request->seat_codes ?? null,
-                'trace' => $exception->getTraceAsString()
-            ]);
-
-            return redirect()->back()->with('error', 'Booking failed. Please try again or contact support.');
-        }
-    }
-
-    /*
-     * ====================================
      * Bkash Checkout Function
      * ====================================
      */
-
     public function Bkashpay(Request $request, BkashService $bkashService)
     {
+
         try {
             // Retrieve the data we saved in the checkout method
             $bookingData = session('booking_data');
 
             if (!$bookingData) {
                 return redirect()->route('front.tour-list')->with('error', 'Checkout session expired. Please select seats again.');
+            }
+
+            session()->put('customer', [
+                'full_name'      => $request->input('customer_name'),
+                'email'          => $request->input('customer_email'),
+                'phone'          => $request->input('customer_phone'),
+                'nid'            => $request->input('customer_nid'),
+                'any_request'    => $request->input('special_requests'),
+                'method' => $request->input('payment_method'),
+            ]);
+
+            //====IF COD METHOD APPLYING================
+
+            if($request->input('payment_method')=='cod')
+            {
+                // Ensure it's array
+                if (is_object($bookingData)) {
+                    $bookingData = (array) $bookingData;
+                }
+
+                DB::beginTransaction();
+
+                //Lock existing bookings
+                $existingBookings = Seat::where('bus_id', $bookingData['bus_id'])
+                    ->where('package_id', $bookingData['package_id'])
+                    ->where('status', '!=', 'cancelled')
+                    ->lockForUpdate()
+                    ->get();
+
+                // Collect booked seats
+                $bookedSeatCodes = [];
+
+                foreach ($existingBookings as $booking) {
+                    // Support both JSON and comma-separated
+                    $seats = is_string($booking->seat_codes)
+                        ? (json_decode($booking->seat_codes, true) ?: explode(',', $booking->seat_codes))
+                        : $booking->seat_codes;
+
+                    if (is_array($seats)) {
+                        $bookedSeatCodes = array_merge($bookedSeatCodes, $seats);
+                    }
+                }
+
+                $bookedSeatCodes = array_unique($bookedSeatCodes);
+
+                $selectedSeatCodes = is_array($bookingData['seat_codes'])
+                    ? $bookingData['seat_codes']
+                    : json_decode($bookingData['seat_codes'], true);
+
+                $conflictingSeats = array_intersect($selectedSeatCodes, $bookedSeatCodes);
+
+                if (!empty($conflictingSeats)) {
+                    DB::rollBack();
+
+                    return redirect()->back()->with(
+                        'error',
+                        'Sorry, seats ' . implode(', ', $conflictingSeats) . ' were just booked. Please select different seats.'
+                    );
+                }
+
+                Seat::create([
+                    'bus_id' => $bookingData['bus_id'],
+                    'package_id' => $bookingData['package_id'],
+                    'seat_code' => json_encode($selectedSeatCodes),
+                    'status' => 'pending',
+                    'user_id' => Auth::user()->id??'0',
+                    'seat_no'=>json_encode($bookingData['seat_numbers'])??'null',
+                    'total_amount'=>$bookingData['total_amount']??'null',
+                    'full_name'      => $request->input('customer_name'),
+                    'email'          => $request->input('customer_email'),
+                    'phone'          => $request->input('customer_phone'),
+                    'nid'            => $request->input('customer_nid'),
+                    'any_request'    => $request->input('special_requests'),
+                    'method' => $request->input('payment_method'),
+                ]);
+                DB::commit();
+                return redirect()->route('front.tour-list')->with('success', 'Package  booked successfully ! ');
             }
 
             $amount =session('booking_data.total_amount');
@@ -312,7 +233,6 @@ class BusController extends Controller
             $response = $bkashService->createPayment($amount, $invoice, $callbackUrl);
 
             if ($response['success']) {
-
                 session([
                     'paymentID' => $response['paymentID'],
                     'invoice' => $invoice
@@ -328,44 +248,125 @@ class BusController extends Controller
             return back()->with('error', 'Something went wrong. Please try again.');
         }
     }
+
     public function callback(Request $request, BkashService $bkashService)
     {
+
         try {
-            if ($request->status == 'success' && $request->paymentID) {
+            //  Validate callback
+            if ($request->status !== 'success' || !$request->paymentID) {
+                return redirect()->route('front.tour-list')
+                    ->with('error', 'Payment was cancelled or failed.');
+            }
 
-                $paymentID = $request->paymentID;
-                $response = $bkashService->executePayment($paymentID);
+            $paymentID = $request->paymentID;
 
-                if ($bkashService->isPaymentSuccessful($response)) {
+            // Execute payment
+            $response = $bkashService->executePayment($paymentID);
 
-                    // 1. Get the booking data from session
-                    $bookingData = session('booking_data');
-
-                    if($bookingData) {
-                        // 2. THIS is where you put your DB::beginTransaction()
-                        // and lockForUpdate() logic from your old booking() method.
-                        // You parse the seat codes, check if they are still free,
-                        // and insert them into the `Seat` table.
-
-                        /* Insert Booking code here */
-                    }
-
-                    // 3. Clear session
-                    session()->forget(['paymentID', 'invoice', 'booking_data']);
-
-                    return redirect()->route('front.tour-list')
-                        ->with('success', 'Payment successful! Your booking is confirmed.');
-                }
-
+            if (!$bkashService->isPaymentSuccessful($response)) {
                 return redirect()->route('front.tour-list')
                     ->with('error', 'Payment execution failed. Please contact support.');
             }
 
+            //  Get session data
+            $bookingData = session('booking_data');
+
+            if (!$bookingData) {
+                return redirect()->route('front.tour-list')
+                    ->with('error', 'Session expired. Please try booking again.');
+            }
+
+            // Ensure it's array
+            if (is_object($bookingData)) {
+                $bookingData = (array) $bookingData;
+            }
+
+            DB::beginTransaction();
+
+            // Lock existing bookings
+            $existingBookings = Seat::where('bus_id', $bookingData['bus_id'])
+                ->where('package_id', $bookingData['package_id'])
+                ->where('status', '!=', 'cancelled')
+                ->lockForUpdate()
+                ->get();
+
+            //  Collect booked seats
+            $bookedSeatCodes = [];
+
+            foreach ($existingBookings as $booking) {
+                // Support both JSON and comma-separated
+                $seats = is_string($booking->seat_codes)
+                    ? (json_decode($booking->seat_codes, true) ?: explode(',', $booking->seat_codes))
+                    : $booking->seat_codes;
+
+                if (is_array($seats)) {
+                    $bookedSeatCodes = array_merge($bookedSeatCodes, $seats);
+                }
+            }
+
+            $bookedSeatCodes = array_unique($bookedSeatCodes);
+
+            // Selected seats
+            $selectedSeatCodes = is_array($bookingData['seat_codes'])
+                ? $bookingData['seat_codes']
+                : json_decode($bookingData['seat_codes'], true);
+
+            //  Conflict check (FIXED)
+            $conflictingSeats = array_intersect($selectedSeatCodes, $bookedSeatCodes);
+
+            if (!empty($conflictingSeats)) {
+                DB::rollBack();
+
+                return redirect()->back()->with(
+                    'error',
+                    'Sorry, seats ' . implode(', ', $conflictingSeats) . ' were just booked. Please select different seats.'
+                );
+            }
+
+            //  Insert booking (example)
+            $customer = session('customer');
+
+            $seat_created = Seat::create([
+                'bus_id' => $bookingData['bus_id'],
+                'package_id' => $bookingData['package_id'],
+                'seat_code' => json_encode($selectedSeatCodes),
+                'status' => 'booked',
+                'user_id' => Auth::user()->id??'0',
+                'seat_no'=>json_encode($bookingData['seat_numbers'])??'null',
+                'total_amount'=>$bookingData['total_amount']??'null',
+                'full_name'      => $customer['full_name'],
+                'email'          =>  $customer['email'],
+                'phone'          =>  $customer['phone'],
+                'nid'            =>  $customer['nid'],
+                'any_request'    =>  $customer['any_request'],
+                'method' =>  $customer['method']
+            ]);
+
+            //  (Optional but recommended) update payment table
+            Payment::where('payment_id', $paymentID)->update([
+                'status' => $response['transactionStatus'] ?? 'Completed',
+                'trx_id' => $response['trxID'] ?? null,
+                'raw_response' => json_encode($response),
+                'seats_id'=>$seat_created->id,
+            ]);
+
+            DB::commit();
+
+            //  Clear session
+            session()->forget(['paymentID', 'invoice', 'booking_data']);
+
             return redirect()->route('front.tour-list')
-                ->with('error', 'Payment was cancelled or failed.');
+                ->with('success', 'Payment successful! Your booking is confirmed.');
 
         } catch (\Exception $e) {
-            Log::error('Bkash callback exception: ' . $e->getMessage());
+            DB::rollBack();
+
+            Log::error('Bkash callback exception', [
+                'error' => $e->getMessage(),
+                'paymentID' => $request->paymentID ?? null
+            ]);
+
             return redirect()->route('front.tour-list')
                 ->with('error', 'Something went wrong with payment verification.');
         }
@@ -378,6 +379,7 @@ class BusController extends Controller
      */
     public function checkout(Request $request)
     {
+
         // Get parameters from the URL
         $bus_id = $request->query('bus_id');
         $package_id = $request->query('package_id');
@@ -401,10 +403,10 @@ class BusController extends Controller
         // Calculate pricing
         $seatPrice = $package->price; // From your URL, each seat is 43
         $subtotal = $total_amount;
-        $vat = $subtotal * 0.05; // 5% VAT
+        $vat = $subtotal * 0; // 0% VAT
         $totalAmount = $subtotal + $vat;
 
-        session('booking_data', [
+        session()->put('booking_data', [
             'bus_id' => $bus_id,
             'package_id' => $package_id,
             'package_name' => $package->name,
@@ -414,7 +416,7 @@ class BusController extends Controller
             'seat_numbers' => $seatNumbers,
             'total_amount' => $totalAmount,
             'vat' => $vat,
-            'subtotal' => $subtotal
+            'subtotal'       => $subtotal
         ]);
 
         // You might want to get these from your database
@@ -437,6 +439,5 @@ class BusController extends Controller
             'endLocation'
         ));
     }
-
 
 }

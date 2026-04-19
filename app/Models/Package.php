@@ -12,4 +12,8 @@ class Package extends Model
     {
         return $this->belongsTo(Bus::class, 'bus_id','id');
     }
+    public function activities()
+    {
+        return $this->hasMany(Activity::class, 'package_id', 'id');
+    }
 }

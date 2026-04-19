@@ -3,6 +3,95 @@
 
 @push('css')
 <style>
+    /* Tour Plan Accordion - Enhanced */
+    .faq-accordion .accordion {
+        border: 1px solid var(--gotur-border-color, #E5E5E5);
+        border-radius: 12px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .faq-accordion .accordion:hover {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        border-color: var(--gotur-base, #63AB45);
+    }
+
+    .faq-accordion .accordion-title {
+        padding: 18px 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: var(--gotur-white, #fff);
+    }
+
+    .faq-accordion .active .accordion-title {
+        background: var(--gotur-gray, #F3F8F6);
+        border-bottom: 1px solid var(--gotur-base, #63AB45);
+    }
+
+    .faq-accordion .accordion-title h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--gotur-black, #1D231F);
+    }
+
+    .faq-accordion .active .accordion-title h4 {
+        color: var(--gotur-base, #63AB45);
+    }
+
+    .faq-accordion .accordion-title__icon {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--gotur-base, #63AB45);
+    }
+
+    .faq-accordion .accordion-title__icon::before {
+        content: '\e918';
+        font-family: 'icomoon';
+        font-size: 12px;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-accordion .active .accordion-title__icon {
+        transform: rotate(90deg);
+        color: var(--gotur-primary, #F7921E);
+    }
+
+    .faq-accordion .accordion-content {
+        display: none;
+        padding: 25px;
+        border-top: 1px solid var(--gotur-border-color, #E5E5E5);
+        background: var(--gotur-white, #fff);
+        animation: accordionSlideDown 0.3s ease;
+    }
+
+    @keyframes accordionSlideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .faq-accordion .accordion-content .inner {
+        color: var(--gotur-text, #595959);
+        line-height: 1.7;
+    }
+
+    .faq-accordion .accordion-content .inner p:last-child {
+        margin-bottom: 0;
+    }
     /* Carousel Image Height Fix */
     .destination-carousel__item {
         position: relative;
@@ -360,58 +449,6 @@
         border-radius: 3px;
     }
 
-    /* Tour Plan Accordion */
-    .faq-accordion .accordion {
-        border: 1px solid var(--gotur-border-color, #E5E5E5);
-        border-radius: 12px;
-        margin-bottom: 15px;
-        overflow: hidden;
-    }
-
-    .faq-accordion .accordion-title {
-        padding: 18px 25px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .faq-accordion .accordion-title h4 {
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .faq-accordion .accordion-title__icon {
-        width: 24px;
-        height: 24px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.3s ease;
-    }
-
-    .faq-accordion .accordion-title__icon::before {
-        content: '\e918';
-        font-family: 'icomoon';
-        font-size: 12px;
-    }
-
-    .faq-accordion .active .accordion-title__icon {
-        transform: rotate(90deg);
-    }
-
-    .faq-accordion .accordion-content {
-        display: none;
-        padding: 0 25px 25px 25px;
-        border-top: 1px solid var(--gotur-border-color, #E5E5E5);
-    }
-
-    .faq-accordion .active .accordion-content {
-        display: block;
-    }
-
     /* Include/Exclude Lists */
     .tour-listing-details__list ul,
     .tour-listing-details__amenities__inner ul {
@@ -702,81 +739,122 @@
 @endsection
 
 @push('js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Price calculation
-        const ticketPrice = {{$tour->amount}};
-        const qtyInput = document.getElementById('quantityField');
-        const totalInput = document.getElementById('totalField');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Price calculation
+            const ticketPrice = {{$tour->amount}};
+            const qtyInput = document.getElementById('quantityField');
+            const totalInput = document.getElementById('totalField');
 
-        if (qtyInput && totalInput) {
-            function calculateTotal() {
-                let qty = parseInt(qtyInput.value) || 0;
-                let total = qty * ticketPrice;
-                totalInput.value = total.toFixed(2);
+            if (qtyInput && totalInput) {
+                function calculateTotal() {
+                    let qty = parseInt(qtyInput.value) || 0;
+                    let total = qty * ticketPrice;
+                    totalInput.value = total.toFixed(2);
 
-                // Highlight effect
-                totalInput.style.backgroundColor = '#e8f5e9';
-                setTimeout(() => {
-                    totalInput.style.backgroundColor = '';
-                }, 200);
+                    // Highlight effect
+                    totalInput.style.backgroundColor = '#e8f5e9';
+                    setTimeout(() => {
+                        totalInput.style.backgroundColor = '';
+                    }, 200);
+                }
+
+                qtyInput.addEventListener('input', calculateTotal);
+                if (qtyInput.value) calculateTotal();
             }
 
-            qtyInput.addEventListener('input', calculateTotal);
-            if (qtyInput.value) calculateTotal();
-        }
+            // Modal functionality
+            const modalOverlay = document.getElementById('modalOverlay');
+            const openBtns = document.querySelectorAll('.open-modal-btn');
+            const closeBtn = document.getElementById('closeModalBtn');
 
-        // Modal functionality
-        const modalOverlay = document.getElementById('modalOverlay');
-        const openBtns = document.querySelectorAll('.open-modal-btn');
-        const closeBtn = document.getElementById('closeModalBtn');
-
-        function openModal() {
-            if (modalOverlay) modalOverlay.classList.add('active');
-            // Set default date (tomorrow)
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dateInput = document.getElementById('dateField');
-            if (dateInput) {
-                dateInput.value = tomorrow.toISOString().split('T')[0];
+            function openModal() {
+                if (modalOverlay) modalOverlay.classList.add('active');
+                // Set default date (tomorrow)
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const dateInput = document.getElementById('dateField');
+                if (dateInput) {
+                    dateInput.value = tomorrow.toISOString().split('T')[0];
+                }
             }
-        }
 
-        function closeModal() {
-            if (modalOverlay) modalOverlay.classList.remove('active');
-        }
+            function closeModal() {
+                if (modalOverlay) modalOverlay.classList.remove('active');
+            }
 
-        openBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openModal();
+            openBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openModal();
+                });
             });
-        });
 
-        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-        if (modalOverlay) {
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) closeModal();
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) closeModal();
+                });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
             });
-        }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
-                closeModal();
+            // Accordion functionality - FIXED
+            const accordionContainer = document.querySelector('.faq-accordion');
+            if (accordionContainer) {
+                const accordions = accordionContainer.querySelectorAll('.accordion');
+
+                accordions.forEach(accordion => {
+                    const title = accordion.querySelector('.accordion-title');
+                    const content = accordion.querySelector('.accordion-content');
+
+                    // Set initial state - only first one open
+                    if (!accordion.classList.contains('active')) {
+                        if (content) {
+                            content.style.display = 'none';
+                        }
+                    } else {
+                        if (content) {
+                            content.style.display = 'block';
+                        }
+                    }
+
+                    // Add click handler
+                    title.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        const isCurrentlyActive = accordion.classList.contains('active');
+
+                        // If this accordion is already active, just close it
+                        if (isCurrentlyActive) {
+                            accordion.classList.remove('active');
+                            if (content) {
+                                content.style.display = 'none';
+                            }
+                        } else {
+                            // Close all other accordions first
+                            accordions.forEach(otherAccordion => {
+                                otherAccordion.classList.remove('active');
+                                const otherContent = otherAccordion.querySelector('.accordion-content');
+                                if (otherContent) {
+                                    otherContent.style.display = 'none';
+                                }
+                            });
+
+                            // Open this accordion
+                            accordion.classList.add('active');
+                            if (content) {
+                                content.style.display = 'block';
+                            }
+                        }
+                    });
+                });
             }
         });
-
-        // Accordion functionality
-        const accordions = document.querySelectorAll('.faq-accordion .accordion');
-        accordions.forEach(accordion => {
-            const title = accordion.querySelector('.accordion-title');
-            title.addEventListener('click', () => {
-                const isActive = accordion.classList.contains('active');
-                accordions.forEach(a => a.classList.remove('active'));
-                if (!isActive) accordion.classList.add('active');
-            });
-        });
-    });
-</script>
+    </script>
 @endpush

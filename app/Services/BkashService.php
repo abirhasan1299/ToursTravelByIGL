@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -237,6 +238,14 @@ class BKashService
             Log::info('bKash payment creation response', ['response' => $responseData]);
 
             if (isset($responseData['bkashURL'], $responseData['paymentID'])) {
+
+                Payment::create([
+                    'user_id' => auth()->id()??"0",
+                    'payment_id' => $responseData['paymentID'],
+                    'invoice_number' => $invoiceNumber,
+                    'amount' => $amount,
+                    'status' => 'pending'
+                ]);
                 return [
                     'success' => true,
                     'paymentID' => $responseData['paymentID'],

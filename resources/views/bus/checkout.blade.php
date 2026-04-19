@@ -608,7 +608,7 @@
         // Calculate prices
         $seatPrice = $selectedSeats[0]['price'] ?? 43;
         $subtotal = $totalAmount;
-        $vat = $subtotal * 0.05;
+        $vat = $subtotal * 0;
         $totalWithVat = $subtotal + $vat;
     @endphp
     <section class="checkout-section">
@@ -771,57 +771,36 @@
                                 </label>
                             </div>
 
-                            {{-- Bkash Details Form --}}
-                            <div class="bkash-details" id="bkashDetails">
-                                <div class="bkash-info">
-                                    <div class="bkash-number">
-                                        017XXXXXXXX
-                                        <small>(Merchant bKash Number)</small>
-                                    </div>
-                                    <p style="font-size: 12px; text-align: center; margin: 0;">
-                                        <i class="fas fa-info-circle"></i> Send the amount to this number and enter the transaction ID below
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label>Transaction ID <span style="color: red;">*</span></label>
-                                    <input type="text" name="transaction_id" id="transactionId" placeholder="Enter bKash transaction ID">
-                                    <small style="font-size: 11px; color: #666;">Example: 8F7G9H2J1K</small>
-                                </div>
-                                <div class="form-group">
-                                    <label>Mobile Number</label>
-                                    <input type="tel" name="bkash_number" id="bkashNumber" placeholder="Enter your bKash number">
-                                </div>
-                            </div>
                         </div>
 
                         {{-- Customer Information --}}
-                        <div class="customer-form">
-                            <div class="method-title" style="margin-top: 0;">Passenger Information</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Full Name <span style="color: red;">*</span></label>
-                                    <input type="text" name="customer_name" required placeholder="Enter your full name">
+                            <div class="customer-form">
+                                <div class="method-title" style="margin-top: 0;">Passenger Information</div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Full Name <span style="color: red;">*</span></label>
+                                        <input type="text" name="customer_name" required placeholder="Enter your full name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email Address <span style="color: red;">*</span></label>
+                                        <input type="email" name="customer_email" required placeholder="your@email.com">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Phone Number <span style="color: red;">*</span></label>
+                                        <input type="tel" name="customer_phone" required placeholder="01XXXXXXXXX">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>NID / Passport (Optional)</label>
+                                        <input type="text" name="customer_nid" placeholder="Enter your NID number">
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Email Address <span style="color: red;">*</span></label>
-                                    <input type="email" name="customer_email" required placeholder="your@email.com">
+                                    <label>Special Requests (Optional)</label>
+                                    <textarea name="special_requests" rows="3" placeholder="Any special requests or requirements?"></textarea>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Phone Number <span style="color: red;">*</span></label>
-                                    <input type="tel" name="customer_phone" required placeholder="01XXXXXXXXX">
-                                </div>
-                                <div class="form-group">
-                                    <label>NID / Passport (Optional)</label>
-                                    <input type="text" name="customer_nid" placeholder="Enter your NID number">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Special Requests (Optional)</label>
-                                <textarea name="special_requests" rows="3" placeholder="Any special requests or requirements?"></textarea>
-                            </div>
-                        </div>
 
                         {{-- Terms & Conditions --}}
                         <div class="terms-checkbox">
@@ -854,17 +833,9 @@
             if (method === 'cod') {
                 codRadio.checked = true;
                 bkashDetails.classList.remove('show');
-
-                // Remove required from bkash fields
-                document.getElementById('transactionId').removeAttribute('required');
-                document.getElementById('bkashNumber').removeAttribute('required');
             } else {
                 bkashRadio.checked = true;
                 bkashDetails.classList.add('show');
-
-                // Add required to bkash fields when selected
-                document.getElementById('transactionId').setAttribute('required', 'required');
-                document.getElementById('bkashNumber').setAttribute('required', 'required');
             }
 
             // Update active state
@@ -882,56 +853,6 @@
             confirmBtn.disabled = !this.checked;
         });
 
-        // Form validation
-        const checkoutForm = document.getElementById('checkoutForm');
-
-        checkoutForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
-            if (paymentMethod === 'bkash') {
-                const transactionId = document.getElementById('transactionId').value;
-                const bkashNumber = document.getElementById('bkashNumber').value;
-
-                if (!transactionId || transactionId.length < 8) {
-                    showAlert('Please enter a valid bKash transaction ID', 'error');
-                    return;
-                }
-
-                if (!bkashNumber || bkashNumber.length < 11) {
-                    showAlert('Please enter a valid bKash mobile number', 'error');
-                    return;
-                }
-            }
-
-            // Validate customer information
-            const customerName = document.querySelector('input[name="customer_name"]').value;
-            const customerEmail = document.querySelector('input[name="customer_email"]').value;
-            const customerPhone = document.querySelector('input[name="customer_phone"]').value;
-
-            if (!customerName) {
-                showAlert('Please enter your full name', 'error');
-                return;
-            }
-
-            if (!customerEmail || !customerEmail.includes('@')) {
-                showAlert('Please enter a valid email address', 'error');
-                return;
-            }
-
-            if (!customerPhone || customerPhone.length < 11) {
-                showAlert('Please enter a valid phone number', 'error');
-                return;
-            }
-
-            // Show loading state
-            confirmBtn.disabled = true;
-            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-
-            // Submit the form
-            this.submit();
-        });
 
         // Show alert message
         function showAlert(message, type = 'error') {
