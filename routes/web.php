@@ -62,8 +62,14 @@ Route::controller(BusController::class)->group(function () {
 
     Route::get('bus/checkout', 'checkout')->name('bus.checkout');
 
+    Route::get('bus/payment/info/{id}', 'paymentInfo')->name('bus.payment.info');
+
     Route::post('bus/booking', 'booking')->name('bus.store');
 
+    Route::post('bus/booking/otp', 'OtpForCod')->name('bus.otp.cod');
+
+    Route::post('bus/booking/otp/verification', 'OtpVerify')->name('bus.otp.cod.verify');
+    Route::delete('bus/booking/cancel/{id}', 'BookingCancel')->name('bus.booking.cancel');
 
     Route::match(['get', 'post'], '/bkash/pay', 'Bkashpay')->name('bkash.pay');
 

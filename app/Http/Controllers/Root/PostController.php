@@ -266,7 +266,7 @@ class PostController extends Controller
         return view('admin.post.person',compact('data','collection','pending'));
     }
 
-        public static function generateTrxId()
+    public static function generateTrxId()
     {
         do {
             $trxId = strtoupper(Str::random(10));
@@ -275,7 +275,7 @@ class PostController extends Controller
         return $trxId;
     }
 
-        public function CashOnDelivery(Request $request,$id)
+    public function CashOnDelivery(Request $request,$id)
     {
         try{
             DB::beginTransaction();
@@ -293,7 +293,7 @@ class PostController extends Controller
                 'status' => "Completed",
                 'trx_id' => self::generateTrxId(),
             ]);
-            $message = "✅ Booking Confirmed
+            $message = "Booking Confirmed
                         Amount: BDT {$seat->total_amount}
                         Transaction ID: {$payment->trx_id}
                         Seat: {$seat->seat_code}
@@ -311,7 +311,5 @@ class PostController extends Controller
         }
 
     }
-
-
 
 }

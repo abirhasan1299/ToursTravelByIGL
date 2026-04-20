@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Bus;
 
 use App\Http\Controllers\Controller;
+use App\Mail\otpmail;
 use App\Models\Booking;
 use App\Models\Bus;
 use App\Models\Package;
@@ -11,7 +12,9 @@ use App\Models\Seat;
 use App\Services\BkashService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Log;
 
@@ -138,10 +141,11 @@ class BusController extends Controller
      * Bkash Checkout Function
      * ====================================
      */
-    public function Bkashpay(Request $request, BkashService $bkashService)
+    public function Bkashpay()
     {
 
         try {
+            $bkashService =  new BkashService();
             // Retrieve the data we saved in the checkout method
             $bookingData = session('booking_data');
 
@@ -149,26 +153,15 @@ class BusController extends Controller
                 return redirect()->route('front.tour-list')->with('error', 'Checkout session expired. Please select seats again.');
             }
 
-            session()->put('customer', [
-                'full_name'      => $request->input('customer_name'),
-                'email'          => $request->input('customer_email'),
-                'phone'          => $request->input('customer_phone'),
-                'nid'            => $request->input('customer_nid'),
-                'any_request'    => $request->input('special_requests'),
-                'method' => $request->input('payment_method'),
-            ]);
-
             //====IF COD METHOD APPLYING================
 
-            if($request->input('payment_method')=='cod')
+            if(session('customer.method')=='cod')
             {
-                // Ensure it's array
+                // Ensure it is array
                 if (is_object($bookingData)) {
                     $bookingData = (array) $bookingData;
                 }
-
                 DB::beginTransaction();
-
                 //Lock existing bookings
                 $existingBookings = Seat::where('bus_id', $bookingData['bus_id'])
                     ->where('package_id', $bookingData['package_id'])
@@ -215,14 +208,15 @@ class BusController extends Controller
                     'user_id' => Auth::user()->id??'0',
                     'seat_no'=>json_encode($bookingData['seat_numbers'])??'null',
                     'total_amount'=>$bookingData['total_amount']??'null',
-                    'full_name'      => $request->input('customer_name'),
-                    'email'          => $request->input('customer_email'),
-                    'phone'          => $request->input('customer_phone'),
-                    'nid'            => $request->input('customer_nid'),
-                    'any_request'    => $request->input('special_requests'),
-                    'method' => $request->input('payment_method'),
+                    'full_name'      => session('customer.full_name'),
+                    'email'          => session('customer.email'),
+                    'phone'          => session('customer.phone'),
+                    'nid'            => session('customer.nid'),
+                    'any_request'    => session('customer.any_request'),
+                    'method' => 'COD',
                 ]);
                 DB::commit();
+                session()->flush();
                 return redirect()->route('front.tour-list')->with('success', 'Package  booked successfully ! ');
             }
 
@@ -340,7 +334,7 @@ class BusController extends Controller
                 'phone'          =>  $customer['phone'],
                 'nid'            =>  $customer['nid'],
                 'any_request'    =>  $customer['any_request'],
-                'method' =>  $customer['method']
+                'method' => "Bkash"
             ]);
 
             //  (Optional but recommended) update payment table
@@ -354,7 +348,7 @@ class BusController extends Controller
             DB::commit();
 
             //  Clear session
-            session()->forget(['paymentID', 'invoice', 'booking_data']);
+            session()->flush();
 
             return redirect()->route('front.tour-list')
                 ->with('success', 'Payment successful! Your booking is confirmed.');
@@ -438,6 +432,72 @@ class BusController extends Controller
             'startLocation',
             'endLocation'
         ));
+    }
+
+    public function OtpForCod(Request $request)
+    {
+        try{
+            $otp = rand(10000000, 99999999);
+
+            session()->put('customer', [
+                'full_name'      => $request->input('customer_name'),
+                'email'          => $request->input('customer_email'),
+                'phone'          => $request->input('customer_phone'),
+                'nid'            => $request->input('customer_nid'),
+                'any_request'    => $request->input('special_requests'),
+                'method' => $request->input('payment_method'),
+                'otp' => $otp,
+                'otp_expire_at'=> now()->addMinutes(4)
+            ]);
+
+            Log::info("Bus Seat Booking OTP:". $otp);
+
+            Mail::to($request->input('customer_email'))->send(new otpmail($otp));
+
+            return view('bus.cod-otp')->with('success', 'OTP sent to your email.');
+
+        }catch (\Exception $e){
+            Log::error("Bus OTP Exception: ". $e->getMessage());
+            return back()->with('error', 'Something went wrong.');
+        }
+    }
+
+    public function OtpVerify(Request $request)
+    {
+
+       if ($request->otp==session('customer.otp'))
+       {
+           return redirect()->route('bkash.pay');
+       }
+       return back()->with('error', 'Invalid OTP');
+    }
+
+    public function BookingCancel($id)
+    {
+        try{
+            $data = Seat::findOrFail($id);
+            $data->delete();
+            return back()->with('success', 'Booking cancelled successfully.');
+
+        }catch (\Exception $e){
+            Log::error("Bus Seat Cancel Exception: ". $e->getMessage());
+            return back()->with('error', 'Something went wrong.');
+        }
+    }
+
+    public function paymentInfo($id)
+    {
+        try{
+            $decode_id =Crypt::decryptString($id);
+            $booking = Seat::findOrFail($decode_id);
+            $transaction = Payment::where('seats_id', $decode_id)->first();
+
+            return view('admin.post.information', compact('booking', 'transaction'));
+
+        }catch (\Exception $e){
+            Log::error("Bus Payment Info Exception: ". $e->getMessage());
+            return back()->with('error', 'Something went wrong.');
+        }
     }
 
 }

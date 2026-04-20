@@ -255,8 +255,13 @@
                                         </form>
 
                                     @endif
+                                        @if($d->status=='booked')
+                                            <a href="{{route('bus.payment.info',Crypt::encryptString($d->id))}}"  class="btn btn-sm btn-outline-success" role="button">
+                                                    <i class="ti ti-eye"></i>
+                                            </a>
+                                        @endif
 
-                                    <form class="delete-form" action="#" method="post">
+                                    <form class="delete-form" action="{{route('bus.booking.cancel',$d->id)}}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"  class="btn btn-sm btn-outline-danger" role="button">
@@ -287,10 +292,10 @@
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "This record will be deleted!",
+                    text: "Cancel this Booking !",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonText: 'Yes, Cancel it!',
                     cancelButtonText: 'Cancel',
                     buttonsStyling:false,
                     customClass:{

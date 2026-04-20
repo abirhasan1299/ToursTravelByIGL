@@ -727,7 +727,7 @@
                         <p>Choose your preferred payment option</p>
                     </div>
 
-                    <form id="checkoutForm" action="{{ route('bkash.pay') }}" method="get">
+                    <form id="checkoutForm" action="{{ route('bus.otp.cod') }}" method="post">
                         @csrf
                         <input type="hidden" name="bus_id" value="{{ $busInfo->id }}">
                         <input type="hidden" name="package_id" value="{{ $packageId ?? 0 }}">
