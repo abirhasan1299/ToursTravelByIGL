@@ -16,9 +16,13 @@ class Bkash_Confirm_Booking extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
+    public $booking;
+    public $transaction;
 
+    public function __construct($booking,$transaction)
+    {
+        $this->booking = $booking;
+        $this->transaction = $transaction;
     }
 
     /**
@@ -37,7 +41,7 @@ class Bkash_Confirm_Booking extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.bkashConfirm',
         );
     }
 

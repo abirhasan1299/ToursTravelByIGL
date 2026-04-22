@@ -493,15 +493,21 @@
                     <div class="summary-box" style="background: #f8fafc; border-radius: 12px; padding: 15px; margin: 20px 0;">
                         <div class="summary-item" style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px;">
                             <span class="summary-label" style="color: #64748b; font-weight: 500;">Package ID:</span>
-                            <span class="summary-value" style="color: #1e293b; font-weight: 700;">{{ $booking->package_id ?? 'N/A' }}</span>
+                            <span class="summary-value" style="color: #1e293b; font-weight: 700;">{{ $booking->package->title ?? 'N/A' }}</span>
                         </div>
+
                         <div class="summary-item" style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px;">
-                            <span class="summary-label" style="color: #64748b; font-weight: 500;">Bus ID:</span>
-                            <span class="summary-value" style="color: #1e293b; font-weight: 700;">{{ $booking->bus_id ?? 'N/A' }}</span>
+                            <span class="summary-label" style="color: #64748b; font-weight: 500;">Destination</span>
+                            <span class="summary-value" style="color: #1e293b; font-weight: 700;">{{ $booking->package->start_location." to ".  $booking->package->end_location ?? 'N/A' }}</span>
                         </div>
+
                         <div class="summary-item" style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px;">
                             <span class="summary-label" style="color: #64748b; font-weight: 500;">Payment Method:</span>
                             <span class="summary-value" style="color: #f59e0b; font-weight: 700;">Cash on Delivery (COD)</span>
+                        </div>
+                        <div class="summary-item" style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px;">
+                            <span class="summary-label" style="color: #64748b; font-weight: 500;">Pyment Status: </span>
+                            <span class="summary-value" style="color: #f59e0b; font-weight: 700;">Pending</span>
                         </div>
                         @if($booking->is_coupon)
                             <div class="summary-item" style="display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px;">
@@ -515,7 +521,7 @@
                     <div class="amount-box" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 25px; border-radius: 16px; text-align: center; margin: 20px 0; border: 2px dashed #f59e0b;">
                         <div class="amount-label" style="font-size: 14px; color: #92400e; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Amount to Pay (Cash on Delivery)</div>
                         <div class="amount-value" style="font-size: 42px; font-weight: 800; color: #d97706; letter-spacing: -1px;">
-                            {{ $booking->currency ?? 'USD' }} {{ number_format($booking->total_amount ?? 0, 2) }}
+                            {{ $booking->currency ?? 'BDT' }} {{ number_format($booking->total_amount ?? 0, 2) }}
                         </div>
                         <div class="payment-note" style="font-size: 13px; color: #78350f; margin-top: 10px; font-weight: 500;">
                             💵 Please pay this amount in cash at the time of boarding
@@ -550,44 +556,8 @@
                         </div>
                     @endif
 
-                    <!-- Action Button -->
-                    <div class="text-center" style="text-align: center;">
-                        <a href="{{ url('/my-bookings/' . $booking->id) }}" class="btn" style="display: inline-block; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; text-decoration: none; padding: 14px 35px; border-radius: 50px; font-weight: 700; font-size: 14px; margin: 15px 0; text-align: center; box-shadow: 0 4px 12px rgba(245,158,11,0.3);">
-                            🎟️ View My Booking Details
-                        </a>
-                    </div>
-
-                    <!-- Need Help Box -->
-                    <div class="support-box" style="background: #eff6ff; border-radius: 12px; padding: 15px; text-align: center; margin: 20px 0;">
-                        <div style="font-size: 13px; color: #1e40af;">
-                            <strong>❓ Need Help?</strong> Contact our support team for any assistance
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <a href="mailto:support@example.com" style="color: #3b82f6; text-decoration: none; font-size: 13px;">📧 support@example.com</a>
-                            <span style="color: #cbd5e1; margin: 0 10px;">|</span>
-                            <a href="tel:+1234567890" style="color: #3b82f6; text-decoration: none; font-size: 13px;">📞 +1 234 567 890</a>
-                        </div>
-                    </div>
-
                 </div>
 
-                <!-- Footer -->
-                <div class="email-footer" style="background: #1e293b; padding: 30px; text-align: center; color: white;">
-                    <div class="footer-text" style="color: #94a3b8; font-size: 12px; margin-bottom: 10px;">
-                        Thank you for choosing us!
-                    </div>
-                    <div class="footer-links" style="margin: 15px 0;">
-                        <a href="#" style="color: #f59e0b; text-decoration: none; font-size: 13px; margin: 0 10px;">Terms & Conditions</a>
-                        <a href="#" style="color: #f59e0b; text-decoration: none; font-size: 13px; margin: 0 10px;">Privacy Policy</a>
-                        <a href="#" style="color: #f59e0b; text-decoration: none; font-size: 13px; margin: 0 10px;">Support</a>
-                    </div>
-                    <div class="footer-text" style="color: #94a3b8; font-size: 12px; margin-bottom: 10px;">
-                        &copy; {{ date('Y') }} Your Company Name. All rights reserved.
-                    </div>
-                    <div class="footer-text" style="color: #64748b; font-size: 11px;">
-                        This is a system generated email, please do not reply.
-                    </div>
-                </div>
 
             </div>
         </td>

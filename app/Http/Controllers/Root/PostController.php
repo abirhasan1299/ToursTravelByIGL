@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Bkash_Confirm_Booking;
 use App\Models\Activity;
 use App\Models\Bus;
 use App\Models\Package;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -293,15 +295,11 @@ class PostController extends Controller
                 'status' => "Completed",
                 'trx_id' => self::generateTrxId(),
             ]);
-            $message = "Booking Confirmed
-                        Amount: BDT {$seat->total_amount}
-                        Transaction ID: {$payment->trx_id}
-                        Seat: {$seat->seat_code}
-                     (IGL TOURS & TRAVELS)";
-
-            sendOtp($seat->phone,$message);
 
             DB::commit();
+
+            Mail::to($seat->email)->send(new Bkash_Confirm_Booking($seat,$payment));
+
             return redirect()->route('admin.post.index')->with('success','Payment & Booking Done');
 
         }catch (\Exception $e){

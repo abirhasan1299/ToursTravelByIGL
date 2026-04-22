@@ -64,7 +64,6 @@
                         © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
                     </td>
                 </tr>
-
             </table>
 
         </td>

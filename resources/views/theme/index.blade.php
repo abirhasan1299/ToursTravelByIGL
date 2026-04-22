@@ -386,6 +386,9 @@
             background: linear-gradient(180deg, #ffffff 0%, #f8faf7 100%);
             position: relative;
             overflow: hidden;
+            /* SHADOW FOR SECTION SEPARATION */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 8px rgba(0, 0, 0, 0.03);
+            border-radius: 0;
         }
 
         .current-tours::before {
@@ -723,8 +726,57 @@
             border-radius: 4px;
         }
 
-        /* Responsive */
+        /* ===== SECTION SHADOW STYLES ===== */
+        /* Each major section gets a soft outer shadow to separate from container white space */
+        .section-space, .section-space-bottom, .about-two, .cta-five, .why-choose-one {
+            position: relative;
+        }
+
+        /* Current Tours shadow */
+        .current-tours {
+            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+            border-radius: 0;
+        }
+
+        /* About Section shadow */
+        .about-two {
+            background: #ffffff;
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+            margin-top: 0;
+            padding: 80px 0;
+            border-radius: 0;
+        }
+
+        /* CTA Section - also shadow for depth */
+        .cta-five {
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Why Choose Us shadow */
+        .why-choose-one {
+            background: #ffffff;
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.02);
+            border-radius: 0;
+        }
+
+        /* Extra consistency for container inner spacing */
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Ensure hero section doesn't get unwanted shadow overlap */
+        .hero-section {
+            box-shadow: none;
+        }
+
+        /* Responsive touch */
         @media (max-width: 768px) {
+            .about-two, .current-tours, .why-choose-one {
+                box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.05);
+            }
             .current-tours {
                 padding-top: 50px;
                 padding-bottom: 50px;
@@ -1011,7 +1063,7 @@
                         </div>
                     </div>
                 @empty
-                    <h4>No Tourse Exist</h4>
+                    <h4>No Tours Exist</h4>
                 @endforelse
             </div>
 
@@ -1027,6 +1079,7 @@
 
     <!-- About Section -->
     <section class="about-two about-two--two section-space"  id="about" >
+        <div class="container">
             <div class="row gutter-y-40">
                 <div class="col-lg-6">
                     <div class="about-two__thumb wow fadeInLeft" data-wow-duration='1500ms' data-wow-delay='300ms'>
@@ -1102,7 +1155,7 @@
                     </div>
                 </div>
             </div>
-
+        </div>
     </section>
 
     <!-- CTA Section -->

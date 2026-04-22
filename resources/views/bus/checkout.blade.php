@@ -881,6 +881,27 @@
         }
     </script>
 
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Message',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#126600'
+            });
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Message',
+                text: '{{ session('error') }}',
+                confirmButtonColor: 'rgba(238,11,45,0.76)'
+            });
+        </script>
+    @endif
+
     @if ($errors->any())
         <script>
             Swal.fire({

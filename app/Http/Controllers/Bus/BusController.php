@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Bus;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Bkash_Confirm_Booking;
+use App\Mail\CancelRequest;
+use App\Mail\Cash_On_Delivery_Confirm_Booking;
 use App\Mail\otpmail;
 use App\Models\Booking;
 use App\Models\Bus;
@@ -200,7 +203,7 @@ class BusController extends Controller
                     );
                 }
 
-                Seat::create([
+                $booking = Seat::create([
                     'bus_id' => $bookingData['bus_id'],
                     'package_id' => $bookingData['package_id'],
                     'seat_code' => json_encode($selectedSeatCodes),
@@ -215,6 +218,9 @@ class BusController extends Controller
                     'any_request'    => session('customer.any_request'),
                     'method' => 'COD',
                 ]);
+
+                Mail::to($booking->email)->send(new Cash_On_Delivery_Confirm_Booking($booking));
+
                 DB::commit();
                 session()->flush();
                 return redirect()->route('front.tour-list')->with('success', 'Package  booked successfully ! ');
@@ -238,6 +244,7 @@ class BusController extends Controller
             return back()->with('error', $response['error'] ?? 'Payment initialization failed');
 
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Bkashpay exception: ' . $e->getMessage());
             return back()->with('error', 'Something went wrong. Please try again.');
         }
@@ -338,7 +345,7 @@ class BusController extends Controller
             ]);
 
             //  (Optional but recommended) update payment table
-            Payment::where('payment_id', $paymentID)->update([
+           $transaction =  Payment::where('payment_id', $paymentID)->update([
                 'status' => $response['transactionStatus'] ?? 'Completed',
                 'trx_id' => $response['trxID'] ?? null,
                 'raw_response' => json_encode($response),
@@ -346,6 +353,8 @@ class BusController extends Controller
             ]);
 
             DB::commit();
+
+            Mail::to($customer['email'])->send(new Bkash_Confirm_Booking($seat_created, $transaction));
 
             //  Clear session
             session()->flush();
@@ -469,17 +478,23 @@ class BusController extends Controller
        {
            return redirect()->route('bkash.pay');
        }
-       return back()->with('error', 'Invalid OTP');
+
+       return redirect()->back()->with('error', 'Invalid OTP');
     }
 
     public function BookingCancel($id)
     {
         try{
+            DB::beginTransaction();
             $data = Seat::findOrFail($id);
+            Mail::to($data->email)->send(new CancelRequest($data));
             $data->delete();
+            DB::commit();
+
             return back()->with('success', 'Booking cancelled successfully.');
 
         }catch (\Exception $e){
+            DB::rollBack();
             Log::error("Bus Seat Cancel Exception: ". $e->getMessage());
             return back()->with('error', 'Something went wrong.');
         }

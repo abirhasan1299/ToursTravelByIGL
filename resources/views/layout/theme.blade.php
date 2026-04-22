@@ -808,17 +808,6 @@
                         <div class="footer-widget footer-widget--contact">
                             <h2 class="footer-widget__title">Newsletter</h2>
                             <p class="footer-widget__contact-text">Subscribe to get exclusive deals and travel inspiration straight to your inbox.</p>
-                            <form action="#" data-url="MAILCHIMP_FORM_URL" class="footer-widget__newsletter mc-form">
-                                <div class="form-group__form">
-                                    <input type="email" name="EMAIL" placeholder="Your email address">
-                                    <button type="submit" class="gotur-btn"><i class="fas fa-paper-plane"></i></button>
-                                </div>
-                                <div class="form-group__check">
-                                    <input type="checkbox" name="checkbox" id="check">
-                                    <label for="check">I agree to the <a href="{{route('front.faq')}}">Privacy Policy</a></label>
-                                </div>
-                            </form>
-                            <div class="mc-form__response"></div>
                         </div>
                     </div>
                 </div>
@@ -838,7 +827,11 @@
                         &copy; Copyright <span class="dynamic-year"></span> {{settings()->app_name}}. All rights reserved.
                     </p>
                     <div class="main-footer__bottom__pyment">
-                        Payments Methods
+                        Payment Methods
+                        <br>
+                        <a target="_blank" href="https://www.sslcommerz.com/" title="SSLCommerz" alt="SSLCommerz">
+                            <img style="width:600px;filter:none !important; -webkit-filter:none !important;" src="https://securepay.sslcommerz.com/public/image/SSLCommerz-Pay-With-logo-All-Size-03.png" />
+                        </a>
                     </div>
                 </div>
             </div>

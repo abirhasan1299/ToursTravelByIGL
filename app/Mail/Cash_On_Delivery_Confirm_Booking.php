@@ -16,8 +16,8 @@ class Cash_On_Delivery_Confirm_Booking extends Mailable
     /**
      * Create a new message instance.
      */
-    public array $booking;
-    public function __construct(array $booking)
+    public  $booking;
+    public function __construct( $booking)
     {
         $this->booking = $booking;
     }

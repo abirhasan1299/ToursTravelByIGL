@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Confirmation - {{ $booking->invoice_number ?? '#' . $booking->id }}</title>
+    <title>Booking Confirmation - {{ $transaction->invoice_number ?? '#' . $booking->id }}</title>
     <style>
         /* Email Client Safe Styles */
         * {
@@ -362,13 +362,6 @@
                         </div>
 
                         <div class="info-row" style="display: flex; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
-                            <div class="info-label" style="width: 120px; font-weight: 600; color: #475569; font-size: 13px;">Invoice No:</div>
-                            <div class="info-value" style="flex: 1; color: #1e293b; font-size: 14px; font-weight: 500;">
-                                {{ $transaction->invoice_number ?? '#' . $booking->id }}
-                            </div>
-                        </div>
-
-                        <div class="info-row" style="display: flex; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
                             <div class="info-label" style="width: 120px; font-weight: 600; color: #475569; font-size: 13px;">Booking Date:</div>
                             <div class="info-value" style="flex: 1; color: #1e293b; font-size: 14px; font-weight: 500;">
                                 {{ \Carbon\Carbon::parse($booking->created_at)->format('d F Y, h:i A') }}
@@ -442,10 +435,10 @@
                     <div class="amount-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 16px; text-align: center; margin: 20px 0;">
                         <div class="amount-label" style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">Total Amount Paid</div>
                         <div class="amount-value" style="font-size: 36px; font-weight: 800; letter-spacing: -1px;">
-                            {{ $transaction->currency ?? 'USD' }} {{ number_format($booking->total_amount ?? 0, 2) }}
+                            {{ $transaction->currency ?? 'BDT' }} {{ number_format($booking->total_amount ?? 0, 2) }}
                         </div>
                         <div class="amount-currency" style="font-size: 18px; font-weight: 600; margin-top: 5px;">
-                            Payment Method: {{ ucfirst($booking->method ?? 'N/A') }}
+                            Payment Method: {{ ucfirst($booking->method ?? 'Bkash') }}
                         </div>
                     </div>
 
@@ -539,12 +532,6 @@
                         </div>
                     </div>
 
-                    <!-- Action Button -->
-                    <div class="text-center" style="text-align: center;">
-                        <a href="{{ url('/my-bookings/' . $booking->id) }}" class="btn" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 600; font-size: 14px; margin: 20px 0; text-align: center;">
-                            🎟️ View My Booking
-                        </a>
-                    </div>
 
                     <!-- Note -->
                     <div style="background: #fefce8; border-left: 4px solid #eab308; padding: 15px; border-radius: 8px; margin: 20px 0;">
@@ -561,17 +548,12 @@
                         Need help? Contact our support team
                     </div>
                     <div style="margin: 10px 0;">
-                        <a href="mailto:support@example.com" style="color: #667eea; text-decoration: none; font-size: 14px;">📧 support@example.com</a>
+                        <a href="mailto:support@example.com" style="color: #667eea; text-decoration: none; font-size: 14px;">📧 info@igltour.com</a>
                         <span style="color: #cbd5e1; margin: 0 10px;">|</span>
-                        <a href="tel:+1234567890" style="color: #667eea; text-decoration: none; font-size: 14px;">📞 +1 234 567 890</a>
-                    </div>
-                    <div class="social-links" style="margin: 15px 0;">
-                        <a href="#" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 18px;">📘</a>
-                        <a href="#" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 18px;">📷</a>
-                        <a href="#" style="color: #667eea; text-decoration: none; margin: 0 10px; font-size: 18px;">🐦</a>
+                        <a href="tel:+01958666999" style="color: #667eea; text-decoration: none; font-size: 14px;">📞 +88 01958666999</a>
                     </div>
                     <div class="footer-text" style="color: #94a3b8; font-size: 12px; margin-bottom: 10px;">
-                        &copy; {{ date('Y') }} Your Company Name. All rights reserved.
+                        &copy; {{ date('Y') }} {{config('app.name')}}. All rights reserved.
                     </div>
                     <div class="footer-text" style="color: #cbd5e1; font-size: 11px;">
                         This is an automated message, please do not reply directly to this email.
