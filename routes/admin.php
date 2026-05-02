@@ -1,12 +1,13 @@
 <?php
 
+
+use App\Http\Controllers\Root\GalleryController;
 use App\Http\Controllers\Root\BookingController;
 use App\Http\Controllers\Bus\BusController;
 use App\Http\Controllers\Root\CompanyInfo;
 use App\Http\Controllers\Root\DestinationController;
 use App\Http\Controllers\Root\FacilityController;
 use App\Http\Controllers\Root\FaqController;
-use App\Http\Controllers\Root\GalleryController;
 use App\Http\Controllers\Root\PostController;
 use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
@@ -67,11 +68,10 @@ Route::delete('seo/destroy/{id}',[SeoController::class,'destroy'])->name('seo.de
     |
 */
 
-Route::get('gallery',[GalleryController::class,'index'])->name('gallery');
-
-Route::post('gallery/store',[GalleryController::class,'store'])->name('gallery.store');
-
-Route::delete('gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
+Route::post('/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
+Route::delete('/gallery/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+Route::post('/gallery/batch-destroy', [GalleryController::class, 'batchDestroy'])->name('gallery.batch-destroy');
 
 Route::get('contacts/',[FaqController::class,'ContactList'])->name('contacts.list');
 

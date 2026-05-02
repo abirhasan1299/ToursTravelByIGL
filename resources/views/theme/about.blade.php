@@ -57,9 +57,7 @@
                 <div class="cta-two__thumb__item">
                     <img src="{{asset('assets/images/resources/cta-man-1-1.png')}}" alt="cta image">
                 </div><!-- /.cta-two__thumb__item -->
-                <div class="cta-two__thumb__popup">
-                    <img src="{{asset('assets/images/shapes/cta-1-1-popup.png')}}" alt="cta image">
-                </div><!-- /.cta-two__thumb__popup -->
+
                 <div class="cta-two__thumb__element"></div><!-- /.cta-two__thumb__element -->
             </div><!-- /.cta-two__thumb -->
             <div class="cta-two__element">
@@ -76,7 +74,7 @@
                                 <img src="{{asset('assets/images/about/about-1-1.jpg')}}" alt="">
                             </div><!-- /.about-one__thumb__item -->
                             <div class="about-one__thumb__item-small  ">
-                                <img src="{{asset('assets/images/about/about-s-1-1.jpg')}}" alt="gotur image">
+                                <img style="width: 200px;" src="{{asset('assets/images/about/about-s-8-1.jpg')}}" alt="gotur image">
                             </div><!-- /.about-one__thumb__item -->
                             <div class="about-one__thumb__item-popup">
                                 <img src="{{asset('assets/images/shapes/about-1-3.png')}}" alt="gotur image">
@@ -119,7 +117,7 @@
                                     </div><!-- /.about-one__button__call__icon -->
                                     <div class="about-one__button__call__content">
                                         <span>Call Us Now</span>
-                                        <a href="tel:+208-555-0112">+208-555-0112</a>
+                                        <a href="tel:+208-555-0112">{{env('PHONE_NUMBER')}}</a>
                                     </div><!-- /.about-one__button__call__content -->
                                 </div><!-- /.about-one__button__call -->
                             </div><!-- /.about-one__button -->

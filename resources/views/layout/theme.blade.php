@@ -65,16 +65,31 @@
 
     <style>
         /* ============================================
-           HEADER - FULL WIDTH WITH CONSTRAINED CONTENT
+           HEADER — STICKY + FULL WIDTH
            ============================================ */
 
         .main-header {
             width: 100% !important;
             max-width: none !important;
             background: #ffffff !important;
-            position: relative;
-            box-shadow: 0 1px 10px rgba(0,0,0,0.05);
-            z-index: 1000;
+            /* Sticky always visible */
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 9999 !important;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: box-shadow 0.3s ease, padding 0.3s ease;
+        }
+
+        /* Scrolled state — tighter, stronger shadow */
+        .main-header.scrolled {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13) !important;
+        }
+
+        /* Push page content below fixed header */
+        .page-wrapper {
+            padding-top: 88px;
         }
 
         .main-header .container-fluid {
@@ -93,31 +108,34 @@
             width: 100%;
             flex-wrap: nowrap;
             gap: 10px;
+            height: 72px;
+            transition: height 0.3s ease;
         }
 
-        .main-header__logo {
-            flex-shrink: 0;
+        .main-header.scrolled .main-header__inner {
+            height: 60px;
         }
+
+        .main-header__logo { flex-shrink: 0; }
 
         .main-header__logo img {
-            max-height: 70px !important;
-            width: 180px;
+            max-height: 60px !important;
+            width: auto;
             transition: all 0.3s ease;
         }
 
-        .sticky-header--normal.sticky-header--fixed .main-header__logo img {
-            max-height: 55px !important;
+        .main-header.scrolled .main-header__logo img {
+            max-height: 46px !important;
         }
 
         /* ============================================
-           NAV WRAPPER & MENU - TIGHTER GAPS
+           DESKTOP NAV
            ============================================ */
 
         .main-header__nav-wrapper {
             flex: 1;
             display: flex;
             justify-content: flex-end;
-            margin: 0;
             overflow: visible;
         }
 
@@ -128,7 +146,6 @@
             width: 100%;
         }
 
-        /* Single definition for menu list - tight gap */
         .main-menu__list {
             display: flex;
             align-items: center;
@@ -136,7 +153,7 @@
             padding: 0;
             list-style: none;
             flex-wrap: nowrap;
-            gap: 0; /* no gap - using padding on <a> only */
+            gap: 2px;
         }
 
         .main-menu__list > li {
@@ -147,47 +164,64 @@
         }
 
         .main-menu__list > li > a {
-            padding: 8px 9px !important;
-            font-size: 13.5px !important;
+            padding: 6px 11px !important;
+            font-size: 14px !important;
             font-weight: 500 !important;
+            color: #374151 !important;
             display: inline-block;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .main-menu__list > li > a:hover,
+        .main-menu__list > li.current > a {
+            color: #63AB45 !important;
+            background: rgba(99,171,69,0.08);
         }
 
         /* ============================================
-           AUTH ITEM - INLINE WITH MENU, FIXED WIDTH
+           AUTH ITEM
            ============================================ */
 
         .main-menu__list > li.nav-auth-item {
             flex-shrink: 0;
-            position: relative; /* scopes dropdown positioning */
-            margin-left: 6px;
+            position: relative;
+            margin-left: 8px;
         }
 
-        /* Login button */
         .main-menu__list > li.nav-auth-item .gotur-btn.main-header__btn {
-            padding: 8px 16px !important;
-            font-size: 13px !important;
+            padding: 9px 20px !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
             border-radius: 50px !important;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: var(--gotur-base);
-            color: #FFFFFF;
+            gap: 7px;
+            background: #63AB45;
+            color: #ffffff !important;
             text-decoration: none;
+            box-shadow: 0 3px 12px rgba(99,171,69,0.35);
+            transition: all 0.25s ease;
+        }
 
+        .main-menu__list > li.nav-auth-item .gotur-btn.main-header__btn:hover {
+            background: #4f9234;
+            box-shadow: 0 5px 18px rgba(99,171,69,0.45);
+            transform: translateY(-1px);
         }
 
         /* User avatar */
         .user-avatar {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--gotur-base, #63AB45) 0%, #4f9234 100%);
+            background: linear-gradient(135deg, #63AB45 0%, #4f9234 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 2px solid rgba(99, 171, 69, 0.2);
+            border: 2.5px solid rgba(99,171,69,0.25);
             overflow: hidden;
             flex-shrink: 0;
             transition: all 0.3s ease;
@@ -195,111 +229,92 @@
 
         .user-avatar:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(99, 171, 69, 0.3);
+            box-shadow: 0 6px 18px rgba(99,171,69,0.35);
+            border-color: #63AB45;
         }
 
-        .user-avatar i {
-            color: #ffffff;
-            font-size: 17px;
-        }
+        .user-avatar i  { color: #fff; font-size: 17px; }
+        .user-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /* Dropdown - anchored to .nav-auth-item (the <li>) */
+        /* Desktop dropdown */
         .user-dropdown-menu {
             position: absolute;
-            top: calc(100% + 12px);
+            top: calc(100% + 14px);
             right: 0;
-            width: 280px;
+            width: 285px;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.14);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1001;
-            border: 1px solid rgba(99, 171, 69, 0.1);
+            transform: translateY(-8px) scale(0.97);
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            z-index: 10001;
+            border: 1px solid rgba(99,171,69,0.12);
         }
 
         .nav-auth-item.active .user-dropdown-menu {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .dropdown-header {
-            padding: 20px;
+            padding: 18px 20px;
             border-bottom: 1px solid #E5E7EB;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .dropdown-header .user-avatar {
-            width: 50px;
-            height: 50px;
-        }
+        .dropdown-header .user-avatar { width: 48px; height: 48px; }
 
         .dropdown-user-info h4 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            color: var(--gotur-black, #1D231F);
-            margin-bottom: 4px;
+            color: #1D231F;
+            margin-bottom: 3px;
         }
 
         .dropdown-user-info p {
             font-size: 12px;
-            color: var(--gotur-text, #595959);
+            color: #6b7280;
             margin: 0;
         }
 
-        .dropdown-items {
-            padding: 10px 0;
-        }
+        .dropdown-items { padding: 8px 0; }
 
         .dropdown-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 20px;
-            color: var(--gotur-text, #595959);
+            padding: 11px 20px;
+            color: #4b5563;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-size: 14px;
+            font-weight: 500;
         }
 
         .dropdown-item i {
             width: 20px;
-            font-size: 16px;
-            color: var(--gotur-base, #63AB45);
+            font-size: 15px;
+            color: #63AB45;
         }
 
         .dropdown-item:hover {
-            background: rgba(99, 171, 69, 0.05);
-            color: var(--gotur-base, #63AB45);
-            padding-left: 25px;
+            background: rgba(99,171,69,0.06);
+            color: #63AB45;
+            padding-left: 24px;
         }
 
-        .dropdown-divider {
-            height: 1px;
-            background: #E5E7EB;
-            margin: 8px 0;
-        }
+        .dropdown-divider { height: 1px; background: #E5E7EB; margin: 6px 0; }
 
-        .logout-item { color: #dc2626; }
-        .logout-item i { color: #dc2626; }
-        .logout-item:hover {
-            background: rgba(220, 38, 38, 0.05);
-            color: #dc2626;
-        }
+        .logout-item { color: #dc2626 !important; }
+        .logout-item i { color: #dc2626 !important; }
+        .logout-item:hover { background: rgba(220,38,38,0.05) !important; color: #dc2626 !important; }
 
-        /* Right side - mobile toggle only */
+        /* Right side */
         .main-header__right {
             display: flex;
             align-items: center;
@@ -307,29 +322,95 @@
             flex-shrink: 0;
         }
 
+        /* ============================================
+           HAMBURGER BUTTON
+           ============================================ */
+
         .mobile-nav__btn {
             display: none;
             cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+        }
+
+        .hamburger-box {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background: #ffffff;
+            border: 2px solid rgba(99,171,69,0.3);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            transition: all 0.25s ease;
+        }
+
+        .hamburger-box span {
+            display: block;
+            width: 22px;
+            height: 2.5px;
+            background: #63AB45;
+            border-radius: 3px;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            transform-origin: center;
+        }
+
+        .mobile-nav__btn:hover .hamburger-box {
+            background: rgba(99,171,69,0.07);
+            border-color: #63AB45;
+            box-shadow: 0 0 0 3px rgba(99,171,69,0.12);
+        }
+
+        /* Open state → X */
+        .mobile-nav__btn.is-open .hamburger-box {
+            background: #63AB45;
+            border-color: #63AB45;
+            box-shadow: 0 4px 16px rgba(99,171,69,0.4);
+        }
+
+        .mobile-nav__btn.is-open .hamburger-box span {
+            background: #ffffff;
+        }
+
+        .mobile-nav__btn.is-open .hamburger-box span:nth-child(1) {
+            transform: translateY(7.5px) rotate(45deg);
+        }
+
+        .mobile-nav__btn.is-open .hamburger-box span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .mobile-nav__btn.is-open .hamburger-box span:nth-child(3) {
+            transform: translateY(-7.5px) rotate(-45deg);
         }
 
         /* ============================================
-           RESPONSIVE
+           RESPONSIVE BREAKPOINTS
            ============================================ */
 
         @media (max-width: 1200px) {
             .main-menu__list > li > a {
-                padding: 8px 7px !important;
+                padding: 6px 8px !important;
                 font-size: 13px !important;
             }
         }
 
         @media (max-width: 992px) {
-            .main-header__nav-wrapper { display: none; }
-            .mobile-nav__btn { display: block !important; }
-            .main-header__logo img { max-height: 50px !important; }
+            .main-header__nav-wrapper { display: none !important; }
+            .mobile-nav__btn { display: flex !important; }
+            .page-wrapper { padding-top: 72px; }
+            .main-header__inner { height: 60px; }
+            .main-header__logo img { max-height: 46px !important; }
         }
 
         @media (max-width: 768px) {
+            .page-wrapper { padding-top: 64px; }
+            .main-header__inner { height: 54px; }
             .page-main-content,
             .main-header .container-fluid,
             .main-footer .container {
@@ -603,6 +684,360 @@
         @media (max-width: 768px) {
             .main-footer__bottom__inner { flex-direction: column; text-align: center; justify-content: center; }
         }
+
+        /* ============================================
+           MOBILE DRAWER NAV
+           ============================================ */
+
+        /* Drawer overlay */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 10099;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Drawer panel */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            max-width: 88vw;
+            height: 100%;
+            background: #ffffff;
+            z-index: 10100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -8px 0 40px rgba(0,0,0,0.18);
+            overflow-y: auto;
+            transform: translateX(100%);
+        }
+
+        .mobile-drawer.active {
+            transform: translateX(0);
+        }
+
+        /* Drawer header */
+        .mobile-drawer__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #f8fdf5 0%, #ffffff 100%);
+            border-bottom: 2px solid rgba(99,171,69,0.12);
+            flex-shrink: 0;
+        }
+
+        .mobile-drawer__header img {
+            height: 42px;
+            width: auto;
+        }
+
+        .mobile-drawer__close {
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: rgba(99,171,69,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .mobile-drawer__close:hover {
+            background: #63AB45;
+        }
+
+        .mobile-drawer__close:hover i { color: #fff; }
+
+        .mobile-drawer__close i {
+            font-size: 13px;
+            color: #63AB45;
+            transition: color 0.2s ease;
+        }
+
+        /* Drawer nav list */
+        .mobile-drawer__nav {
+            flex: 1;
+            padding: 8px 12px;
+        }
+
+        .mobile-drawer__nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mobile-drawer__nav ul li {
+            margin-bottom: 2px;
+        }
+
+        .mobile-drawer__nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #374151;
+            text-decoration: none;
+            transition: all 0.22s ease;
+            border-radius: 10px;
+            border-left: none;
+            position: relative;
+            gap: 10px;
+        }
+
+        .mobile-drawer__nav ul li a::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #d1d5db;
+            flex-shrink: 0;
+            transition: all 0.22s ease;
+        }
+
+        .mobile-drawer__nav ul li a:hover,
+        .mobile-drawer__nav ul li.current a {
+            color: #63AB45;
+            background: rgba(99,171,69,0.08);
+            padding-left: 20px;
+        }
+
+        .mobile-drawer__nav ul li a:hover::before,
+        .mobile-drawer__nav ul li.current a::before {
+            background: #63AB45;
+            transform: scale(1.4);
+        }
+
+        /* Divider between nav and auth */
+        .mobile-drawer__divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #E5E7EB, transparent);
+            margin: 4px 18px;
+            flex-shrink: 0;
+        }
+
+        /* Drawer auth section */
+        .mobile-drawer__auth {
+            padding: 14px 16px;
+            flex-shrink: 0;
+        }
+
+        /* Logged-in user block */
+        .mobile-drawer__user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, rgba(99,171,69,0.08) 0%, rgba(79,146,52,0.04) 100%);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(99,171,69,0.12);
+        }
+
+        .mobile-drawer__user .user-avatar {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+        }
+
+        .mobile-drawer__user-info h5 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1D231F;
+            margin: 0 0 2px;
+        }
+
+        .mobile-drawer__user-info p {
+            font-size: 11px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .mobile-drawer__user-links {
+            list-style: none;
+            margin: 0 0 8px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .mobile-drawer__user-links li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-drawer__user-links li a i {
+            width: 18px;
+            color: #63AB45;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .mobile-drawer__user-links li a:hover {
+            background: rgba(99,171,69,0.08);
+            color: #63AB45;
+        }
+
+        .mobile-drawer__user-links li.logout-item a {
+            color: #dc2626;
+        }
+
+        .mobile-drawer__user-links li.logout-item a i {
+            color: #dc2626;
+        }
+
+        .mobile-drawer__user-links li.logout-item a:hover {
+            background: rgba(220,38,38,0.06);
+        }
+
+        /* Login button */
+        .mobile-drawer__login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px 20px;
+            background: linear-gradient(135deg, #63AB45, #4f9234);
+            color: #ffffff !important;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(99,171,69,0.4);
+            transition: all 0.25s ease;
+        }
+
+        .mobile-drawer__login-btn:hover {
+            background: linear-gradient(135deg, #4f9234, #3d7228);
+            box-shadow: 0 6px 20px rgba(99,171,69,0.5);
+            transform: translateY(-1px);
+            color: #ffffff !important;
+        }
+
+        /* Contacts */
+        .mobile-drawer__contacts {
+            padding: 14px 16px;
+            border-top: 1px solid #E5E7EB;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-drawer__contacts a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #6b7280;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-drawer__contacts a:hover {
+            color: #63AB45;
+            background: rgba(99,171,69,0.06);
+        }
+
+        .mobile-drawer__contacts a i {
+            width: 16px;
+            color: #63AB45;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* Social row */
+        .mobile-drawer__social {
+            display: flex;
+            gap: 10px;
+            padding: 12px 16px 20px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .mobile-drawer__social-label {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        .mobile-drawer__social a {
+            width: 36px;
+            height: 36px;
+            background: rgba(99,171,69,0.1);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.22s ease;
+            text-decoration: none;
+        }
+
+        .mobile-drawer__social a:hover {
+            background: #63AB45;
+            transform: translateY(-2px);
+        }
+
+        .mobile-drawer__social a i {
+            font-size: 14px;
+            color: #63AB45;
+            transition: color 0.2s ease;
+        }
+
+        .mobile-drawer__social a:hover i {
+            color: #ffffff;
+        }
+
+        /* Only show drawer on mobile */
+        @media (min-width: 993px) {
+            .mobile-drawer,
+            .mobile-drawer-overlay { display: none !important; }
+        }
+
+        /* Footer responsive fixes */
+        @media (max-width: 992px) {
+            .footer-widget__list { flex-direction: column; gap: 20px; }
+            .main-footer__top__inner { flex-direction: column; text-align: center; }
+        }
+
+        @media (max-width: 768px) {
+            .main-footer__bottom__inner { flex-direction: column; text-align: center; justify-content: center; }
+        }
+
+        @media (max-width: 576px) {
+            .main-footer__top__inner { gap: 20px; }
+            .footer-widget__list__icon { width: 40px; height: 40px; }
+            .main-footer__bottom__pyment img { max-width: 100%; height: auto; }
+        }
     </style>
 
     @stack('css')
@@ -624,11 +1059,11 @@
                 <!-- Logo -->
                 <div class="main-header__logo logo-retina">
                     <a href="{{route('home')}}" class="logo-link">
-                        <img  src="{{asset('assets/images/igl.png')}}" alt="{{settings()->app_name ?? 'IGL Tour'}}" class="logo-img">
+                        <img src="{{asset('assets/images/igl.png')}}" alt="{{settings()->app_name ?? 'IGL Tour'}}" class="logo-img">
                     </a>
                 </div>
 
-                <!-- Nav + Auth inline -->
+                <!-- Nav + Auth inline (desktop only) -->
                 <div class="main-header__nav-wrapper">
                     <nav class="main-header__nav main-menu">
                         <ul class="main-menu__list">
@@ -641,9 +1076,9 @@
                             <li class="{{ request()->routeIs('front.tour-list') ? 'current' : '' }}">
                                 <a href="{{route('front.tour-list')}}">Tours</a>
                             </li>
-                            <li class="{{ request()->routeIs('front.hotel-list') ? 'current' : '' }}">
-                                <a href="{{route('front.hotel-list')}}">Hotels</a>
-                            </li>
+{{--                            <li class="{{ request()->routeIs('front.hotel-list') ? 'current' : '' }}">--}}
+{{--                                <a href="{{route('front.hotel-list')}}">Hotels</a>--}}
+{{--                            </li>--}}
                             <li class="{{ request()->routeIs('front.des') ? 'current' : '' }}">
                                 <a href="{{route('front.des')}}">Destinations</a>
                             </li>
@@ -690,7 +1125,6 @@
                                                 <i class="fas fa-ticket-alt"></i>
                                                 <span>My Bookings</span>
                                             </a>
-
                                             <div class="dropdown-divider"></div>
                                             <a href="{{route('admin.logout')}}" class="dropdown-item logout-item">
                                                 <i class="fas fa-sign-out-alt"></i>
@@ -711,16 +1145,140 @@
 
                 <!-- Mobile toggle -->
                 <div class="main-header__right">
-                    <div class="mobile-nav__btn mobile-nav__toggler">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                    <button class="mobile-nav__btn" id="mobileDrawerToggle" type="button" aria-label="Open menu">
+                        <div class="hamburger-box">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
                 </div>
 
             </div>
         </div>
     </header>
+
+    <!-- ==================== MOBILE DRAWER ==================== -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+
+        <!-- Drawer header -->
+        <div class="mobile-drawer__header">
+            <a href="{{route('home')}}">
+                <img src="{{asset('assets/images/igl.png')}}" alt="{{settings()->app_name ?? 'IGL Tour'}}">
+            </a>
+            <button class="mobile-drawer__close" id="mobileDrawerClose" aria-label="Close menu">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Drawer nav links -->
+        <nav class="mobile-drawer__nav">
+            <ul>
+                <li class="{{ request()->routeIs('home') ? 'current' : '' }}">
+                    <a href="{{route('home')}}">Home</a>
+                </li>
+                <li class="{{ request()->routeIs('front.about') ? 'current' : '' }}">
+                    <a href="{{route('front.about')}}">About</a>
+                </li>
+                <li class="{{ request()->routeIs('front.tour-list') ? 'current' : '' }}">
+                    <a href="{{route('front.tour-list')}}">Tours</a>
+                </li>
+{{--                <li class="{{ request()->routeIs('front.hotel-list') ? 'current' : '' }}">--}}
+{{--                    <a href="{{route('front.hotel-list')}}">Hotels</a>--}}
+{{--                </li>--}}
+                <li class="{{ request()->routeIs('front.des') ? 'current' : '' }}">
+                    <a href="{{route('front.des')}}">Destinations</a>
+                </li>
+                <li class="{{ request()->routeIs('front.gallery') ? 'current' : '' }}">
+                    <a href="{{route('front.gallery')}}">Gallery</a>
+                </li>
+                <li class="{{ request()->routeIs('front.faq') ? 'current' : '' }}">
+                    <a href="{{route('front.faq')}}">FAQ</a>
+                </li>
+                <li class="{{ request()->routeIs('front.contact') ? 'current' : '' }}">
+                    <a href="{{route('front.contact')}}">Contact</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="mobile-drawer__divider"></div>
+
+        <!-- Drawer auth section -->
+        <div class="mobile-drawer__auth">
+            @auth
+                <div class="mobile-drawer__user">
+                    <div class="user-avatar">
+                        @if(Auth::user()->avatar)
+                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}">
+                        @else
+                            <i class="fas fa-user"></i>
+                        @endif
+                    </div>
+                    <div class="mobile-drawer__user-info">
+                        <h5>{{ Auth::user()->name }}</h5>
+                        <p>{{ Auth::user()->email }}</p>
+                    </div>
+                </div>
+                <ul class="mobile-drawer__user-links">
+                    <li>
+                        <a href="{{route('user.profile')}}">
+                            <i class="fas fa-user-circle"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('user.bookings')}}">
+                            <i class="fas fa-ticket-alt"></i>
+                            My Bookings
+                        </a>
+                    </li>
+                    <li class="logout-item">
+                        <a href="{{route('admin.logout')}}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            @else
+                <a href="{{route('front.login')}}" class="mobile-drawer__login-btn">
+                    <i class="icon-paper-plane"></i>
+                    Login
+                </a>
+            @endauth
+        </div>
+
+        <!-- Drawer contact info -->
+        <div class="mobile-drawer__contacts">
+            <a href="mailto:{{settings()->app_email}}">
+                <i class="fa fa-envelope"></i>
+                {{settings()->app_email}}
+            </a>
+            <a href="tel:{{settings()->app_phone}}">
+                <i class="fa fa-phone-alt"></i>
+                {{settings()->app_phone}}
+            </a>
+        </div>
+
+        <!-- Drawer social icons -->
+        <div class="mobile-drawer__social">
+            <a href="{{settings()->app_facebook??'#'}}" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="{{settings()->app_twitter??'#'}}" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="{{settings()->app_instagram??'#'}}" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="{{settings()->app_youtube??'#'}}" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+
+    </div>
+    <!-- ==================== END MOBILE DRAWER ==================== -->
 
     <!-- ==================== MAIN CONTENT ==================== -->
     <main class="page-main-content">
@@ -782,11 +1340,9 @@
                         <div class="footer-widget footer-widget--links">
                             <h2 class="footer-widget__title">Popular Destinations</h2>
                             <ul class="list-unstyled footer-widget__links">
-                                <li><a href="#">Bali, Indonesia</a></li>
-                                <li><a href="#">Paris, France</a></li>
-                                <li><a href="#">Dubai, UAE</a></li>
-                                <li><a href="#">Tokyo, Japan</a></li>
-                                <li><a href="#">New York, USA</a></li>
+                                @foreach(destination() as $item)
+                                    <li><a href="{{route('front.des.about',base64_encode($item->id))}}">{{ $item->country }}</a></li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -797,8 +1353,7 @@
                             <ul class="list-unstyled footer-widget__links">
                                 <li><a href="{{route('front.about')}}">About Us</a></li>
                                 <li><a href="{{route('front.des')}}">Destinations</a></li>
-                                <li><a href="#">Blog & News</a></li>
-                                <li><a href="#">Meet Our Guides</a></li>
+                                <li><a href="{{route('front.tour-list')}}">Tours</a></li>
                                 <li><a href="{{route('front.contact')}}">Contact Us</a></li>
                             </ul>
                         </div>
@@ -963,7 +1518,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // User dropdown toggle - now targets .nav-auth-item (the <li>)
+        // ── Desktop user dropdown ──────────────────────────────
         const authItem = document.querySelector('.nav-auth-item');
         const avatarBtn = document.getElementById('userAvatarBtn');
 
@@ -980,9 +1535,44 @@
             });
         }
 
-        // Dynamic copyright year
+        // ── Dynamic copyright year ─────────────────────────────
         const yearEl = document.querySelector('.dynamic-year');
         if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+        // ── Mobile drawer ──────────────────────────────────────
+        const drawerToggle  = document.getElementById('mobileDrawerToggle');
+        const drawer        = document.getElementById('mobileDrawer');
+        const drawerOverlay = document.getElementById('mobileDrawerOverlay');
+        const drawerClose   = document.getElementById('mobileDrawerClose');
+
+        function openDrawer() {
+            drawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+            drawerToggle.classList.add('is-open');
+            document.body.style.overflow = 'hidden'; // prevent background scroll
+        }
+
+        function closeDrawer() {
+            drawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            drawerToggle.classList.remove('is-open');
+            document.body.style.overflow = '';
+        }
+
+        if (drawerToggle) {
+            drawerToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                drawer.classList.contains('active') ? closeDrawer() : openDrawer();
+            });
+        }
+
+        if (drawerClose)   drawerClose.addEventListener('click', closeDrawer);
+        if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+        // Close drawer on ESC key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeDrawer();
+        });
 
     });
 </script>

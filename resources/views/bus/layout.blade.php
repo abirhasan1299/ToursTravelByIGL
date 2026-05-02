@@ -817,7 +817,7 @@
                                     <i class="fas fa-user-tie"></i>
                                 </div>
                                 <div class="info-content">
-                                    <div class="info-label">Driver Name</div>
+                                    <div class="info-label">Guide Assistant</div>
                                     <div class="info-value">{{ $bus_info->driver_name ?? 'John Anderson' }}</div>
                                 </div>
                             </div>
@@ -833,15 +833,15 @@
                             </div>
 
                             {{-- Bus Details --}}
-                            <div class="info-item">
-                                <div class="info-icon">
-                                    <i class="fas fa-bus"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label">Bus Model</div>
-                                    <div class="info-value">{{ $bus_info->model ?? 'Volvo B9R' }}</div>
-                                </div>
-                            </div>
+{{--                            <div class="info-item">--}}
+{{--                                <div class="info-icon">--}}
+{{--                                    <i class="fas fa-bus"></i>--}}
+{{--                                </div>--}}
+{{--                                <div class="info-content">--}}
+{{--                                    <div class="info-label">Bus Model</div>--}}
+{{--                                    <div class="info-value">{{ $bus_info->model ?? 'Volvo B9R' }}</div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                             <div class="info-item">
                                 <div class="info-icon">
@@ -853,15 +853,15 @@
                                 </div>
                             </div>
 
-                            <div class="info-item">
-                                <div class="info-icon">
-                                    <i class="fas fa-tag"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label">Registration Number</div>
-                                    <div class="info-value">{{ $bus_info->reg_number ?? 'DHAKA-METRO-1234' }}</div>
-                                </div>
-                            </div>
+{{--                            <div class="info-item">--}}
+{{--                                <div class="info-icon">--}}
+{{--                                    <i class="fas fa-tag"></i>--}}
+{{--                                </div>--}}
+{{--                                <div class="info-content">--}}
+{{--                                    <div class="info-label">Registration Number</div>--}}
+{{--                                    <div class="info-value">{{ $bus_info->reg_number ?? 'DHAKA-METRO-1234' }}</div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
 
                             {{-- Contact Information --}}
@@ -886,11 +886,11 @@
                                     <div class="info-label">Bus Status</div>
                                     <div class="info-value">
                                         @if($bus_info->status == 'active')
-                                            <span style="color: #63AB45;">● Active</span>
+                                            <span style="color: #63AB45;">● OPEN</span>
                                         @elseif($bus_info->status == 'inactive')
-                                            <span style="color: #ff4757;">● Inactive</span>
+                                            <span style="color: #ff4757;">● CLOSED</span>
                                         @else
-                                            <span style="color: #f39c12;">● Maintenance</span>
+                                            <span style="color: #f39c12;">● MAINTAINENCE</span>
                                         @endif
                                     </div>
                                 </div>

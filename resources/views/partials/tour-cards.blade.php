@@ -1,98 +1,3 @@
-@if(count($tours) > 0)
-    @foreach($tours as $tour)
-        <div class="col-lg-4 col-md-6 px-3 py-3">
-            <div class="tour-card-modern wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='{{$loop->index * 100}}ms'>
-                <div class="tour-card-modern__image-wrapper">
-                    <img src="{{asset('storage/package/'.$tour->cover_img)}}" alt="{{$tour->title}}" class="tour-card-modern__image">
-
-                    {{-- Overlay Gradient --}}
-                    <div class="tour-card-modern__overlay"></div>
-
-                    {{-- Featured Badge --}}
-                    @if($tour->is_featured ?? false)
-                        <span class="tour-card-modern__featured">
-                            <i class="fas fa-star"></i> Featured
-                        </span>
-                    @endif
-
-                    {{-- Tour Type Badge --}}
-                    <span class="tour-card-modern__type">
-                        <i class="fas fa-{{$tour->tour_type == 'adventure' ? 'mountain' : ($tour->tour_type == 'beach' ? 'umbrella-beach' : 'compass')}}"></i>
-                        {{ucfirst($tour->tour_type)}}
-                    </span>
-
-                    {{-- Location Info - Positioned at bottom of image --}}
-                    <div class="tour-card-modern__location-info">
-                        <div class="tour-card-modern__route">
-                            <span class="route-start">{{$tour->start_location}}</span>
-                            <span class="route-arrow"><i class="fas fa-long-arrow-alt-right"></i></span>
-                            <span class="route-end">{{$tour->end_location}}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tour-card-modern__content">
-                    {{-- Title --}}
-                    <h3 class="tour-card-modern__title">
-                        <a href="{{route('front.tour.detail', base64_encode($tour->id))}}">
-                            {{ Str::limit($tour->title, 45) }}
-                        </a>
-                    </h3>
-
-                    {{-- Meta Info Row --}}
-                    <div class="tour-card-modern__meta">
-                        <div class="meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>{{$tour->day}}D / {{$tour->night}}N</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>Daily Tour</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-users"></i>
-                            <span>Max {{$tour->max_people}}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-bus"></i>
-                            <span>Available Seats: {{\App\Models\Bus::find($tour->bus->id)->getAvailableSeatsCount($tour->id)}}</span>
-                        </div>
-                    </div>
-
-                    {{-- Price and Action --}}
-                    <div class="tour-card-modern__footer">
-                        <div class="tour-card-modern__price">
-                            <span class="price-label">Starting from</span>
-                            <div class="price-amount">
-                                <span class="currency">{{config('app.currency')}}</span>
-                                <span class="amount">{{number_format($tour->amount)}}</span>
-                            </div>
-                            <span class="price-per">/ person</span>
-                        </div>
-
-                        <a href="{{route('front.tour.detail', base64_encode($tour->id))}}" class="tour-card-modern__btn">
-                            <span>View</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-@else
-    <div class="col-12">
-        <div class="no-results-modern">
-            <div class="no-results-modern__icon">
-                <i class="fas fa-map-signs"></i>
-            </div>
-            <h4>No Tours Found</h4>
-            <p>We couldn't find any tours matching your criteria. Try adjusting your filters or explore our other amazing destinations.</p>
-            <a href="{{route('front.tour-list')}}" class="no-results-modern__btn">
-                <i class="fas fa-redo-alt"></i> Reset Filters
-            </a>
-        </div>
-    </div>
-@endif
 @push('css')
     <style>
         /* Modern Tour Card Design */
@@ -114,11 +19,23 @@
             border-color: rgba(99, 171, 69, 0.2);
         }
 
-        /* Image Wrapper */
+        /* Image Wrapper - Now contains the anchor link */
         .tour-card-modern__image-wrapper {
             position: relative;
             padding-top: 70%; /* 16:9 aspect ratio */
             overflow: hidden;
+        }
+
+        /* Image Link - Full coverage anchor */
+        .tour-card-modern__image-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         .tour-card-modern__image {
@@ -129,6 +46,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            pointer-events: none; /* Allows click to pass through to the anchor */
         }
 
         .tour-card-modern:hover .tour-card-modern__image {
@@ -152,7 +70,7 @@
             z-index: 1;
         }
 
-        /* Featured Badge */
+        /* Featured Badge - Keep clickable through */
         .tour-card-modern__featured {
             position: absolute;
             top: 16px;
@@ -170,6 +88,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            pointer-events: none; /* Badge doesn't block clicks */
         }
 
         .tour-card-modern__featured i {
@@ -196,6 +115,7 @@
             align-items: center;
             gap: 5px;
             box-shadow: 0 4px 12px rgba(99, 171, 69, 0.2);
+            pointer-events: none; /* Badge doesn't block clicks */
         }
 
         /* Location Info - Route Display */
@@ -207,6 +127,7 @@
             padding: 20px 16px 16px;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
             z-index: 2;
+            pointer-events: none; /* Location info doesn't block clicks */
         }
 
         .tour-card-modern__route {
@@ -434,6 +355,11 @@
             color: #ffffff;
         }
 
+        /* Cursor pointer on hover over image area */
+        .tour-card-modern__image-link {
+            cursor: pointer;
+        }
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .route-start,
@@ -505,3 +431,103 @@
         }
     </style>
 @endpush
+@if(count($tours) > 0)
+    @foreach($tours as $tour)
+        <div class="col-lg-4 col-md-6 px-3 py-3">
+            <div class="tour-card-modern wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='{{$loop->index * 100}}ms'>
+                <div class="tour-card-modern__image-wrapper">
+                    {{-- Make the entire image wrapper a clickable link --}}
+                    <a href="{{route('front.tour.detail', base64_encode($tour->id))}}" class="tour-card-modern__image-link">
+                        <img src="{{asset('storage/package/'.$tour->cover_img)}}" alt="{{$tour->title}}" class="tour-card-modern__image">
+
+                        {{-- Overlay Gradient --}}
+                        <div class="tour-card-modern__overlay"></div>
+
+                        {{-- Featured Badge --}}
+                        @if($tour->is_featured ?? false)
+                            <span class="tour-card-modern__featured">
+                                <i class="fas fa-star"></i> Featured
+                            </span>
+                        @endif
+
+                        {{-- Tour Type Badge --}}
+                        <span class="tour-card-modern__type">
+                            <i class="fas fa-{{$tour->tour_type == 'adventure' ? 'mountain' : ($tour->tour_type == 'beach' ? 'umbrella-beach' : 'compass')}}"></i>
+                            {{ucfirst($tour->tour_type)}}
+                        </span>
+
+                        {{-- Location Info - Positioned at bottom of image --}}
+                        <div class="tour-card-modern__location-info">
+                            <div class="tour-card-modern__route">
+                                <span class="route-start">{{$tour->start_location}}</span>
+                                <span class="route-arrow"><i class="fas fa-long-arrow-alt-right"></i></span>
+                                <span class="route-end">{{$tour->end_location}}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="tour-card-modern__content">
+                    {{-- Title --}}
+                    <h3 class="tour-card-modern__title">
+                        <a href="{{route('front.tour.detail', base64_encode($tour->id))}}">
+                            {{ Str::limit($tour->title, 45) }}
+                        </a>
+                    </h3>
+
+                    {{-- Meta Info Row --}}
+                    <div class="tour-card-modern__meta">
+                        <div class="meta-item">
+                            <i class="far fa-clock"></i>
+                            <span>{{$tour->day}}D / {{$tour->night}}N</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Daily Tour</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>Max {{$tour->max_people}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-bus"></i>
+                            <span>Available Seats: {{\App\Models\Bus::find($tour->bus->id)->getAvailableSeatsCount($tour->id)}}</span>
+                        </div>
+                    </div>
+
+                    {{-- Price and Action --}}
+                    <div class="tour-card-modern__footer">
+                        <div class="tour-card-modern__price">
+                            <span class="price-label">Starting from</span>
+                            <div class="price-amount">
+                                <span class="currency">{{config('app.currency')}}</span>
+                                <span class="amount">{{number_format($tour->amount)}}</span>
+                            </div>
+                            <span class="price-per">/ person</span>
+                        </div>
+
+                        <a href="{{route('front.tour.detail', base64_encode($tour->id))}}" class="tour-card-modern__btn">
+                            <span>View</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+@else
+    <div class="col-12">
+        <div class="no-results-modern">
+            <div class="no-results-modern__icon">
+                <i class="fas fa-map-signs"></i>
+            </div>
+            <h4>No Tours Found</h4>
+            <p>We couldn't find any tours matching your criteria. Try adjusting your filters or explore our other amazing destinations.</p>
+            <a href="{{route('front.tour-list')}}" class="no-results-modern__btn">
+                <i class="fas fa-redo-alt"></i> Reset Filters
+            </a>
+        </div>
+    </div>
+@endif
+
+

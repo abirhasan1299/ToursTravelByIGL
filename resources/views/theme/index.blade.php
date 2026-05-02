@@ -19,7 +19,7 @@
 
 @push('css')
     <style>
-        /* ── Hero Section ── Full width background video ─────────────────── */
+        /* ── Hero Section ── Full width background image ─────────────────── */
         .hero-section {
             position: relative;
             width: 100%;
@@ -35,8 +35,8 @@
             z-index: 1;
         }
 
-        /* VIDEO BACKGROUND - Full cover within hero section (edge to edge, no gaps) */
-        .hero-video-wrapper {
+        /* IMAGE BACKGROUND - Full cover within hero section (edge to edge, no gaps) */
+        .hero-image-wrapper {
             position: absolute;
             top: 0;
             left: 0;
@@ -46,30 +46,26 @@
             height: 100%;
             z-index: -2;
             overflow: hidden;
-
         }
 
-        .hero-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover;
-
-        }
-
-        /* Fallback image if video fails - also full cover */
-        .hero-video-fallback {
+        .hero-bg-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('{{ asset('assets/images/hero-fallback.jpg') }}');
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* Fallback image with gradient or solid color */
+        .hero-image-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ asset('assets/images/background-image.jpg') }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -85,7 +81,6 @@
             height: 100%;
             background: linear-gradient(to bottom, rgba(0,0,0,.58) 0%, rgba(0,0,0,.38) 55%, rgba(0,0,0,.7) 100%);
             z-index: -1;
-
         }
 
         /* Content container - keeps content within bounds */
@@ -96,7 +91,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-
         }
 
         /* ── Headline ── */
@@ -304,53 +298,69 @@
         }
         .s-btn-submit:active { transform: translateY(0); }
 
-        /* Stats */
+        /* =============================================
+           FIXED STATS STYLES – FULL VISIBILITY ON ANY BACKGROUND
+           ============================================= */
         .hero-stats {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 60px;
+            padding: 0.9rem 2rem;
             margin-top: 24px;
             margin-bottom: -200px;
-            background: rgba(255,255,255,.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,.18);
-            border-radius: 14px;
-            padding: 14px 32px;
-            gap: 0;
-            max-width: 800px;
+            max-width: 950px;
             margin-left: auto;
             margin-right: auto;
-
+            width: 100%;
+            box-shadow: 0 10px 28px -8px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
         }
+
         .hero-stat {
             flex: 1;
             text-align: center;
-            padding: 0 16px;
+            padding: 0.25rem 0.5rem;
+            min-width: 100px;
+        }
 
-        }
         .hero-stat__num {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--gotur-white, #fff);
-            line-height: 1;
-            margin-bottom: 3px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #1e2a1c;
+            margin-bottom: 0.2rem;
+            letter-spacing: -0.01em;
         }
+
         .hero-stat__num sup {
-            font-size: 11px;
-            color: var(--gotur-base, #63AB45);
-            vertical-align: super;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2b6e2f;
+            top: -0.2em;
         }
+
         .hero-stat__lbl {
-            font-size: 10px;
-            letter-spacing: .07em;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: rgba(255,255,255,.5);
+            color: #2c3e2b;
+            opacity: 0.85;
         }
+
         .hero-stat-sep {
             width: 1px;
-            height: 32px;
-            background: rgba(255,255,255,.18);
+            height: 40px;
+            background: rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
+            margin: 0 0.25rem;
         }
 
         /* Ensure no margins/paddings cause gaps */
@@ -360,33 +370,70 @@
             overflow-x: hidden;
         }
 
-        /* Responsive */
+        /* Responsive Stats Fixes */
         @media (max-width: 900px) {
             #tourSearchForm  .s-form__row,
             #hotelSearchForm .s-form__row { grid-template-columns: 1fr 1fr; }
             .s-btn-submit { width: 100%; }
             .search-card__inner { padding: 16px 16px 14px; }
-            .hero-stats { padding: 12px 16px; max-width: 90%; }
-            .hero-stat { padding: 0 10px; }
+            .hero-stats { padding: 0.85rem 1.2rem; border-radius: 48px; gap: 0.5rem; max-width: 90%; }
+            .hero-stat__num { font-size: 1.6rem; }
+            .hero-stat__lbl { font-size: 0.65rem; }
+            .hero-stat-sep { height: 34px; }
             .hero-section { min-height: 80vh; padding-top: 80px; }
         }
+
+        @media (max-width: 640px) {
+            .hero-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.96);
+                border-radius: 36px;
+                padding: 1rem 1.2rem;
+                gap: 0.8rem 1rem;
+                margin-bottom: -150px;
+            }
+            .hero-stat-sep { display: none; }
+            .hero-stat {
+                flex: 0 0 auto;
+                min-width: 110px;
+                padding: 0.3rem 0.2rem;
+            }
+            .hero-stat__num { font-size: 1.7rem; }
+            .hero-stat__lbl { font-size: 0.7rem; }
+        }
+
         @media (max-width: 560px) {
             #tourSearchForm  .s-form__row,
             #hotelSearchForm .s-form__row { grid-template-columns: 1fr; }
             .hero-section { min-height: 75vh; padding-top: 70px; padding-bottom: 30px; }
-            .hero-stats { flex-wrap: wrap; gap: 12px; justify-content: center; }
-            .hero-stat-sep { display: none; }
-            .hero-stat { padding: 0 12px; }
+            .hero-stats {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+                background: rgba(255, 255, 255, 0.98);
+                border-radius: 30px;
+                padding: 0.9rem 0.8rem;
+                margin-bottom: -120px;
+            }
+            .hero-stat { min-width: 85px; flex: 1; }
+            .hero-stat__num { font-size: 1.5rem; }
+            .hero-stat__num sup { font-size: 0.8rem; }
+            .hero-stat__lbl { font-size: 0.6rem; white-space: nowrap; }
         }
-    </style>
 
-    <style>
+        @media (max-width: 480px) {
+            .hero-stats { gap: 0.65rem; padding: 0.8rem 0.6rem; margin-bottom: -100px; }
+            .hero-stat { min-width: 70px; }
+            .hero-stat__num { font-size: 1.3rem; }
+            .hero-stat__lbl { font-size: 0.55rem; letter-spacing: 0.04em; }
+        }
+
         /* Current Tours Section Styles */
         .current-tours {
             background: linear-gradient(180deg, #ffffff 0%, #f8faf7 100%);
             position: relative;
             overflow: hidden;
-            /* SHADOW FOR SECTION SEPARATION */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 8px rgba(0, 0, 0, 0.03);
             border-radius: 0;
         }
@@ -726,19 +773,16 @@
             border-radius: 4px;
         }
 
-        /* ===== SECTION SHADOW STYLES ===== */
-        /* Each major section gets a soft outer shadow to separate from container white space */
+        /* Section Shadow Styles */
         .section-space, .section-space-bottom, .about-two, .cta-five, .why-choose-one {
             position: relative;
         }
 
-        /* Current Tours shadow */
         .current-tours {
             box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
             border-radius: 0;
         }
 
-        /* About Section shadow */
         .about-two {
             background: #ffffff;
             box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
@@ -747,32 +791,27 @@
             border-radius: 0;
         }
 
-        /* CTA Section - also shadow for depth */
         .cta-five {
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 2;
         }
 
-        /* Why Choose Us shadow */
         .why-choose-one {
             background: #ffffff;
             box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.02);
             border-radius: 0;
         }
 
-        /* Extra consistency for container inner spacing */
         .container {
             position: relative;
             z-index: 2;
         }
 
-        /* Ensure hero section doesn't get unwanted shadow overlap */
         .hero-section {
             box-shadow: none;
         }
 
-        /* Responsive touch */
         @media (max-width: 768px) {
             .about-two, .current-tours, .why-choose-one {
                 box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.05);
@@ -821,17 +860,14 @@
 
 @section('content')
     <section class="hero-section" id="home">
-        <!-- VIDEO BACKGROUND - FULL COVER EDGE TO EDGE -->
-        <div class="hero-video-wrapper">
-            <video class="hero-video" autoplay muted loop playsinline poster="{{ asset('assets/images/hero-poster.jpg') }}">
-                <source src="{{ asset('assets/video/background.mp4') }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="hero-video-fallback"></div>
+        <!-- STATIC IMAGE BACKGROUND - FULL COVER EDGE TO EDGE -->
+        <div class="hero-image-wrapper">
+            <img class="hero-bg-image" src="{{ asset('assets/images/hero-bg.jpg') }}" alt="Adventure Background">
+            <div class="hero-image-fallback"></div>
         </div>
         <div class="hero-overlay"></div>
 
-        <!-- Content Container - everything stays within bounds -->
+        <!-- Content Container -->
         <div class="hero-content-wrapper">
             <!-- Headline -->
             <div class="hero-content">
@@ -848,9 +884,6 @@
                     <div class="s-tabs">
                         <button class="s-tab-btn active" data-tab="tour">
                             <i class="fas fa-umbrella-beach"></i> Tours
-                        </button>
-                        <button class="s-tab-btn" data-tab="hotel">
-                            <i class="fas fa-hotel"></i> Hotels
                         </button>
                     </div>
 
@@ -905,55 +938,10 @@
                             </div>
                         </div>
                     </form>
-
-                    <!-- Hotel Form -->
-                    <form class="s-form" id="hotelSearchForm" action="{{ route('front.hotel-list') }}" method="GET">
-                        <div class="s-form__row">
-                            <div class="s-field">
-                                <span class="s-field__label">Location</span>
-                                <div class="s-field__wrap">
-                                    <i class="s-icon fas fa-city"></i>
-                                    <select name="location" id="city" class="hotel-select">
-                                        <option value="">All Locations</option>
-                                        @foreach ($hotelLocations ?? [] as $location)
-                                            <option value="{{ $location }}">{{ $location }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="s-field">
-                                <span class="s-field__label">Check-in</span>
-                                <div class="s-field__wrap">
-                                    <i class="s-icon fas fa-calendar-check"></i>
-                                    <input type="date" name="check_in" id="check_in" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="s-field">
-                                <span class="s-field__label">Check-out</span>
-                                <div class="s-field__wrap">
-                                    <i class="s-icon fas fa-calendar-times"></i>
-                                    <input type="date" name="check_out" id="check_out" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="s-field">
-                                <span class="s-field__label">Guests</span>
-                                <div class="s-field__wrap">
-                                    <i class="s-icon fas fa-users"></i>
-                                    <input type="number" name="guests" min="1" max="20" placeholder="2" value="2">
-                                </div>
-                            </div>
-                            <div class="s-field">
-                                <span class="s-field__label">&nbsp;</span>
-                                <button class="s-btn-submit" type="submit">
-                                    <i class="fas fa-search"></i> Search
-                                </button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
 
-            <!-- Stats -->
+            <!-- FIXED STATS SECTION - Now fully visible on all backgrounds and responsive -->
             <div class="hero-stats">
                 <div class="hero-stat">
                     <div class="hero-stat__num"><span class="counter" data-target="1200">0</span><sup>+</sup></div>
@@ -1007,8 +995,8 @@
 
                                 {{-- Tour Type Badge --}}
                                 <span class="tour-card__badge">
-                                <i class="fas fa-tag"></i> {{ strtoupper($tour->tour_type) ?? 'Adventure' }}
-                            </span>
+                                    <i class="fas fa-tag"></i> {{ strtoupper($tour->tour_type) ?? 'Adventure' }}
+                                </span>
 
                                 {{-- Price Tag --}}
                                 <div class="tour-card__price">
@@ -1078,16 +1066,16 @@
     </section>
 
     <!-- About Section -->
-    <section class="about-two about-two--two section-space"  id="about" >
+    <section class="about-two about-two--two section-space" id="about">
         <div class="container">
             <div class="row gutter-y-40">
                 <div class="col-lg-6">
                     <div class="about-two__thumb wow fadeInLeft" data-wow-duration='1500ms' data-wow-delay='300ms'>
                         <div class="about-two__thumb__item">
-                            <img src="{{ asset('assets/images/about/about-2-1.jpg') }}" alt="gotur image">
+                            <img style="width: 500px;" src="{{ asset('assets/images/about/about-2-1.jpg') }}" alt="gotur image">
                         </div>
                         <div class="about-two__thumb__item-small">
-                            <img src="{{ asset('assets/images/about/about-s-2-1.jpg') }}" alt="gotur image">
+                            <img style="width: 200px;" src="{{ asset('assets/images/about/about-s-2-1.jpg') }}" alt="gotur image">
                         </div>
                         <div class="about-two__thumb__funfact">
                             <div class="about-two__thumb__funfact__icon">
@@ -1209,7 +1197,7 @@
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="why-choose-one section-space-bottom" style="margin-top:-150px;margin-bottom:-100px;">
+    <section class="why-choose-one section-space-bottom" style="margin-top:50px;margin-bottom:-100px;">
         <div class="container">
             <div class="row align-items-center gutter-y-40">
                 <div class="col-lg-6">
@@ -1309,7 +1297,7 @@
                 });
             }
 
-            // --- Counter animation ---
+            // --- Counter animation for hero stats ---
             const counters = document.querySelectorAll('.counter');
             if (counters.length) {
                 const observer = new IntersectionObserver((entries) => {
@@ -1333,29 +1321,19 @@
 
             // --- Flatpickr (Datepicker) ---
             if (typeof flatpickr !== 'undefined') {
-                flatpickr('#check_in', {
+                flatpickr('#check_in, #check_out', {
                     minDate: 'today',
                     dateFormat: 'Y-m-d',
                     placeholder: 'Select Date'
                 });
             }
 
-            if (typeof flatpickr !== 'undefined') {
-                flatpickr('#check_out', {
-                    minDate: 'today',
-                    dateFormat: 'Y-m-d',
-                    placeholder: 'Select Date'
-                });
-            }
-
-            // --- Select2 Initialization with Theme Matching ---
+            // --- Select2 Initialization ---
             if (typeof $.fn.select2 !== 'undefined') {
                 const select2Settings = {
                     width: '100%',
                     placeholder: 'Select Option',
                     allowClear: true,
-                    dropdownCssClass: 'custom-select2-dropdown',
-                    selectionCssClass: 'custom-select2-selection'
                 };
 
                 if ($('#location').length) {
@@ -1410,16 +1388,6 @@
                 alert('{{ session('error') }}');
             }
             @endif
-
-            // Ensure video plays correctly and covers full width
-            const heroVideo = document.querySelector('.hero-video');
-            if (heroVideo) {
-                heroVideo.play().catch(e => {
-                    console.log('Video autoplay failed:', e);
-                    const fallback = document.querySelector('.hero-video-fallback');
-                    if (fallback) fallback.style.zIndex = '1';
-                });
-            }
         });
     </script>
 @endpush

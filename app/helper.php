@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Destination;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -9,6 +11,12 @@ if(!function_exists('settings'))
        {
            return cache()->remember('settings', 3600, function () {
                return Setting::find(1);
+           });
+       }
+       function destination()
+       {
+           return cache()->remember('destination', 3600, function () {
+               return Destination::select('id','country')->get();
            });
        }
 
