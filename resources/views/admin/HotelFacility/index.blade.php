@@ -18,7 +18,6 @@
                         <tr>
                             <th>SL</th>
                             <th>Title</th>
-                            <th>Detail</th>
                             <th>Added</th>
                             <th>Actions</th>
                         </tr>
@@ -28,7 +27,7 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$d->title}}</td>
-                                <td>{{$d->detail??"Null"}}</td>
+
                                 <td>{{ $d->created_at->diffForHumans() }}</td>
                                 <td class="d-flex justify-content-center">
 

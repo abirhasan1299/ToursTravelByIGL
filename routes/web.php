@@ -7,9 +7,11 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\UserBooking;
 use App\Models\About;
+use App\Models\Banner;
 use App\Models\Hotel;
 use App\Models\Package;
 use App\Models\Seo;
+use App\Models\Video;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,14 +28,21 @@ use Illuminate\Support\Facades\Route;
         $tourTypes = Package::select('tour_type')
                     ->distinct()
                     ->pluck('tour_type');
+        $photos= Banner::all();
 
-        $hotelLocations = Hotel::distinct()->pluck('location')->toArray();
 
         $tours = Package::inRandomOrder()->limit(3)->get();
 
-        return view('theme.index',compact('about','startLocations','tourTypes','hotelLocations','seo','tours'));
+        return view('theme.index',compact('about','startLocations','tourTypes','photos','seo','tours'));
 
     })->name('home');
+
+Route::get('/videos', function () {
+    $data = Video::orderBy('id','desc')->get();
+    return view('theme.video',compact('data'));
+
+})->name('front.videos');
+
 
     Route::get('/404', function () {
         return view('theme.404');
@@ -66,9 +75,15 @@ Route::controller(BusController::class)->group(function () {
 
     Route::post('bus/booking', 'booking')->name('bus.store');
 
-    Route::post('bus/booking/otp', 'OtpForCod')->name('bus.otp.cod');
 
-    Route::post('bus/booking/otp/verification', 'OtpVerify')->name('bus.otp.cod.verify');
+    Route::prefix('bus')->group(function () {
+        // OTP Routes
+        Route::post('booking/otp', 'OtpForCod')->name('bus.otp.cod');
+        Route::post('booking/otp/resend', 'OtpResend')->name('bus.otp.resend');
+        Route::post('contact/update', 'updateContact')->name('bus.contact.update');
+        Route::post('booking/otp/verification', 'OtpVerify')->name('bus.otp.cod.verify');
+    });
+
     Route::delete('bus/booking/cancel/{id}', 'BookingCancel')->name('bus.booking.cancel');
 
     Route::match(['get', 'post'], '/bkash/pay', 'Bkashpay')->name('bkash.pay');
@@ -90,7 +105,7 @@ Route::controller(BusController::class)->group(function () {
     Route::post('package/store/users',[UserBooking::class,'bookingForUser'])->name('package.booking.user');
 
 //--------------------Auth Route----------------------------------------------------
-    Route::get('auth/login',[AuthController::class,'AdminLogin'])->name('login');
+    Route::get('admin',[AuthController::class,'AdminLogin'])->name('login');
 
     Route::post('auth/verify',[AuthController::class,'AdminLoginPost'])->name('admin.verify');
 
@@ -148,6 +163,10 @@ Route::controller(BusController::class)->group(function () {
     Route::post('about-us/store',[CommonController::class,'ContactForm'])->name('front.contact.store');
 
     Route::get('gallery',[CommonController::class,'gallery'])->name('front.gallery');
+
+    Route::get('gallery/albums/{id}',[CommonController::class,'showAlbum'])->name('front.showAlbum');
+
+
 
     Route::post('/tour-list/filter', [CommonController::class, 'filterTours'])->name('front.tour-list.filter');
 

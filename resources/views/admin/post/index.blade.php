@@ -8,9 +8,8 @@
 
             <a href="{{ route('admin.post.create')  }}"
                class="btn btn-primary mb-2">
-                <i class="ti ti-plus"></i> Add Post
+                <i class="ti ti-plus"></i> Add Package
             </a>
-
 
             <div class="card">
                 <div class="card-body">
@@ -65,13 +64,14 @@
                                     <a href="{{route('admin.post.show',base64_encode($d->id))}}" class="btn btn-sm btn-outline-primary" role="button">
                                         <i class="ti ti-eye"></i>
                                     </a>
+
                                     <a href="{{ route('admin.post.edit', base64_encode($d->id)) }}" class="btn btn-sm btn-outline-warning" role="button">
                                         <i class="ti ti-pencil"></i>
                                     </a>
 
-                                    <a href="{{route('admin.post.activity',base64_encode($d->id))}}" class="btn btn-sm btn-outline-info" role="button">
-                                        <i class="ti ti-calendar-plus"></i>
-                                    </a>
+{{--                                    <a href="{{route('admin.post.activity',base64_encode($d->id))}}" class="btn btn-sm btn-outline-info" role="button">--}}
+{{--                                        <i class="ti ti-calendar-plus"></i>--}}
+{{--                                    </a>--}}
 
                                     <a href="{{route('admin.post.persons',base64_encode($d->id))}}" class="btn btn-sm btn-outline-secondary" role="button">
                                         <i class="ti ti-user-circle"></i>

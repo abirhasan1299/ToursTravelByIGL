@@ -19,10 +19,10 @@
             border-color: rgba(99, 171, 69, 0.2);
         }
 
-        /* Image Wrapper - Now contains the anchor link */
+        /* Image Wrapper - Larger image */
         .tour-card-modern__image-wrapper {
             position: relative;
-            padding-top: 70%; /* 16:9 aspect ratio */
+            padding-top: 65%;
             overflow: hidden;
         }
 
@@ -46,7 +46,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            pointer-events: none; /* Allows click to pass through to the anchor */
+            pointer-events: none;
         }
 
         .tour-card-modern:hover .tour-card-modern__image {
@@ -63,14 +63,14 @@
             background: linear-gradient(
                 to bottom,
                 rgba(0, 0, 0, 0.1) 0%,
-                rgba(0, 0, 0, 0.02) 40%,
-                rgba(0, 0, 0, 0.6) 100%
+                rgba(0, 0, 0, 0.02) 60%,
+                rgba(0, 0, 0, 0.3) 100%
             );
             pointer-events: none;
             z-index: 1;
         }
 
-        /* Featured Badge - Keep clickable through */
+        /* Featured Badge */
         .tour-card-modern__featured {
             position: absolute;
             top: 16px;
@@ -88,7 +88,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            pointer-events: none; /* Badge doesn't block clicks */
+            pointer-events: none;
         }
 
         .tour-card-modern__featured i {
@@ -96,64 +96,34 @@
             color: #1a1a1a;
         }
 
-        /* Tour Type Badge */
+        /* Tour Type Badge - Perfect Square Shape (No rounded corners) */
         .tour-card-modern__type {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(99, 171, 69, 0.9);
+            bottom: 0;
+            right: 0;
+            background: rgba(99, 171, 69, 0.95);
             backdrop-filter: blur(4px);
             color: #ffffff;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 11px;
+            padding: 12px 20px;
+            min-width: 90px;
+            text-align: center;
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             z-index: 3;
             display: flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 4px 12px rgba(99, 171, 69, 0.2);
-            pointer-events: none; /* Badge doesn't block clicks */
-        }
-
-        /* Location Info - Route Display */
-        .tour-card-modern__location-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px 16px 16px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
-            z-index: 2;
-            pointer-events: none; /* Location info doesn't block clicks */
-        }
-
-        .tour-card-modern__route {
-            display: flex;
-            align-items: center;
             justify-content: center;
             gap: 8px;
-            color: #ffffff;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: -2px -2px 12px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            /* Perfect square - NO border radius at all */
+            border-radius: 0px;
         }
 
-        .route-start,
-        .route-end {
+        .tour-card-modern__type i {
             font-size: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 120px;
-        }
-
-        .route-arrow {
-            color: #63AB45;
-            font-size: 18px;
-            flex-shrink: 0;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         /* Content Section */
@@ -165,12 +135,13 @@
             background: #ffffff;
         }
 
-        /* Title */
+        /* Title - Centered */
         .tour-card-modern__title {
             font-size: 18px;
             font-weight: 700;
             line-height: 1.4;
             margin-bottom: 15px;
+            text-align: center;
         }
 
         .tour-card-modern__title a {
@@ -191,6 +162,7 @@
         .tour-card-modern__meta {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 16px;
             margin-bottom: 18px;
             padding-bottom: 16px;
@@ -259,24 +231,30 @@
             margin-top: 2px;
         }
 
-        /* View Details Button */
+        /* View Details Button - With Text Visible */
         .tour-card-modern__btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             padding: 10px 20px;
             background: linear-gradient(135deg, #63AB45 0%, #4f9234 100%);
             color: #ffffff;
-            border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(99, 171, 69, 0.25);
+            /* Square shape - no border radius */
+            border-radius: 0px;
+        }
+
+        .tour-card-modern__btn span {
+            display: inline-block;
         }
 
         .tour-card-modern__btn i {
-            font-size: 11px;
+            font-size: 12px;
             transition: transform 0.3s ease;
         }
 
@@ -289,6 +267,17 @@
 
         .tour-card-modern__btn:hover i {
             transform: translateX(4px);
+        }
+
+        /* Reduce padding/margin between cards */
+        .px-3.py-3 {
+            padding: 0.75rem !important;
+        }
+
+        /* Responsive adjustments for card gaps */
+        .row {
+            margin-left: -0.75rem !important;
+            margin-right: -0.75rem !important;
         }
 
         /* Empty State - No Results */
@@ -362,10 +351,8 @@
 
         /* Responsive Design */
         @media (max-width: 1200px) {
-            .route-start,
-            .route-end {
-                max-width: 100px;
-                font-size: 13px;
+            .meta-item {
+                font-size: 11px;
             }
         }
 
@@ -385,21 +372,26 @@
             .amount {
                 font-size: 20px;
             }
+
+            .tour-card-modern__btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 768px) {
             .tour-card-modern__image-wrapper {
-                padding-top: 65%;
+                padding-top: 60%;
             }
 
-            .route-start,
-            .route-end {
-                max-width: 80px;
+            .tour-card-modern__type {
+                padding: 8px 16px;
+                min-width: 75px;
+                font-size: 11px;
+            }
+
+            .tour-card-modern__type i {
                 font-size: 12px;
-            }
-
-            .route-arrow {
-                font-size: 14px;
             }
 
             .tour-card-modern__footer {
@@ -411,17 +403,22 @@
             .tour-card-modern__btn {
                 width: 100%;
                 justify-content: center;
+                padding: 10px 20px;
+            }
+
+            .meta-item {
+                font-size: 10px;
             }
         }
 
         @media (max-width: 480px) {
-            .tour-card-modern__location-info {
-                padding: 15px 12px 12px;
+            .tour-card-modern__type {
+                padding: 6px 12px;
+                min-width: 65px;
+                font-size: 10px;
             }
 
-            .route-start,
-            .route-end {
-                max-width: 70px;
+            .tour-card-modern__type i {
                 font-size: 11px;
             }
 
@@ -431,9 +428,10 @@
         }
     </style>
 @endpush
+
 @if(count($tours) > 0)
     @foreach($tours as $tour)
-        <div class="col-lg-4 col-md-6 px-3 py-3">
+        <div class="col-lg-4 col-md-6 px-1 py-1">
             <div class="tour-card-modern wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='{{$loop->index * 100}}ms'>
                 <div class="tour-card-modern__image-wrapper">
                     {{-- Make the entire image wrapper a clickable link --}}
@@ -449,41 +447,36 @@
                                 <i class="fas fa-star"></i> Featured
                             </span>
                         @endif
-
-                        {{-- Tour Type Badge --}}
-                        <span class="tour-card-modern__type">
-                            <i class="fas fa-{{$tour->tour_type == 'adventure' ? 'mountain' : ($tour->tour_type == 'beach' ? 'umbrella-beach' : 'compass')}}"></i>
-                            {{ucfirst($tour->tour_type)}}
-                        </span>
-
-                        {{-- Location Info - Positioned at bottom of image --}}
-                        <div class="tour-card-modern__location-info">
-                            <div class="tour-card-modern__route">
-                                <span class="route-start">{{$tour->start_location}}</span>
-                                <span class="route-arrow"><i class="fas fa-long-arrow-alt-right"></i></span>
-                                <span class="route-end">{{$tour->end_location}}</span>
-                            </div>
-                        </div>
                     </a>
+
+                    {{-- Tour Type Badge - Perfect Square Shape attached to bottom right corner --}}
+                    <span class="tour-card-modern__type">
+                        <i class="fas fa-{{$tour->tour_type == 'adventure' ? 'mountain' : ($tour->tour_type == 'beach' ? 'umbrella-beach' : 'compass')}}"></i>
+                        {{ucfirst($tour->tour_type)}}
+                    </span>
                 </div>
 
                 <div class="tour-card-modern__content">
-                    {{-- Title --}}
+                    {{-- Title - Centered --}}
                     <h3 class="tour-card-modern__title">
                         <a href="{{route('front.tour.detail', base64_encode($tour->id))}}">
                             {{ Str::limit($tour->title, 45) }}
                         </a>
                     </h3>
 
-                    {{-- Meta Info Row --}}
+                    {{-- Start and End Location in Meta --}}
                     <div class="tour-card-modern__meta">
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{$tour->start_location}} → {{$tour->end_location}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span> {{$tour->tour_date?? "N/A"}}</span>
+                        </div>
                         <div class="meta-item">
                             <i class="far fa-clock"></i>
                             <span>{{$tour->day}}D / {{$tour->night}}N</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>Daily Tour</span>
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-users"></i>
@@ -491,7 +484,7 @@
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-bus"></i>
-                            <span>Available Seats: {{\App\Models\Bus::find($tour->bus->id)->getAvailableSeatsCount($tour->id)}}</span>
+                            <span>Seats: {{\App\Models\Bus::find($tour->bus_id)->getAvailableSeatsCount($tour->id) ?? 0}}</span>
                         </div>
                     </div>
 
@@ -507,7 +500,7 @@
                         </div>
 
                         <a href="{{route('front.tour.detail', base64_encode($tour->id))}}" class="tour-card-modern__btn">
-                            <span>View</span>
+                            <span>View Details</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -529,5 +522,3 @@
         </div>
     </div>
 @endif
-
-

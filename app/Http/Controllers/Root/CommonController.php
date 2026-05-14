@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Album;
 use App\Models\CompanyPackage;
 use App\Models\Destination;
 use App\Models\Faq;
@@ -42,7 +43,6 @@ class CommonController extends Controller
         $data = Destination::with('images')->findOrFail(base64_decode($id));
         return view('theme.destination-detail',compact('data'));
     }
-
     public function BookingHotel(Request $request)
     {
         $data = $request->validate([
@@ -247,7 +247,6 @@ class CommonController extends Controller
         return view('theme.about',compact('seo'));
     }
 
-
     public function ContactForm(Request $request)
     {
        try{
@@ -277,11 +276,19 @@ class CommonController extends Controller
 
     public function gallery()
     {
-        $data = Gallery::all();
+        $albums  = Album::withCount('gallery')->orderBy('id','desc')->get();
+
         $seo = Seo::where('page_name','gallery')->first();
-        return view('theme.gallery',compact('data','seo'));
+
+        return view('theme.gallery',compact('albums','seo'));
     }
 
+    public function showAlbum($id)
+    {
+        $album = Album::findOrFail($id);
+        $photos = $album->gallery()->get();
+        return view('theme.show-album',compact('album','photos'));
+    }
 
 
 }

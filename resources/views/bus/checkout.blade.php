@@ -800,7 +800,63 @@
                                     <label>Special Requests (Optional)</label>
                                     <textarea name="special_requests" rows="3" placeholder="Any special requests or requirements?"></textarea>
                                 </div>
-                            </div>
+                                <style>
+                                    .otp-option {
+                                        border: 2px solid #dee2e6;
+                                        border-radius: 10px;
+                                        padding: 12px 20px;
+                                        cursor: pointer;
+                                        transition: all 0.2s ease;
+                                    }
+
+                                    .otp-option:hover {
+                                        border-color: #0d6efd;
+                                        background-color: #f8f9fa;
+                                    }
+
+                                    .otp-option input {
+                                        display: none;
+                                    }
+
+                                    .otp-option.active {
+                                        border-color: #0d6efd;
+                                        background-color: #e7f1ff;
+                                    }
+                                </style>
+
+                                <div class="form-group">
+                                    <label class="mb-2"><strong>Get OTP via:</strong></label>
+
+                                    <div class="d-flex gap-3">
+                                        <label class="otp-option " id="phoneOption">
+                                            <input type="radio" name="otp_method" value="phone" required>
+                                            📱 Phone
+                                        </label>
+
+                                        <label class="otp-option" id="emailOption">
+                                            <input type="radio" name="otp_method" value="email" required>
+                                            📧 Email
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <script id="l3x9af">
+                                    document.querySelectorAll('.otp-option').forEach(option => {
+                                        option.addEventListener('click', function() {
+                                            document.querySelectorAll('.otp-option').forEach(el => el.classList.remove('active'));
+                                            this.classList.add('active');
+                                        });
+                                    });
+                                </script>
+                                <div class="form-group text-center my-3">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="g-recaptcha" data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
+                                    </div>
+
+                                    @error('g-recaptcha-response')
+                                    <small class="text-danger d-block mt-2">{{ $message }}</small>
+                                    @enderror
+                                </div>
 
                         {{-- Terms & Conditions --}}
                         <div class="terms-checkbox">
@@ -823,6 +879,7 @@
 @endsection
 
 @push('js')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
         // Payment method selection
         function selectPayment(method) {

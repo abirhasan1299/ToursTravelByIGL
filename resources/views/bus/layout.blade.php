@@ -1,3 +1,4 @@
+
 {{-- resources/views/bus/layout.blade.php --}}
 @extends('layout.theme')
 @section('title', 'Select Bus Seats - ' . $bus_info->name)
@@ -716,6 +717,10 @@
                 </h1>
                 <p class="bus-header__subtitle wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
                     {{ $bus_info->name }} • {{ $bus_info->total_seat }} Seats
+                    {{-- Display max people limit --}}
+                    @if(isset($max_people) && $max_people > 0)
+                        • Max <strong>{{ $max_people }}</strong> {{ Str::plural('seat', $max_people) }}
+                    @endif
                 </p>
             </div>
 
@@ -728,6 +733,9 @@
                     <h4>
                         <i class="fas fa-ticket-alt"></i>
                         Selected Seats (<span id="selectedCount">0</span>)
+                        @if(isset($max_people) && $max_people > 0)
+                            <span style="font-size: 14px; font-weight: normal; color: #666;">/ Max {{ $max_people }}</span>
+                        @endif
                     </h4>
                     <button class="clear-seats-btn" id="clearSeatsBtn" onclick="clearAllSeats()">
                         <i class="fas fa-trash-alt"></i> Clear All
@@ -832,17 +840,6 @@
                                 </div>
                             </div>
 
-                            {{-- Bus Details --}}
-{{--                            <div class="info-item">--}}
-{{--                                <div class="info-icon">--}}
-{{--                                    <i class="fas fa-bus"></i>--}}
-{{--                                </div>--}}
-{{--                                <div class="info-content">--}}
-{{--                                    <div class="info-label">Bus Model</div>--}}
-{{--                                    <div class="info-value">{{ $bus_info->model ?? 'Volvo B9R' }}</div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-chair"></i>
@@ -852,17 +849,6 @@
                                     <div class="info-value">{{ $bus_info->total_seat }} seats</div>
                                 </div>
                             </div>
-
-{{--                            <div class="info-item">--}}
-{{--                                <div class="info-icon">--}}
-{{--                                    <i class="fas fa-tag"></i>--}}
-{{--                                </div>--}}
-{{--                                <div class="info-content">--}}
-{{--                                    <div class="info-label">Registration Number</div>--}}
-{{--                                    <div class="info-value">{{ $bus_info->reg_number ?? 'DHAKA-METRO-1234' }}</div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
 
                             {{-- Contact Information --}}
                             @if(isset($bus_info->contact_number) && $bus_info->contact_number)
@@ -928,6 +914,9 @@
         const SEAT_PRICE = {{ $package_info->amount ?? 0 }};
         const BUS_ID = {{ $bus_info->id }};
         const PACKAGE_ID = {{ request()->get('package_id') ? base64_decode(request()->get('package_id')) : 0 }};
+
+        {{-- MAX PEOPLE LIMIT from database --}}
+        const MAX_PEOPLE = {{ isset($package_info->max_people) && $package_info->max_people > 0 ? $package_info->max_people : 999 }};
 
         // Row labels (A-J for 10 rows)
         const ROW_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
@@ -1024,7 +1013,7 @@
             return seatDiv;
         }
 
-        // Toggle seat selection
+        // Toggle seat selection with MAX_PEOPLE limit
         function toggleSeat(seatElement) {
             const seatCode = seatElement.dataset.seatCode;
             const seatNumber = parseInt(seatElement.dataset.seatNumber);
@@ -1040,6 +1029,19 @@
                 seatElement.classList.add('seat-available');
                 selectedSeats = selectedSeats.filter(s => s.code !== seatCode);
             } else {
+                // Check MAX_PEOPLE limit before selecting
+                if (selectedSeats.length >= MAX_PEOPLE) {
+                    // Show SweetAlert for max limit reached
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Maximum Seats Reached',
+                        text: `You can only select up to ${MAX_PEOPLE} seat${MAX_PEOPLE > 1 ? 's' : ''} per booking.`,
+                        confirmButtonColor: '#63AB45',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+
                 // Select
                 seatElement.classList.remove('seat-available');
                 seatElement.classList.add('seat-selected');
@@ -1219,3 +1221,4 @@
         </script>
     @endif
 @endpush
+

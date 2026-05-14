@@ -1,7 +1,6 @@
 @extends('layout.theme')
 @section('title', 'Booking Confirmation')
 
-
 @push('css')
     <style>
         /* OTP Confirmation Page Styles */

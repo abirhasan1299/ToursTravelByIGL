@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Root\BannerController;
 use App\Http\Controllers\Root\GalleryController;
 use App\Http\Controllers\Root\BookingController;
 use App\Http\Controllers\Bus\BusController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Root\DestinationController;
 use App\Http\Controllers\Root\FacilityController;
 use App\Http\Controllers\Root\FaqController;
 use App\Http\Controllers\Root\PostController;
+use App\Http\Controllers\Root\ThemeController;
 use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Root\CompanyController;
@@ -17,6 +19,52 @@ use App\Http\Controllers\Root\PackageController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+
+/*
+    |--------------------------------------------------------------------------
+    | Themes Image  Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+
+Route::get('/themes/images',[ThemeController::class,'index'])->name('themes');
+Route::put('/themes/images/update',[ThemeController::class,'update'])->name('themes.update');
+
+/*
+    |--------------------------------------------------------------------------
+    | Albums Routes
+    |--------------------------------------------------------------------------
+*/
+Route::get('/album/showAlbum/{id}', [GalleryController::class, 'showAlbum'])->name('album.show');
+
+Route::post('/album/store', [GalleryController::class, 'storeAlbum'])->name('album.store');
+Route::post('/album/photos/store/', [GalleryController::class, 'storePhotos'])->name('album.photos.store');
+
+Route::delete('/album/destroy/{id}', [GalleryController::class, 'destroyAlbum'])->name('album.destroy');
+Route::delete('/album/photos/{id}', [GalleryController::class, 'destroyPhoto'])->name('album.photos.destroy');
+
+Route::delete('/video/destroy/{id}', [GalleryController::class, 'videodestroy'])->name('video.destroy');
+
+/*
+    |--------------------------------------------------------------------------
+    | Video Routes
+    |--------------------------------------------------------------------------
+*/
+
+Route::get('/video', [GalleryController::class, 'video'])->name('video');
+Route::post('/video/store', [GalleryController::class, 'videostore'])->name('video.store');
+Route::delete('/video/destroy/{id}', [GalleryController::class, 'videodestroy'])->name('video.destroy');
+
+/*
+    |--------------------------------------------------------------------------
+    | Banner Routes
+    |--------------------------------------------------------------------------
+    |
+*/
+Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
+Route::post('/banner', [BannerController::class, 'store'])->name('banner.store');
+Route::delete('/banner/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
+
 
 /*
     |--------------------------------------------------------------------------
@@ -69,9 +117,10 @@ Route::delete('seo/destroy/{id}',[SeoController::class,'destroy'])->name('seo.de
 */
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
-Route::post('/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
-Route::delete('/gallery/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
-Route::post('/gallery/batch-destroy', [GalleryController::class, 'batchDestroy'])->name('gallery.batch-destroy');
+
+//Route::post('/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
+//Route::delete('/gallery/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+//Route::post('/gallery/batch-destroy', [GalleryController::class, 'batchDestroy'])->name('gallery.batch-destroy');
 
 Route::get('contacts/',[FaqController::class,'ContactList'])->name('contacts.list');
 
@@ -94,10 +143,12 @@ Route::delete('faqs/destroy/{id}',[FaqController::class,'destroy'])->name('faqs.
 
 /*
     |--------------------------------------------------------------------------
-    | Website Information Routes
+    | Website Information & Themes Image  Routes
     |--------------------------------------------------------------------------
     |
 */
+
+
 
 Route::get('/about',[CompanyInfo::class,'index'])->name('about');
 

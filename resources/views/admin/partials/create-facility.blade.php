@@ -21,19 +21,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Package Detail -->
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold">
-                                        Facility Detail
-                                    </label>
-                                    <textarea class="form-control form-control-lg" name="detail" rows="3"
-                                              placeholder="Write  details">{{old('detail')}}</textarea>
-                                    @error('detail')
-                                    <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                </div>
-
-
                                         <!-- Buttons -->
                                         <div class="d-flex justify-content-end mt-4">
                                             <button type="submit" class="btn btn-primary rounded-pill px-4">

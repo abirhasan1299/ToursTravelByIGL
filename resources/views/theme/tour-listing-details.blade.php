@@ -1,4 +1,3 @@
-
 @extends('layout.theme')
 @section('title', $tour->title ?? 'Tour Details')
 
@@ -386,30 +385,67 @@
             border-radius: 3px;
         }
 
-        /* Include/Exclude Lists */
+        /* Include/Exclude Lists - UPDATED: Badge Style with Clean Grid */
         .tour-listing-details__list ul,
         .tour-listing-details__amenities__inner ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .tour-listing-details__list li,
         .tour-listing-details__amenities__inner li {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 0;
+            gap: 8px;
+            padding: 6px 16px;
+            background: #F0F9EC;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #2C5E1E;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
         .tour-listing-details__list li i,
         .tour-listing-details__amenities__inner li i {
             color: var(--gotur-base, #63AB45);
-            font-size: 16px;
-            width: 20px;
+            font-size: 14px;
+        }
+
+        /* Hover effect for badges */
+        .tour-listing-details__list li:hover,
+        .tour-listing-details__amenities__inner li:hover {
+            background: var(--gotur-base, #63AB45);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tour-listing-details__list li:hover i,
+        .tour-listing-details__amenities__inner li:hover i {
+            color: white;
+        }
+
+        /* Excluded items can have a slightly different badge style */
+        .tour-listing-details__amenities__inner li {
+            background: #FEF3E2;
+            color: #D97706;
+        }
+
+        .tour-listing-details__amenities__inner li i {
+            color: #D97706;
+        }
+
+        .tour-listing-details__amenities__inner li:hover {
+            background: #D97706;
+            color: white;
+        }
+
+        .tour-listing-details__amenities__inner li:hover i {
+            color: white;
         }
 
         /* ========== COMPACT HERO SECTION - SMALLER IMAGE, LESS SCROLLING ========== */
@@ -654,7 +690,13 @@
         @media (max-width: 768px) {
             .tour-listing-details__list ul,
             .tour-listing-details__amenities__inner ul {
-                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .tour-listing-details__list li,
+            .tour-listing-details__amenities__inner li {
+                font-size: 12px;
+                padding: 5px 14px;
             }
 
             .tour-listing-details__title {
@@ -774,8 +816,8 @@
                 <div class="stat-item">
                     <div class="stat-icon"><i class="icon-price-tag"></i></div>
                     <div class="stat-info">
-                        <h6>Starting From</h6>
-                        <p>{{config('app.currency')}} {{number_format($tour->amount)}}</p>
+                        <h6>Travel Date</h6>
+                        <p>{{$tour->tour_date??"Null"}}</p>
                     </div>
                 </div>
             </div>
@@ -793,56 +835,51 @@
                         </div>
                     </div>
 
-                    <!-- What's Included -->
+                    <!-- What's Included - UPDATED: Badge List Style -->
                     <div class="tour-listing-details__content__item tour-listing-details__list wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
                         <h4 class="tour-listing-details__title">What's Included</h4>
                         <div>
-                            {!! $tour->include !!}
+                            @php
+                                // Clean and split the include content by commas
+                                $includeText = strip_tags($tour->include);
+                                // Split by comma, trim each item, and filter out empty values
+                                $includedItems = array_filter(array_map('trim', explode(',', $includeText)));
+                            @endphp
+
+                            @if(!empty($includedItems))
+                                <ul>
+                                    @foreach($includedItems as $item)
+                                        <li><i class="fas fa-check-circle"></i> {{ $item }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                {!! $tour->include !!}
+                            @endif
                         </div>
                     </div>
 
-                    <!-- What's Excluded -->
+                    <!-- What's Excluded - UPDATED: Badge List Style -->
                     <div class="tour-listing-details__content__item tour-listing-details__amenities wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='400ms'>
                         <h4 class="tour-listing-details__title">What's Excluded</h4>
                         <div class="tour-listing-details__amenities__inner">
-                            {!! $tour->exclude !!}
+                            @php
+                                // Clean and split the exclude content by commas
+                                $excludeText = strip_tags($tour->exclude);
+                                $excludedItems = array_filter(array_map('trim', explode(',', $excludeText)));
+                            @endphp
+
+                            @if(!empty($excludedItems))
+                                <ul>
+                                    @foreach($excludedItems as $item)
+                                        <li><i class="fas fa-times-circle"></i> {{ $item }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                {!! $tour->exclude !!}
+                            @endif
                         </div>
                     </div>
 
-                    <!-- Tour Plan Accordion -->
-                    <div class="tour-listing-details__content__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='500ms'>
-                        <h4 class="tour-listing-details__title">Tour Plan</h4>
-                        <div class="faq-page__accordion faq-accordion gotur-accordion" data-grp-name="gotur-accordion">
-                            @forelse($activities as $index => $activity)
-                                <div class="accordion {{$index == 0 ? 'active' : ''}}">
-                                    <div class="accordion-title">
-                                        <h4>
-                                            Day {{$index + 1}}: {{$activity->title}}
-                                            <span class="accordion-title__icon"></span>
-                                        </h4>
-                                    </div>
-                                    <div class="accordion-content">
-                                        <div class="inner">
-                                            {!! $activity->detail !!}
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="accordion active">
-                                    <div class="accordion-title">
-                                        <h4>Tour Plan <span class="accordion-title__icon"></span></h4>
-                                    </div>
-                                    <div class="accordion-content">
-                                        <div class="inner">
-                                            <p>Tour plan details will be updated soon.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <!-- Gallery Section (if images exist) -->
                     @if($tour->gallery_images && count(json_decode($tour->gallery_images, true)) > 0)
                         <div class="tour-listing-details__content__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='600ms'>
                             <h4 class="tour-listing-details__title">Gallery</h4>
@@ -902,7 +939,7 @@
                         </div>
                         <div class="booking-card-body">
                             <ul class="feature-list" style="margin-bottom: 0;">
-                                <li><i class="fas fa-hashtag"></i> <strong>Tour ID:</strong> <span style="margin-left: auto;">#{{$tour->id}}</span></li>
+
                                 <li><i class="fas fa-clock"></i> <strong>Duration:</strong> <span style="margin-left: auto;">{{$tour->day}} Days / {{$tour->night}} Nights</span></li>
                                 <li><i class="fas fa-users"></i> <strong>Max People:</strong> <span style="margin-left: auto;">{{$tour->max_people}}</span></li>
                                 <li><i class="fas fa-map-marker-alt"></i> <strong>Start Point:</strong> <span style="margin-left: auto;">{{$tour->start_location}}</span></li>

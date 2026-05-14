@@ -17,7 +17,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Log;
 
@@ -443,43 +445,279 @@ class BusController extends Controller
         ));
     }
 
+    /**
+     * Show OTP page and send initial OTP.
+     * Accessible via:  POST /bus/booking/otp  (route: bus.otp.cod)
+     */
     public function OtpForCod(Request $request)
     {
-        try{
-            $otp = rand(10000000, 99999999);
+        // Prefer request values, fall back to session
+        $email     = $request->input('customer_email', Session::get('customer.email', ''));
+        $phone     = $request->input('customer_phone', Session::get('customer.phone', ''));
+        $otpMethod = $request->input('otp_method',     Session::get('customer.otp_method', 'email'));
 
-            session()->put('customer', [
-                'full_name'      => $request->input('customer_name'),
-                'email'          => $request->input('customer_email'),
-                'phone'          => $request->input('customer_phone'),
-                'nid'            => $request->input('customer_nid'),
-                'any_request'    => $request->input('special_requests'),
-                'method' => $request->input('payment_method'),
-                'otp' => $otp,
-                'otp_expire_at'=> now()->addMinutes(4)
+        // FIX: normalise method to only accepted values
+        $otpMethod = in_array($otpMethod, ['email', 'phone']) ? $otpMethod : 'email';
+
+        // Persist in session for the rest of the flow
+        Session::put('customer.email',      $email);
+        Session::put('customer.phone',      $phone);
+        Session::put('customer.otp_method', $otpMethod);
+
+        // Generate a unique token that ties this OTP to the page load
+        $otpToken = uniqid('otp_', true);
+
+        // Generate 6-digit OTP
+        $otp = random_int(100000, 999999);   // FIX: use random_int (cryptographically secure)
+
+        // FIX: expiry is now 300 seconds (5 minutes)
+        Session::put('otp.' . $otpToken, [
+            'code'       => (string) $otp,
+            'method'     => $otpMethod,
+            'contact'    => $otpMethod === 'email' ? $email : $phone,
+            'expires_at' => time() + 300,
+        ]);
+
+        // Send OTP
+        if ($otpMethod === 'email') {
+            $this->sendOtpByEmail($email, $otp);
+        } else {
+            $this->sendOtpBySms($phone, $otp);
+        }
+
+        return view('bus.cod-otp', [
+            'otpToken'     => $otpToken,
+            'contactEmail' => $email,      // FIX: use contactEmail to match blade $contactEmail
+            'contactPhone' => $phone,      // FIX: use contactPhone to match blade $contactPhone
+        ]);
+    }
+
+    /**
+     * Resend OTP to the same (or updated) contact.
+     * Accessible via:  POST /bus/booking/otp/resend  (route: bus.otp.resend)
+     */
+    public function OtpResend(Request $request)
+    {
+        try {
+            $request->validate([
+                'contact_value' => 'required|string|max:255',
+                'otp_method'    => 'required|in:email,phone',
+                'otp_token'     => 'required|string',
             ]);
 
-            Log::info("Bus Seat Booking OTP:". $otp);
+            $otpToken = $request->input('otp_token');
 
-            Mail::to($request->input('customer_email'))->send(new otpmail($otp));
+            // FIX: if the session key no longer exists (e.g. expired session),
+            //      create a new entry instead of hard-failing
+            if (!Session::has('otp.' . $otpToken)) {
+                // Attempt to re-use a token from any surviving sibling key,
+                // or just create a fresh slot under the same token.
+                Log::warning('OTP Resend: token not in session, creating fresh entry.', [
+                    'token' => $otpToken,
+                ]);
+            }
 
-            return view('bus.cod-otp')->with('success', 'OTP sent to your email.');
+            $otp = random_int(100000, 999999);
 
-        }catch (\Exception $e){
-            Log::error("Bus OTP Exception: ". $e->getMessage());
-            return back()->with('error', 'Something went wrong.');
+            // FIX: expiry 300 seconds (5 minutes)
+            Session::put('otp.' . $otpToken, [
+                'code'       => (string) $otp,
+                'method'     => $request->input('otp_method'),
+                'contact'    => $request->input('contact_value'),
+                'expires_at' => time() + 300,
+            ]);
+
+            // Also update session customer fields so they stay in sync
+            if ($request->input('otp_method') === 'email') {
+                Session::put('customer.email',      $request->input('contact_value'));
+                Session::put('customer.phone',      $request->input('phone', Session::get('customer.phone', '')));
+            } else {
+                Session::put('customer.phone',      $request->input('contact_value'));
+                Session::put('customer.email',      $request->input('email', Session::get('customer.email', '')));
+            }
+            Session::put('customer.otp_method', $request->input('otp_method'));
+
+            // Send
+            if ($request->input('otp_method') === 'email') {
+                $this->sendOtpByEmail($request->input('contact_value'), $otp);
+            } else {
+                $this->sendOtpBySms($request->input('contact_value'), $otp);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'OTP sent successfully.',
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => collect($e->errors())->flatten()->first(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Resend OTP Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to resend OTP. Please try again.',
+            ], 500);
         }
     }
 
+    /**
+     * Update contact info and send fresh OTP.
+     * Accessible via:  POST /bus/contact/update  (route: bus.contact.update)
+     */
+    public function updateContact(Request $request)
+    {
+        try {
+            $request->validate([
+                'contact_value' => 'required|string|max:255',
+                'otp_method'    => 'required|in:email,phone',
+                'otp_token'     => 'required|string',
+            ]);
+
+            $otpToken = $request->input('otp_token');
+            $method   = $request->input('otp_method');
+            $contact  = $request->input('contact_value');
+
+            // Update session customer fields
+            if ($method === 'email') {
+                Session::put('customer.email', $contact);
+                // preserve phone if it was already stored
+                if (!Session::has('customer.phone')) {
+                    Session::put('customer.phone', '');
+                }
+            } else {
+                Session::put('customer.phone', $contact);
+                if (!Session::has('customer.email')) {
+                    Session::put('customer.email', '');
+                }
+            }
+            Session::put('customer.otp_method', $method);
+
+            // Generate new OTP — expiry 300 s (5 minutes)
+            $otp = random_int(100000, 999999);
+
+            Session::put('otp.' . $otpToken, [
+                'code'       => (string) $otp,
+                'method'     => $method,
+                'contact'    => $contact,
+                'expires_at' => time() + 300,
+            ]);
+
+            // Send
+            if ($method === 'email') {
+                $this->sendOtpByEmail($contact, $otp);
+            } else {
+                $this->sendOtpBySms($contact, $otp);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Contact updated and OTP sent successfully.',
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => collect($e->errors())->flatten()->first(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Update Contact Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update contact information.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Verify OTP and proceed.
+     * Accessible via:  POST /bus/booking/otp/verification  (route: bus.otp.cod.verify)
+     */
     public function OtpVerify(Request $request)
     {
+        try {
+            $request->validate([
+                'otp'       => 'required|string|size:6',
+                'otp_token' => 'required|string',
+            ]);
 
-       if ($request->otp==session('customer.otp'))
-       {
-           return redirect()->route('bkash.pay');
-       }
+            $otpToken = $request->input('otp_token');
 
-       return redirect()->back()->with('error', 'Invalid OTP');
+            if (!Session::has('otp.' . $otpToken)) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Session expired. Please request a new OTP.');
+            }
+
+            $otpData = Session::get('otp.' . $otpToken);
+
+            // Check expiry
+            if (time() > $otpData['expires_at']) {
+                Session::forget('otp.' . $otpToken);
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'OTP has expired. Please request a new one.');
+            }
+
+            // FIX: use hash_equals for timing-safe comparison (prevents timing attacks)
+            if (!hash_equals((string) $otpData['code'], (string) $request->input('otp'))) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['otp' => 'Invalid OTP. Please try again.']);
+            }
+
+            // Verified — clean up OTP from session
+            Session::forget('otp.' . $otpToken);
+
+            // Redirect to payment / success
+            return redirect()->route('bkash.pay');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($e->errors());
+        } catch (\Exception $e) {
+            Log::error('OTP Verification Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Verification failed. Please try again.');
+        }
+    }
+
+    /**
+     * Send OTP via Email.
+     */
+    private function sendOtpByEmail(string $email, int $otp): void
+    {
+        if (empty(trim($email))) {
+            Log::warning('sendOtpByEmail called with empty email.');
+            return;
+        }
+        try {
+            Mail::to($email)->send(new otpmail($otp));
+            Log::info('OTP email sent.', ['email' => $email]);
+        } catch (\Exception $e) {
+            Log::error('Email Sending Error: ' . $e->getMessage(), ['email' => $email]);
+        }
+    }
+
+    /**
+     * Send OTP via SMS.
+     */
+    private function sendOtpBySms(string $phone, int $otp): void
+    {
+        if (empty(trim($phone))) {
+            Log::warning('sendOtpBySms called with empty phone.');
+            return;
+        }
+        try {
+            sendOtp($phone, $otp);   // your existing global helper
+            Log::info('OTP SMS sent.', ['phone' => $phone]);
+        } catch (\Exception $e) {
+            Log::error('SMS Sending Error: ' . $e->getMessage(), ['phone' => $phone]);
+        }
     }
 
     public function BookingCancel($id)

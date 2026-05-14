@@ -43,6 +43,11 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_CALLBACK_REDIRECTS'),
-    ]
+    ],
+    'sms' => [
+    'url' => env('SMS_API_LINK'),
+    'key' => env('SMS_API_KEY'),
+    'sender' => env('SMS_SENDER_ID'),
+],
 
 ];

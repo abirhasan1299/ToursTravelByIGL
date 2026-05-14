@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\Gallery;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,69 +13,130 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $photos = Gallery::orderBy('created_at', 'desc')->get();
-        return view('admin.about.gallery', compact('photos'));
+        $albums = Album::all();
+        return view('admin.about.gallery', compact('albums'));
     }
 
-    public function store(Request $request)
+
+    public function video()
+    {
+        $videos = Video::orderBy('id', 'desc')->get();
+        return view('admin.about.video', compact('videos'));
+    }
+
+    public function videostore(Request $request)
+    {
+        $request->validate([
+            'embed_code' => 'required|string'
+        ]);
+
+        $embedCode = $request->embed_code;
+
+
+        preg_match('/youtu(?:\.be|be\.com\/(?:embed\/|v\/|watch\?v=))([\w-]+)/', $embedCode, $matches);
+
+        Video::create([
+            'code' => $embedCode,
+        ]);
+
+        return redirect()->route('admin.video')
+            ->with('success', 'YouTube video added successfully!');
+    }
+
+    public function videodestroy($id)
+    {
+        $video = Video::findOrFail($id);
+        $video->delete();
+
+        return redirect()->route('admin.video')
+            ->with('success', 'YouTube video deleted successfully!');
+    }
+
+    public function storeAlbum(Request $request)
+    {
+        $request->validate([
+            'album_name' => 'required|string|max:255',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:1048'
+        ]);
+
+        $coverImage = $request->file('cover_image');
+        $imageName = time().'_'.uniqid().'.'.$coverImage->getClientOriginalExtension();
+
+        $path = $coverImage->storeAs('album_covers', $imageName, 'public');
+
+
+        if (!$path) {
+            return redirect()->back()
+                ->with('error', 'Failed to upload cover image!')
+                ->withInput();
+        }
+
+        Album::create([
+            'name' => $request->album_name,
+            'cover_img' => $imageName  // Make sure your database column is 'cover_img'
+        ]);
+
+        return redirect()->route('admin.gallery')
+            ->with('success', 'Album created successfully!');
+    }
+
+    public function destroyAlbum($id)
+    {
+        $album = Album::findOrFail($id);
+        // Delete cover image
+        if ($album->cover_img) {
+            Storage::disk('public')->delete('album_covers/' . $album->cover_img);
+        }
+
+        // Delete all photos in the album
+        foreach ($album->gallery as $photo) {
+            Storage::disk('public')->delete('gallery/' . $photo->img_name);
+            $photo->delete();
+        }
+
+        $album->delete();
+        return redirect()->route('admin.gallery')->with('success', 'Album deleted successfully!');
+    }
+    public function showAlbum($id)
+    {
+        $album = Album::findOrFail($id);
+        $photos = Gallery::where('album_id',$id)->get();
+        return view('admin.about.album-show', compact('album', 'photos'));
+    }
+
+    public function storePhotos(Request $request)
     {
         $request->validate([
             'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
+        $uploadedCount = 0;
+
         foreach ($request->file('photos') as $photo) {
-            $filename = time() . '_' . $photo->getClientOriginalName();
-            $path = $photo->storeAs('gallery', $filename, 'public');
+            $imageName = time() . '_gallery_' . uniqid() . '.' . $photo->getClientOriginalExtension();
 
-            Gallery::create([
-                'img_name' => $filename,
-                'filename' => $photo->getClientOriginalName()
-            ]);
+
+            $path = Storage::disk('public')->putFileAs('gallery', $photo, $imageName);
+
+
+            if ($path) {
+                Gallery::create([
+                    'img_name' => $imageName,
+                    'album_id' => $request->album_id,
+                ]);
+                $uploadedCount++;
+            }
         }
 
-        return redirect()->route('admin.gallery')->with('success', 'Photos uploaded successfully!');
+        return redirect()->back()->with('success', $uploadedCount . ' photos uploaded successfully!');
     }
 
-    public function destroy($id)
+    public function destroyPhoto($id)
     {
-        try {
-            $photo = Gallery::findOrFail($id);
+        $photo = Gallery::findOrFail($id);
+        Storage::disk('public')->delete('gallery/' . $photo->img_name);
+        $photo->delete();
 
-            // Delete file from storage
-            if (Storage::disk('public')->exists('gallery/' . $photo->img_name)) {
-                Storage::disk('public')->delete('gallery/' . $photo->img_name);
-            }
-
-            $photo->delete();
-
-            return redirect()->route('admin.gallery')->with('success', 'Photos Deleted  successfully!');
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function batchDestroy(Request $request)
-    {
-        try {
-            $request->validate([
-                'ids' => 'required|array',
-                'ids.*' => 'exists:galleries,id'
-            ]);
-
-            $photos = Gallery::whereIn('id', $request->ids)->get();
-
-            foreach ($photos as $photo) {
-                // Delete file from storage
-                if (Storage::disk('public')->exists('gallery/' . $photo->img_name)) {
-                    Storage::disk('public')->delete('gallery/' . $photo->img_name);
-                }
-            }
-
-            Gallery::whereIn('id', $request->ids)->delete();
-
-            return redirect()->route('admin.gallery')->with('success', 'Photos Deleted  successfully!');
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
+        return redirect()->back()->with('success', 'Photo deleted successfully!');
     }
 }

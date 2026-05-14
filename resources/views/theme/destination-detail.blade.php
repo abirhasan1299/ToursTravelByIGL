@@ -2,6 +2,76 @@
 @section('title', $data->country)
 @push('css')
     <style>
+        /* Language Item Styles */
+        .language-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 15px;
+        }
+
+        /* Language Badges Wrapper */
+        .language-badges-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* Update existing language-badge styles */
+        .language-badge {
+            display: inline-block;
+            background: rgba(99, 171, 69, 0.1);
+            color: var(--gotur-base, #63AB45);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 0;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .language-badge:hover {
+            background: var(--gotur-base, #63AB45);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Update list item styles */
+        .destination-details__sidebar__list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gotur-border-color, #E5E5E5);
+            transition: all 0.3s ease;
+        }
+
+        .destination-details__sidebar__list li:hover {
+            transform: translateX(5px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .language-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .language-badges-wrapper {
+                justify-content: flex-start;
+            }
+
+            .destination-details__sidebar__list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
         /* Destination Hero Section */
         .destination-hero {
             position: relative;

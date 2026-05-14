@@ -1,25 +1,50 @@
 {{-- resources/views/admin/gallery.blade.php --}}
 @extends('layout.admin')
-@section('title', 'Gallery')
+@section('title', 'Gallery Albums')
 
 @push('css')
     <style>
-        .table-gallery-img {
-            width: 60px;
-            height: 60px;
+        .album-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .album-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+        }
+        .album-cover {
+            height: 200px;
             object-fit: cover;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
         }
-        .btn-icon {
-            background: none;
+        .album-card .card-body {
+            background: white;
+        }
+        .delete-album-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: rgb(78 78 78 / 0.9);
             border: none;
-            color: #dc2626;
-            transition: opacity 0.2s;
-            padding: 6px 10px;
+            color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            opacity: 0;
         }
-        .btn-icon:hover {
-            opacity: 0.7;
+        .album-card:hover .delete-album-btn {
+            opacity: 1;
+        }
+        .delete-album-btn:hover {
+            background: #ed6a6a;
+            transform: scale(1.05);
         }
         .upload-area {
             background-color: #f8fafc;
@@ -31,9 +56,9 @@
             border-color: #3061fd;
             background-color: #f1f5f9;
         }
-        .upload-preview-thumb {
-            width: 60px;
-            height: 60px;
+        .cover-preview {
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             border-radius: 0.5rem;
             border: 2px solid #fff;
@@ -47,82 +72,92 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2 class="fw-semibold text-dark mb-1"><i class="fas fa-images me-2" style="color: #3061fd;"></i>Photo Gallery</h2>
-                <p class="text-muted">Manage uploaded images</p>
+                <h2 class="fw-semibold text-dark mb-1"><i class="fas fa-images me-2" style="color: #3061fd;"></i>Gallery Albums</h2>
+                <p class="text-muted">Manage photo albums and categories</p>
             </div>
-            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">Total: {{ count($photos) }}</span>
+            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">Total Albums: {{ count($albums) }}</span>
         </div>
 
-        <!-- Upload Card -->
+        <!-- Create Album Card -->
         <div class="card shadow-sm border-0 rounded-4 mb-5">
             <div class="card-body p-4">
-                <h5 class="card-title mb-3"><i class="fas fa-cloud-upload-alt me-2" style="color: #3061fd;"></i>Upload New Photo</h5>
-                <form method="POST" action="{{ route('admin.gallery.store') }}" enctype="multipart/form-data">
+                <h5 class="card-title mb-3"><i class="fas fa-plus-circle me-2" style="color: #3061fd;"></i>Create New Album</h5>
+                <form method="POST" action="{{route('admin.album.store')}}" enctype="multipart/form-data">
                     @csrf
-                    <div class="upload-area p-4 text-center rounded-4" id="dropZone">
-                        <input type="file" name="photos[]" id="fileInput" multiple accept="image/*" class="d-none">
-                        <div class="py-3">
-                            <i class="fas fa-image fa-3x text-muted mb-3" style="opacity: 0.6;"></i>
-                            <h6 class="fw-semibold">Drag & drop images here or click to browse</h6>
-                            <p class="text-muted small mb-2">Supported: JPG, PNG, WEBP, GIF (max 2MB each)</p>
-                            <button type="button" class="btn btn-sm btn-outline-primary px-4" id="browseBtn">
-                                <i class="fas fa-folder-open me-1"></i> Choose files
-                            </button>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="album_name" class="form-label fw-semibold">Album Name <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   class="form-control @error('album_name') is-invalid @enderror"
+                                   id="album_name"
+                                   name="album_name"
+                                   placeholder="e.g., Summer Events, Conference 2024, Team Building"
+                                   required>
+                            @error('album_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="row g-2 mt-3 justify-content-center" id="previewContainer"></div>
+                        <div class="col-md-6">
+                            <label for="cover_image" class="form-label fw-semibold">Cover Image <span class="text-danger">*</span></label>
+                            <div class="upload-area p-3 text-center rounded-4" id="dropZone">
+                                <input type="file" name="cover_image" id="cover_image" accept="image/*" class="d-none" required>
+                                <div id="coverPreviewArea">
+                                    <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted small mb-0">Click or drag to upload cover image</p>
+                                    <p class="text-muted small">JPG, PNG, WEBP (max 2MB)</p>
+                                </div>
+                            </div>
+                            @error('cover_image')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                     <div class="mt-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary px-5 py-2" id="uploadSubmitBtn" disabled>
-                            <i class="fas fa-upload me-2"></i>Upload
+                        <button type="submit" class="btn btn-primary px-5 py-2">
+                            <i class="fas fa-folder-plus me-2"></i>Create Album
                         </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Gallery Table -->
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light">
-                        <tr>
-                            <th style="width: 80px">Preview</th>
-                            <th>Filename</th>
-                            <th>Uploaded At</th>
-                            <th style="width: 100px" class="text-center">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($photos as $photo)
-                            <tr data-id="{{ $photo->id }}">
-                                <td>
-                                    <img src="{{ asset('storage/gallery/'.$photo->img_name) }}" class="table-gallery-img" alt="Gallery image">
-                                </td>
-                                <td class="text-muted">{{ $photo->filename ?? $photo->img_name }}</td>
-                                <td class="text-muted">{{ $photo->created_at ? $photo->created_at->format('d M Y, h:i A') : 'N/A' }}</td>
-                                <td class="text-center">
-                                    <button type="button" class="btn-icon delete-single" data-id="{{ $photo->id }}" title="Delete">
-                                        <i class="ti ti-trash me-3"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center py-5">
-                                    <i class="far fa-images fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted mb-0">No photos uploaded yet</p>
-                                </td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
+        <!-- Albums Grid -->
+        <div class="row g-4">
+            @forelse($albums as $album)
+                <div class="col-md-4 col-lg-3">
+                    <div class="card album-card shadow-sm border-0 h-100 position-relative">
+                        <button type="button" class="delete-album-btn" data-id="{{ $album->id }}" data-name="{{ $album->name }}">
+                            <i class="ti ti-trash"></i>
+                        </button>
+                        <a href="{{route('admin.album.show',$album->id)}}" class="text-decoration-none">
+                            @if($album->cover_img)
+                                <img src="{{ asset('storage/album_covers/'.$album->cover_img) }}"
+                                     class="album-cover"
+                                     alt="{{ $album->name }}">
+                            @else
+                                <div class="album-cover bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-image fa-4x text-muted"></i>
+                                </div>
+                            @endif
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-dark fw-semibold mb-2">{{ $album->name }}</h6>
+
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @empty
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="far fa-folder-open fa-4x text-muted mb-3"></i>
+                        <p class="text-muted mb-0">No albums created yet. Create your first album above!</p>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
 
-    <form id="singleDeleteForm" method="POST" style="display: none;">
+    <form id="deleteAlbumForm" method="POST" style="display: none;">
         @csrf
         @method('DELETE')
     </form>
@@ -132,53 +167,47 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         (function() {
-            // Upload preview logic
-            const fileInput = document.getElementById('fileInput');
-            const browseBtn = document.getElementById('browseBtn');
-            const previewContainer = document.getElementById('previewContainer');
-            const uploadSubmitBtn = document.getElementById('uploadSubmitBtn');
+            // Cover image preview logic
+            const coverInput = document.getElementById('cover_image');
             const dropZone = document.getElementById('dropZone');
+            const coverPreviewArea = document.getElementById('coverPreviewArea');
 
-            function updateUploadButton() {
-                uploadSubmitBtn.disabled = fileInput.files.length === 0;
-            }
+            function previewCoverImage(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    coverPreviewArea.innerHTML = `
+                        <div class="position-relative d-inline-block">
+                            <img src="${e.target.result}" class="cover-preview" alt="Cover preview">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle p-0"
+                                    style="width: 24px; height: 24px; font-size: 12px;" id="removeCoverBtn">
+                                ×
+                            </button>
+                        </div>
+                    `;
 
-            function updatePreview() {
-                previewContainer.innerHTML = '';
-                const files = Array.from(fileInput.files);
-
-                files.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const col = document.createElement('div');
-                        col.className = 'col-auto';
-                        col.innerHTML = `
-                            <div class="position-relative">
-                                <img src="${e.target.result}" class="upload-preview-thumb" alt="Preview">
-                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle p-0" style="width: 18px; height: 18px; font-size: 10px; line-height: 1;" data-index="${index}">×</button>
-                            </div>
-                        `;
-                        previewContainer.appendChild(col);
-
-                        const removeBtn = col.querySelector('button');
-                        removeBtn.addEventListener('click', () => {
-                            const dt = new DataTransfer();
-                            const newFiles = Array.from(fileInput.files).filter((_, i) => i !== index);
-                            newFiles.forEach(f => dt.items.add(f));
-                            fileInput.files = dt.files;
-                            updatePreview();
-                            updateUploadButton();
+                    const removeBtn = document.getElementById('removeCoverBtn');
+                    if (removeBtn) {
+                        removeBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            coverInput.value = '';
+                            coverPreviewArea.innerHTML = `
+                                <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
+                                <p class="text-muted small mb-0">Click or drag to upload cover image</p>
+                                <p class="text-muted small">JPG, PNG, WEBP (max 2MB)</p>
+                            `;
                         });
-                    };
-                    reader.readAsDataURL(file);
-                });
-                updateUploadButton();
+                    }
+                };
+                reader.readAsDataURL(file);
             }
 
-            fileInput.addEventListener('change', updatePreview);
-            browseBtn.addEventListener('click', () => fileInput.click());
+            coverInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    previewCoverImage(this.files[0]);
+                }
+            });
 
-            // Drag and drop
+            // Drag and drop for cover image
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 dropZone.classList.add('dragover');
@@ -192,38 +221,38 @@
                 e.preventDefault();
                 dropZone.classList.remove('dragover');
                 const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    const dt = new DataTransfer();
-                    Array.from(fileInput.files).forEach(f => dt.items.add(f));
-                    Array.from(files).forEach(f => dt.items.add(f));
-                    fileInput.files = dt.files;
-                    updatePreview();
+                if (files.length > 0 && files[0].type.startsWith('image/')) {
+                    coverInput.files = files;
+                    previewCoverImage(files[0]);
                 }
             });
 
-            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('click', () => coverInput.click());
 
-            // Single Delete with SweetAlert
-            const singleDeleteForm = document.getElementById('singleDeleteForm');
+            // Delete Album with SweetAlert
+            const deleteAlbumForm = document.getElementById('deleteAlbumForm');
 
-            document.querySelectorAll('.delete-single').forEach(btn => {
+            document.querySelectorAll('.delete-album-btn').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.preventDefault();
-                    const photoId = this.dataset.id;
+                    e.stopPropagation();
+
+                    const albumId = this.dataset.id;
+                    const albumName = this.dataset.name;
 
                     const result = await Swal.fire({
-                        title: 'Delete photo?',
-                        text: "This action cannot be undone!",
+                        title: 'Delete Album?',
+                        html: `Are you sure you want to delete album <strong>"${albumName}"</strong>?<br><span class="text-danger">This will also delete all photos inside this album!</span>`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#dc2626',
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Yes, delete album!',
                         cancelButtonText: 'Cancel'
                     });
 
                     if (result.isConfirmed) {
-                        singleDeleteForm.action = `/admin/gallery/${photoId}`;
-                        singleDeleteForm.submit();
+                        deleteAlbumForm.action = `/admin/album/destroy/${albumId}`;
+                        deleteAlbumForm.submit();
                     }
                 });
             });
@@ -260,7 +289,7 @@
         <script>
             Swal.fire({
                 icon: 'error',
-                title: 'Upload Error!',
+                title: 'Error!',
                 text: '{{ $errors->first() }}',
                 confirmButtonColor: '#dc2626'
             });

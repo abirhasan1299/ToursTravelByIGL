@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\Bkash_Confirm_Booking;
 use App\Models\Activity;
 use App\Models\Bus;
+use App\Models\HotelFacility;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Seat;
@@ -39,6 +40,7 @@ class PostController extends Controller
 
             // Fetch bus list
             $bus = Bus::where('status', 'active')->get();
+            $facility = HotelFacility::all();
 
             // Fetch districts for location dropdown
             $state = Http::get('https://bdapis.com/api/v1.2/districts');
@@ -48,7 +50,7 @@ class PostController extends Controller
                 $state = $state->json();
             }
 
-            return view('admin.post.edit', compact('package', 'bus', 'state'));
+            return view('admin.post.edit', compact('package', 'bus', 'state', 'facility'));
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -65,24 +67,27 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|integer|min:0',
             'day' => 'required|integer|min:0',
             'night' => 'required|integer|min:0',
+            'tour_category' => 'required|string',
             'tour_type' => 'required|string',
+            'transport' => 'required|string',
             'max_people' => 'required|integer|min:1',
+            'tour_date' => 'required',
             'start_location' => 'required|string',
             'end_location' => 'required|string',
-            'include' => 'required|string|min:5',
-            'exclude' => 'required|string|min:5',
             'bus_id' => 'required|exists:buses,id',
-            'detail' => 'required|string|min:5',
-            'cover_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'detail' => 'required',
+            'facilities' => 'nullable|array',
+            'facilities.*' => 'string',
+            'cover_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1048', // Changed to nullable for update
         ]);
 
         try {
+            // Handle cover image upload
             $imageName = $package->cover_img; // Keep old image by default
 
-            // Handle new image upload
             if ($request->hasFile('cover_img')) {
                 // Delete old image if exists
                 if ($package->cover_img && Storage::disk('public')->exists('package/' . $package->cover_img)) {
@@ -90,26 +95,41 @@ class PostController extends Controller
                 }
 
                 $image = $request->file('cover_img');
-                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('package', $imageName, 'public');
             }
 
-            // Update package
+            // Process facilities (selected ones are included, unselected are excluded)
+            $selectedFacilities = $request->input('facilities', []);
+
+            // Get all possible facilities from the HotelFacility model
+            $allFacilities = HotelFacility::pluck('title')->toArray();
+
+            // Calculate excluded facilities (facilities not selected)
+            $excludedFacilities = array_diff($allFacilities, $selectedFacilities);
+
+            // Format include and exclude as comma-separated strings
+            $includeList = !empty($selectedFacilities) ? implode(', ', $selectedFacilities) : null;
+            $excludeList = !empty($excludedFacilities) ? implode(', ', $excludedFacilities) : null;
+
+            // Update the package
             $package->update([
                 'title' => $request->title,
                 'amount' => $request->amount,
                 'day' => $request->day,
                 'night' => $request->night,
+                'tour_category' => $request->tour_category,
                 'tour_type' => $request->tour_type,
+                'transport' => $request->transport,
                 'max_people' => $request->max_people,
+                'tour_date' => $request->tour_date,
                 'start_location' => $request->start_location,
                 'end_location' => $request->end_location,
-                'include' => $request->include,
-                'exclude' => $request->exclude,
+                'include' => $includeList,
+                'exclude' => $excludeList,
                 'detail' => $request->detail,
                 'bus_id' => $request->bus_id,
                 'cover_img' => $imageName,
-
             ]);
 
             return redirect()
@@ -117,7 +137,7 @@ class PostController extends Controller
                 ->with('success', 'Package updated successfully!');
 
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            \Log::error('Package update error: ' . $e->getMessage());
             return redirect()
                 ->back()
                 ->withInput()
@@ -135,53 +155,74 @@ class PostController extends Controller
     public function create()
     {
         $bus = Bus::where('status','active')->orderBy('id','desc')->get();
-        $state = $this->getState();
-        return view('admin.post.create',compact('state','bus'));
+        $facility = HotelFacility::all();
+
+        return view('admin.post.create',compact('bus','facility'));
     }
 
     public function store(Request $request)
     {
+
         $request->validate([
-            'title' => 'required',
-            'amount' => 'required|integer',
-            'day' => 'required|integer',
-            'night' => 'required|integer',
+            'title' => 'required|string|max:255',
+            'amount' => 'required|integer|min:0',
+            'day' => 'required|integer|min:0',
+            'night' => 'required|integer|min:0',
+            'tour_category' => 'required',
             'tour_type' => 'required',
-            'max_people' => 'required|integer',
-            'start_location' => 'required',
-            'end_location' => 'required',
-            'include' => 'required|min:5',
-            'exclude' => 'required|min:5',
-            'bus_id' => 'required',
-            'detail' => 'required|min:5',
-            'destination' => 'nullable|array',
-            'cover_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'transport' => 'required',
+            'max_people' => 'required|integer|min:1',
+            'tour_date' => 'required',
+            'start_location' => 'required|string',
+            'end_location' => 'required|string',
+            'bus_id' => 'required|exists:buses,id',
+            'detail' => 'required|string|min:5',
+            'facilities' => 'nullable|array',  // Changed from 'include' to 'facilities' to match your form
+            'facilities.*' => 'string',
+            'cover_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1048',
         ]);
 
+        // Handle cover image upload
         $imageName = null;
-
         if ($request->hasFile('cover_img')) {
             $image = $request->file('cover_img');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('package', $imageName, 'public');
         }
 
-        Package::create([
+        // Process facilities (selected ones are included, unselected are excluded)
+        $selectedFacilities = $request->input('facilities', []); // Changed from 'include' to 'facilities'
+
+        // Define all possible facilities (hardcoded array since you're using checkbox values directly)
+        $allFacilities =  HotelFacility::pluck('title')->toArray();
+
+        // Calculate excluded facilities (facilities not selected)
+        $excludedFacilities = array_diff($allFacilities, $selectedFacilities);
+
+        // Format include and exclude as comma-separated strings
+        $includeList = !empty($selectedFacilities) ? implode(', ', $selectedFacilities) : null;
+        $excludeList = !empty($excludedFacilities) ? implode(', ', $excludedFacilities) : null;
+
+        // Create the package
+        $package = Package::create([
             'title' => $request->title,
             'amount' => $request->amount,
             'day' => $request->day,
             'night' => $request->night,
+            'tour_category' => $request->tour_category,
             'tour_type' => $request->tour_type,
+            'transport' => $request->transport,
             'max_people' => $request->max_people,
+            'tour_date' => $request->tour_date,
             'start_location' => $request->start_location,
             'end_location' => $request->end_location,
-            'include' => $request->include,
-            'exclude' => $request->exclude,
+            'include' => $includeList,
+            'exclude' => $excludeList,
             'detail' => $request->detail,
             'status' => 'active',
-            'user_id' => auth()->id(), // safer
+            'user_id' => auth()->id(),
             'cover_img' => $imageName,
-            'bus_id' => $request->bus_id
+            'bus_id' => $request->bus_id,
         ]);
 
         return redirect()

@@ -22,7 +22,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($transactions as $d)
+                            @foreach($transactions as $d)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$d->t_transaction_id}}</td>

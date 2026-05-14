@@ -30,6 +30,7 @@ class DestinationController extends Controller
         $country = $response->json();
 
         $json = file_get_contents(resource_path('views\data\languages.json'));
+
         $languages = json_decode($json, true);
 
         return view('admin.destination.create',compact('country','languages'));

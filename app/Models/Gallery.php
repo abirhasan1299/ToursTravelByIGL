@@ -10,6 +10,6 @@ class Gallery extends Model
 
     protected $fillable = [
         'img_name',
-        'filename'
+        'album_id',
     ];
 }

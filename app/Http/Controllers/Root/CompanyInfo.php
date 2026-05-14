@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class CompanyInfo extends Controller
@@ -65,6 +66,7 @@ class CompanyInfo extends Controller
     {
         try{
             Setting::updateOrCreate(['id'=>1],$request->all());
+            Artisan::call('cache:clear');
             return redirect()->route('admin.setting')->with('success','App Information updated successfully');
         }catch (\Exception $e){
             Log::error($e->getMessage());

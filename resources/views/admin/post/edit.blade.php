@@ -162,21 +162,61 @@
             font-size: 0.75rem;
         }
 
-        /* Dual Input Group */
-        .dual-input {
+        /* Days & Nights Group */
+        .days-nights-group {
             display: flex;
             gap: 1rem;
+            align-items: flex-end;
         }
 
-        .dual-input .input-group-custom {
+        .days-nights-group .input-wrapper {
             flex: 1;
         }
 
-        .input-group-custom .input-label {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-bottom: 0.25rem;
-            display: block;
+        .days-nights-group .separator {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #6366f1;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Checkbox Group for Facilities */
+        .facilities-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .facility-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .facility-checkbox:hover {
+            background: #f1f5f9;
+        }
+
+        .facility-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #6366f1;
+        }
+
+        .facility-checkbox label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #334155;
         }
 
         /* Select2 Custom */
@@ -259,9 +299,12 @@
             .form-section {
                 padding: 1rem;
             }
-            .dual-input {
+            .days-nights-group {
                 flex-direction: column;
                 gap: 0.75rem;
+            }
+            .facilities-group {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -322,7 +365,7 @@
 
                                 <div class="col-12">
                                     <label class="form-label">
-                                        Cover Image
+                                        Cover Image <span class="required">*</span>
                                     </label>
                                     <div class="image-upload-area" id="imageUploadArea">
                                         @if($package->cover_img)
@@ -338,7 +381,8 @@
                                             <i class="ti ti-cloud-upload" style="font-size: 2.5rem; color: #94a3b8;"></i>
                                             <p class="mt-2 mb-1 fw-medium">Click or drag to upload cover image</p>
                                         @endif
-                                        <p class="text-muted small mb-0">PNG, JPG or JPEG (Max 5MB)</p>
+                                        <p class="text-muted small mb-0">PNG, JPG or JPEG (Max 2MB)</p>
+                                        <p class="text-danger small mb-0">max-width: 400px, max-height:300px</p>
                                         <div id="imagePreview"></div>
                                     </div>
                                     <input type="file" class="d-none" id="cover_img" name="cover_img" accept="image/*">
@@ -366,18 +410,39 @@
                                     <label class="form-label">
                                         Duration <span class="required">*</span>
                                     </label>
-                                    <div class="dual-input">
-                                        <div class="input-group-custom">
+                                    <div class="days-nights-group">
+                                        <div class="input-wrapper">
                                             <input type="number" class="form-control @error('day') is-invalid @enderror"
                                                    name="day" value="{{ old('day', $package->day) }}" min="0" placeholder="Days" required>
+                                            <small class="text-muted">Days</small>
                                         </div>
-                                        <div class="input-group-custom">
+                                        <div class="separator">/</div>
+                                        <div class="input-wrapper">
                                             <input type="number" class="form-control @error('night') is-invalid @enderror"
                                                    name="night" value="{{ old('night', $package->night) }}" min="0" placeholder="Nights" required>
+                                            <small class="text-muted">Nights</small>
                                         </div>
                                     </div>
                                     @error('day')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                    @error('night')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">
+                                        Tour Category <span class="required">*</span>
+                                    </label>
+                                    <select class="form-select @error('tour_category') is-invalid @enderror" name="tour_category" required>
+                                        <option value="" disabled {{ old('tour_category', $package->tour_category) ? '' : 'selected' }}>Select category</option>
+                                        <option value="Basic" {{ old('tour_category', $package->tour_category) == 'Basic' ? 'selected' : '' }}>Basic</option>
+                                        <option value="Classic" {{ old('tour_category', $package->tour_category) == 'Classic' ? 'selected' : '' }}>Classic</option>
+                                        <option value="Premium" {{ old('tour_category', $package->tour_category) == 'Premium' ? 'selected' : '' }}>Premium</option>
+                                    </select>
+                                    @error('tour_category')
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -386,15 +451,30 @@
                                         Tour Type <span class="required">*</span>
                                     </label>
                                     <select class="form-select @error('tour_type') is-invalid @enderror" name="tour_type" required>
-                                        <option value="" disabled>Select tour type</option>
-                                        <option value="adventure" {{ old('tour_type', $package->tour_type) == 'adventure' ? 'selected' : '' }}>🏔️ Adventure</option>
-                                        <option value="cultural" {{ old('tour_type', $package->tour_type) == 'cultural' ? 'selected' : '' }}>🏛️ Cultural</option>
-                                        <option value="family" {{ old('tour_type', $package->tour_type) == 'family' ? 'selected' : '' }}>👨‍👩‍👧‍👦 Family</option>
-                                        <option value="honeymoon" {{ old('tour_type', $package->tour_type) == 'honeymoon' ? 'selected' : '' }}>💑 Honeymoon</option>
-                                        <option value="beach" {{ old('tour_type', $package->tour_type) == 'beach' ? 'selected' : '' }}>🏖️ Beach</option>
-                                        <option value="wildlife" {{ old('tour_type', $package->tour_type) == 'wildlife' ? 'selected' : '' }}>🦁 Wildlife</option>
+                                        <option value="" disabled {{ old('tour_type', $package->tour_type) ? '' : 'selected' }}>Select tour type</option>
+                                        <option value="adventure" {{ old('tour_type', $package->tour_type) == 'adventure' ? 'selected' : '' }}>Adventure</option>
+                                        <option value="cultural" {{ old('tour_type', $package->tour_type) == 'cultural' ? 'selected' : '' }}>Cultural</option>
+                                        <option value="family" {{ old('tour_type', $package->tour_type) == 'family' ? 'selected' : '' }}>Family</option>
+                                        <option value="corporate" {{ old('tour_type', $package->tour_type) == 'corporate' ? 'selected' : '' }}>Corporate</option>
+                                        <option value="official" {{ old('tour_type', $package->tour_type) == 'official' ? 'selected' : '' }}>Official</option>
                                     </select>
                                     @error('tour_type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">
+                                        Transport <span class="required">*</span>
+                                    </label>
+                                    <select class="form-select @error('transport') is-invalid @enderror" name="transport" required>
+                                        <option value="" disabled {{ old('transport', $package->transport) ? '' : 'selected' }}>Select transport</option>
+                                        <option value="Bus" {{ old('transport', $package->transport) == 'Bus' ? 'selected' : '' }}>Bus</option>
+                                        <option value="Air" {{ old('transport', $package->transport) == 'Air' ? 'selected' : '' }}>Air</option>
+                                        <option value="Train" {{ old('transport', $package->transport) == 'Train' ? 'selected' : '' }}>Train</option>
+                                        <option value="Launch" {{ old('transport', $package->transport) == 'Launch' ? 'selected' : '' }}>Launch</option>
+                                    </select>
+                                    @error('transport')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -412,17 +492,26 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">
-                                        Select Bus <span class="required">*</span>
+                                        Select Guide Assistance <span class="required">*</span>
                                     </label>
                                     <select class="form-select select2 @error('bus_id') is-invalid @enderror" name="bus_id" required>
                                         <option value="">---CHOOSE BUS---</option>
                                         @foreach($bus as $b)
-                                            <option value="{{$b->id}}" {{ old('bus_id', $package->bus_id) == $b->id ? 'selected' : '' }}>
-                                                {{$b->name}} ({{$b->contact_number}})
-                                            </option>
+                                            <option value="{{$b->id}}" {{ old('bus_id', $package->bus_id) == $b->id ? 'selected' : '' }}>{{$b->driver_name}} ({{$b->contact_number}})</option>
                                         @endforeach
                                     </select>
                                     @error('bus_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">
+                                        Tour Execution Date <span class="required">*</span>
+                                    </label>
+                                    <input type="date" data-provider="flatpickr" data-date-format="d M, Y" class="form-control @error('tour_date') is-invalid @enderror"
+                                           name="tour_date" value="{{ old('tour_date', $package->tour_date) }}" required>
+                                    @error('tour_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -441,15 +530,10 @@
                                     <label class="form-label">
                                         Start Location <span class="required">*</span>
                                     </label>
-                                    <select class="form-select select2 @error('start_location') is-invalid @enderror"
-                                            name="start_location" required>
-                                        <option value="">Select start location</option>
-                                        @foreach($state['data'] as $d)
-                                            <option value="{{ $d['district'] ?? '' }}"
-                                                {{ old('start_location', $package->start_location) == ($d['district'] ?? '') ? 'selected' : '' }}>
-                                                {{ $d['district'] ?? 'Unknown' }}
-                                            </option>
-                                        @endforeach
+                                    <select class="form-select select2 @error('start_location') is-invalid @enderror" name="start_location" required>
+                                        <option value="" disabled {{ old('start_location', $package->start_location) ? '' : 'selected' }}>Select start location</option>
+                                        <option value="Dhaka" {{ old('start_location', $package->start_location) == 'Dhaka' ? 'selected' : '' }}>Dhaka</option>
+                                        <option value="Chattogram" {{ old('start_location', $package->start_location) == 'Chattogram' ? 'selected' : '' }}>Chattogram</option>
                                     </select>
                                     @error('start_location')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -458,17 +542,58 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">
-                                        End Location <span class="required">*</span>
+                                        Destination Location <span class="required">*</span>
                                     </label>
                                     <select class="form-select select2 @error('end_location') is-invalid @enderror"
                                             name="end_location" required>
-                                        <option value="">Select end location</option>
-                                        @foreach($state['data'] as $d)
-                                            <option value="{{ $d['district'] ?? '' }}"
-                                                {{ old('end_location', $package->end_location) == ($d['district'] ?? '') ? 'selected' : '' }}>
-                                                {{ $d['district'] ?? 'Unknown' }}
-                                            </option>
-                                        @endforeach
+                                        <option value="">Select destination</option>
+                                        <!-- Major Tourists Spots in Bangladesh -->
+                                        <optgroup label="Dhaka Division">
+                                            <option value="Dhaka" {{ old('end_location', $package->end_location) == 'Dhaka' ? 'selected' : '' }}>Dhaka</option>
+                                            <option value="Sonargaon" {{ old('end_location', $package->end_location) == 'Sonargaon' ? 'selected' : '' }}>Sonargaon</option>
+                                            <option value="Narsingdi" {{ old('end_location', $package->end_location) == 'Narsingdi' ? 'selected' : '' }}>Narsingdi</option>
+                                            <option value="Gazipur" {{ old('end_location', $package->end_location) == 'Gazipur' ? 'selected' : '' }}>Gazipur (Bhawal National Park)</option>
+                                        </optgroup>
+                                        <optgroup label="Chattogram Division">
+                                            <option value="Cox's Bazar" {{ old('end_location', $package->end_location) == "Cox's Bazar" ? 'selected' : '' }}>Cox's Bazar (Longest Sea Beach)</option>
+                                            <option value="Saint Martin" {{ old('end_location', $package->end_location) == 'Saint Martin' ? 'selected' : '' }}>Saint Martin Island</option>
+                                            <option value="Bandarban" {{ old('end_location', $package->end_location) == 'Bandarban' ? 'selected' : '' }}>Bandarban (Nilgiri, Nilachal)</option>
+                                            <option value="Rangamati" {{ old('end_location', $package->end_location) == 'Rangamati' ? 'selected' : '' }}>Rangamati (Kaptai Lake)</option>
+                                            <option value="Khagrachari" {{ old('end_location', $package->end_location) == 'Khagrachari' ? 'selected' : '' }}>Khagrachari (Alutila Cave)</option>
+                                            <option value="Chattogram" {{ old('end_location', $package->end_location) == 'Chattogram' ? 'selected' : '' }}>Chattogram (Patenga, Foy's Lake)</option>
+                                        </optgroup>
+                                        <optgroup label="Sylhet Division">
+                                            <option value="Sylhet" {{ old('end_location', $package->end_location) == 'Sylhet' ? 'selected' : '' }}>Sylhet</option>
+                                            <option value="Srimangal" {{ old('end_location', $package->end_location) == 'Srimangal' ? 'selected' : '' }}>Srimangal (Tea Gardens)</option>
+                                            <option value="Jaflong" {{ old('end_location', $package->end_location) == 'Jaflong' ? 'selected' : '' }}>Jaflong</option>
+                                            <option value="Ratargul" {{ old('end_location', $package->end_location) == 'Ratargul' ? 'selected' : '' }}>Ratargul Swamp Forest</option>
+                                            <option value="Bisanakandi" {{ old('end_location', $package->end_location) == 'Bisanakandi' ? 'selected' : '' }}>Bisanakandi</option>
+                                        </optgroup>
+                                        <optgroup label="Rajshahi Division">
+                                            <option value="Rajshahi" {{ old('end_location', $package->end_location) == 'Rajshahi' ? 'selected' : '' }}>Rajshahi</option>
+                                            <option value="Paharpur" {{ old('end_location', $package->end_location) == 'Paharpur' ? 'selected' : '' }}>Paharpur (Somapura Mahavihara)</option>
+                                            <option value="Kushtia" {{ old('end_location', $package->end_location) == 'Kushtia' ? 'selected' : '' }}>Kushtia (Lalon Shah's Shrine)</option>
+                                            <option value="Natore" {{ old('end_location', $package->end_location) == 'Natore' ? 'selected' : '' }}>Natore (Uttara Gonobhaban)</option>
+                                        </optgroup>
+                                        <optgroup label="Khulna Division">
+                                            <option value="Sundarban" {{ old('end_location', $package->end_location) == 'Sundarban' ? 'selected' : '' }}>Sundarban (Mangrove Forest)</option>
+                                            <option value="Khulna" {{ old('end_location', $package->end_location) == 'Khulna' ? 'selected' : '' }}>Khulna</option>
+                                            <option value="Jessore" {{ old('end_location', $package->end_location) == 'Jessore' ? 'selected' : '' }}>Jessore</option>
+                                            <option value="Bagerhat" {{ old('end_location', $package->end_location) == 'Bagerhat' ? 'selected' : '' }}>Bagerhat (Sixty Dome Mosque)</option>
+                                        </optgroup>
+                                        <optgroup label="Barishal Division">
+                                            <option value="Kuakata" {{ old('end_location', $package->end_location) == 'Kuakata' ? 'selected' : '' }}>Kuakata (Sea Beach)</option>
+                                            <option value="Barishal" {{ old('end_location', $package->end_location) == 'Barishal' ? 'selected' : '' }}>Barishal</option>
+                                        </optgroup>
+                                        <optgroup label="Rangpur Division">
+                                            <option value="Rangpur" {{ old('end_location', $package->end_location) == 'Rangpur' ? 'selected' : '' }}>Rangpur</option>
+                                            <option value="Dinajpur" {{ old('end_location', $package->end_location) == 'Dinajpur' ? 'selected' : '' }}>Dinajpur (Kantajew Temple)</option>
+                                            <option value="Panchagarh" {{ old('end_location', $package->end_location) == 'Panchagarh' ? 'selected' : '' }}>Panchagarh (Teesta River)</option>
+                                        </optgroup>
+                                        <optgroup label="Mymensingh Division">
+                                            <option value="Mymensingh" {{ old('end_location', $package->end_location) == 'Mymensingh' ? 'selected' : '' }}>Mymensingh</option>
+                                            <option value="Jahangirnagar" {{ old('end_location', $package->end_location) == 'Jahangirnagar' ? 'selected' : '' }}>Jahangirnagar (Shoshi Lodge)</option>
+                                        </optgroup>
                                     </select>
                                     @error('end_location')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -477,39 +602,7 @@
                             </div>
                         </div>
 
-                        <!-- Section 3: Include & Exclude -->
-                        <div class="form-section">
-                            <div class="section-title">
-                                <i class="ti ti-checklist"></i>
-                                <span>Inclusions & Exclusions</span>
-                            </div>
-
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="ti ti-check text-success me-1"></i> What's Included
-                                    </label>
-                                    <textarea class="form-control summernote @error('include') is-invalid @enderror"
-                                              name="include" rows="6">{{ old('include', $package->include) }}</textarea>
-                                    @error('include')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="ti ti-x text-danger me-1"></i> What's Excluded
-                                    </label>
-                                    <textarea class="form-control summernote @error('exclude') is-invalid @enderror"
-                                              name="exclude" rows="6">{{ old('exclude', $package->exclude) }}</textarea>
-                                    @error('exclude')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Section 4: Detailed Description -->
+                        <!-- Section 3: Tour Details -->
                         <div class="form-section">
                             <div class="section-title">
                                 <i class="ti ti-article"></i>
@@ -522,9 +615,56 @@
                                         Detailed Description <span class="required">*</span>
                                     </label>
                                     <textarea class="form-control summernote @error('detail') is-invalid @enderror"
-                                              name="detail" rows="8">{{ old('detail', $package->detail) }}</textarea>
+                                              name="detail" rows="8" placeholder="Provide a detailed description of the tour package...">{{ old('detail', $package->detail) }}</textarea>
                                     @error('detail')
                                     <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Facilities Included -->
+                        <div class="form-section">
+                            <div class="section-title">
+                                <i class="ti ti-checklist"></i>
+                                <span>Tour Facilities</span>
+                                <small class="text-muted ms-2">(Checked items will be included)</small>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="form-label">
+                                        Select Included Facilities <span class="required">*</span>
+                                    </label>
+                                    <div class="facilities-group">
+                                        @php
+                                            $selectedFacilities = [];
+
+                                            // Get selected facilities from the package's 'include' field
+                                            if ($package->include) {
+                                                // Split comma-separated string and trim whitespace
+                                                $selectedFacilities = array_map('trim', explode(',', $package->include));
+                                            }
+
+                                            // Also handle old input after validation error
+                                            if (old('facilities')) {
+                                                $selectedFacilities = old('facilities');
+                                            }
+                                        @endphp
+
+                                        @foreach($facility as $f)
+                                            <div class="facility-checkbox">
+                                                <input type="checkbox" name="facilities[]" value="{{ $f->title }}"
+                                                       id="facility_{{ $f->id ?? $loop->index }}"
+                                                    {{ in_array($f->title, $selectedFacilities) ? 'checked' : '' }}>
+                                                <label for="facility_{{ $f->id ?? $loop->index }}">{{ $f->title }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <small class="text-muted d-block mt-2">💡 Tip: Items not checked will be considered as excluded from the package</small>
+                                    <input type="hidden" name="facilities_raw" id="facilities_raw">
+                                    @error('facilities')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -571,6 +711,15 @@
                 ]
             });
 
+            // Set minimum date for tour_date (today)
+            const today = new Date().toISOString().split('T')[0];
+            const tourDateInput = document.querySelector('input[name="tour_date"]');
+            if (tourDateInput && !tourDateInput.value) {
+                tourDateInput.setAttribute('min', today);
+            } else if (tourDateInput) {
+                tourDateInput.setAttribute('min', today);
+            }
+
             // Image upload preview
             const imageUploadArea = document.getElementById('imageUploadArea');
             const coverImageInput = document.getElementById('cover_img');
@@ -588,13 +737,21 @@
                             currentImage.style.display = 'none';
                         }
 
-                        imagePreview.innerHTML = `<img src="${e.target.result}" class="image-preview" alt="New Preview">
-                                                  <span class="image-overlay" style="position: relative; display: inline-block; margin-left: 10px;">New Image</span>`;
+                        imagePreview.innerHTML = `<img src="${e.target.result}" class="image-preview" alt="Preview">`;
                         imageUploadArea.style.borderColor = '#10b981';
                         imageUploadArea.style.background = '#f0fdf4';
                     }
                     reader.readAsDataURL(e.target.files[0]);
                 }
+            });
+
+            // Form submit handler - consolidate facilities
+            $('#packageForm').on('submit', function() {
+                const selectedFacilities = [];
+                $('input[name="facilities[]"]:checked').each(function() {
+                    selectedFacilities.push($(this).val());
+                });
+                $('#facilities_raw').val(JSON.stringify(selectedFacilities));
             });
 
             // Form validation
