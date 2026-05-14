@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,8 +18,6 @@
     <meta property="og:title" content="@yield('title', 'Default Title')">
     <meta property="og:description" content="@yield('meta_description', 'Default description')">
     <meta property="og:image" content="@yield('meta_image', asset('default.jpg'))">
-
-    <!-- Optional image details -->
     <meta property="og:image:width" content="@yield('og_width', '1200')">
     <meta property="og:image:height" content="@yield('og_height', '630')">
 
@@ -32,18 +29,18 @@
 
     <title>@yield('title')</title>
 
-    <!-- favicons Icons -->
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('assets/images/favicons/apple-touch-icon.png')}}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('assets/images/favicons/favicon-32x32.png')}}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/favicons/favicon-16x16.png')}}">
     <link rel="manifest" href="{{asset('assets/images/favicons/site.webmanifest')}}">
 
-    <!-- fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
-    <!-- External Links -->
+    <!-- External CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
@@ -61,7 +58,6 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/owl-carousel/css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/owl-carousel/css/owl.theme.default.min.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="{{asset('assets/css/gotur.css')}}">
 
     <style>
@@ -74,7 +70,7 @@
             content: "";
             position: fixed;
             inset: 0;
-            background: url("{{ asset('assets/images/backgrounds/bg-prime.jpg') }}") no-repeat center center;
+            background: url("{{ asset(themeImg()->img??'#') }}") no-repeat center center;
             background-size: cover;
             filter: blur(6px);
             transform: scale(1.05);
@@ -90,7 +86,7 @@
         }
 
         /* ============================================
-           HEADER — STICKY + FULL WIDTH
+           TWO-ROW STICKY HEADER
            ============================================ */
 
         .main-header {
@@ -103,15 +99,11 @@
             right: 0 !important;
             z-index: 9999 !important;
             box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-            transition: box-shadow 0.3s ease, padding 0.3s ease;
+            transition: box-shadow 0.3s ease;
         }
 
         .main-header.scrolled {
             box-shadow: 0 4px 24px rgba(0,0,0,0.13) !important;
-        }
-
-        .page-wrapper {
-            padding-top: 88px;
         }
 
         .main-header .container-fluid {
@@ -123,48 +115,75 @@
             padding-right: 20px !important;
         }
 
-        .main-header__inner {
+        /* ── Row 1: Logo + Right items ── */
+        .main-header__row1 {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
-            flex-wrap: nowrap;
-            gap: 10px;
-            height: 72px;
+            height: 70px;
+            gap: 16px;
             transition: height 0.3s ease;
         }
 
-        .main-header.scrolled .main-header__inner {
-            height: 60px;
+        .main-header.scrolled .main-header__row1 {
+            height: 56px;
         }
 
         .main-header__logo { flex-shrink: 0; }
 
         .main-header__logo img {
-            max-height: 60px !important;
+            max-height: 56px !important;
             width: auto;
-            transition: all 0.3s ease;
+            transition: max-height 0.3s ease;
         }
 
         .main-header.scrolled .main-header__logo img {
-            max-height: 46px !important;
+            max-height: 42px !important;
+        }
+
+        .main-header__row1-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Payment icons strip */
+        .header-payment-strip {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-payment-strip img {
+            height: 150px;
+            width: 600px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ── Row 2: Nav menu ── */
+        .main-header__row2 {
+            border-top: 1px solid rgba(99,171,69,0.12);
+        }
+
+        .main-header__row2-inner {
+            display: flex;
+            align-items: center;
+            height: 46px;
+        }
+
+        /* ── Page offset for two-row header ── */
+        .page-wrapper {
+            padding-top: 118px;
         }
 
         /* ============================================
-           DESKTOP NAV
+           DESKTOP NAV (Row 2)
            ============================================ */
-
-        .main-header__nav-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-            overflow: visible;
-        }
 
         .main-header__nav.main-menu {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
             width: 100%;
         }
 
@@ -176,6 +195,7 @@
             list-style: none;
             flex-wrap: nowrap;
             gap: 2px;
+            width: 100%;
         }
 
         .main-menu__list > li {
@@ -187,14 +207,14 @@
         }
 
         .main-menu__list > li > a {
-            padding: 6px 11px !important;
-            font-size: 14px !important;
+            padding: 6px 13px !important;
+            font-size: 13.5px !important;
             font-weight: 500 !important;
             color: #374151 !important;
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            border-radius: 8px;
+            border-radius: 7px;
             transition: all 0.2s ease;
             text-decoration: none;
         }
@@ -202,18 +222,15 @@
         .main-menu__list > li > a:hover,
         .main-menu__list > li.current > a {
             color: #63AB45 !important;
-            background: rgba(99,171,69,0.08);
+            background: rgba(99,171,69,0.09);
         }
 
         /* ============================================
-           GALLERY DROPDOWN — DESKTOP (FIXED)
+           GALLERY DROPDOWN
            ============================================ */
 
-        .nav-gallery-item {
-            position: relative;
-        }
+        .nav-gallery-item { position: relative; }
 
-        /* Chevron icon next to Gallery */
         .nav-gallery-item > a .nav-chevron {
             font-size: 10px;
             opacity: 0.6;
@@ -225,10 +242,9 @@
             opacity: 1;
         }
 
-        /* Dropdown panel - important: higher z-index and proper pointer-events */
         .nav-gallery-dropdown {
             position: absolute;
-            top: calc(100% + 8px);
+            top: calc(100% + 6px);
             left: 50%;
             transform: translateX(-50%) translateY(-6px);
             width: 200px;
@@ -244,7 +260,6 @@
             pointer-events: none;
         }
 
-        /* Small arrow tip */
         .nav-gallery-dropdown::before {
             content: '';
             position: absolute;
@@ -257,16 +272,7 @@
             filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.06));
         }
 
-        /* Hover state: ensure dropdown remains interactive */
-        .nav-gallery-item:hover .nav-gallery-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
-
-        /* Also keep dropdown visible when hovering directly over the dropdown itself
-           to prevent disappearing when moving cursor from link to dropdown */
+        .nav-gallery-item:hover .nav-gallery-dropdown,
         .nav-gallery-dropdown:hover {
             opacity: 1;
             visibility: visible;
@@ -284,7 +290,6 @@
             color: #374151 !important;
             text-decoration: none;
             transition: all 0.2s ease;
-            border-radius: 0;
             background: #ffffff;
         }
 
@@ -306,17 +311,18 @@
         .nav-gallery-dropdown a:last-child  { border-radius: 0 0 8px 8px; }
 
         /* ============================================
-           AUTH ITEM
+           AUTH / USER AVATAR & DROPDOWN
            ============================================ */
 
-        .main-menu__list > li.nav-auth-item {
-            flex-shrink: 0;
+        .header-auth-wrap {
+            display: flex;
+            align-items: center;
             position: relative;
-            margin-left: 8px;
+            flex-shrink: 0;
         }
 
-        .main-menu__list > li.nav-auth-item .gotur-btn.main-header__btn {
-            padding: 9px 20px !important;
+        .header-auth-wrap .gotur-btn.main-header__btn {
+            padding: 9px 22px !important;
             font-size: 14px !important;
             font-weight: 600 !important;
             border-radius: 50px !important;
@@ -330,7 +336,7 @@
             transition: all 0.25s ease;
         }
 
-        .main-menu__list > li.nav-auth-item .gotur-btn.main-header__btn:hover {
+        .header-auth-wrap .gotur-btn.main-header__btn:hover {
             background: #4f9234;
             box-shadow: 0 5px 18px rgba(99,171,69,0.45);
             transform: translateY(-1px);
@@ -376,7 +382,7 @@
             border: 1px solid rgba(99,171,69,0.12);
         }
 
-        .nav-auth-item.active .user-dropdown-menu {
+        .header-auth-wrap.active .user-dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: translateY(0) scale(1);
@@ -437,15 +443,8 @@
         .logout-item i { color: #dc2626 !important; }
         .logout-item:hover { background: rgba(220,38,38,0.05) !important; color: #dc2626 !important; }
 
-        .main-header__right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
         /* ============================================
-           HAMBURGER BUTTON
+           HAMBURGER BUTTON (mobile)
            ============================================ */
 
         .mobile-nav__btn {
@@ -504,22 +503,23 @@
 
         @media (max-width: 1200px) {
             .main-menu__list > li > a {
-                padding: 6px 8px !important;
+                padding: 6px 9px !important;
                 font-size: 13px !important;
             }
         }
 
         @media (max-width: 992px) {
-            .main-header__nav-wrapper { display: none !important; }
-            .mobile-nav__btn { display: flex !important; }
-            .page-wrapper { padding-top: 72px; }
-            .main-header__inner { height: 60px; }
+            .main-header__row2  { display: none !important; }
+            .mobile-nav__btn    { display: flex !important; }
+            .header-payment-strip { display: none; }
+            .page-wrapper       { padding-top: 72px; }
+            .main-header__row1  { height: 60px; }
             .main-header__logo img { max-height: 46px !important; }
         }
 
         @media (max-width: 768px) {
             .page-wrapper { padding-top: 64px; }
-            .main-header__inner { height: 54px; }
+            .main-header__row1 { height: 54px; }
             .page-main-content,
             .main-header .container-fluid,
             .main-footer .container {
@@ -668,7 +668,15 @@
             padding-right: 20px !important;
         }
 
-        .page-main-content { max-width: 1260px; width: 100%; margin-left: auto; margin-right: auto; padding-left: 20px; padding-right: 20px; min-height: 500px; }
+        .page-main-content {
+            max-width: 1260px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+            min-height: 500px;
+        }
 
         @media (max-width: 992px) {
             .footer-widget__list { flex-direction: column; gap: 20px; }
@@ -782,7 +790,7 @@
             transform: scale(1.4);
         }
 
-        /* GALLERY ACCORDION — MOBILE DRAWER */
+        /* Gallery accordion — mobile drawer */
         .mobile-drawer__nav ul li.drawer-gallery-item > a {
             justify-content: space-between;
         }
@@ -810,9 +818,7 @@
             transition: max-height 0.3s ease;
         }
 
-        .drawer-gallery-item.is-open .drawer-gallery-sub {
-            max-height: 200px;
-        }
+        .drawer-gallery-item.is-open .drawer-gallery-sub { max-height: 200px; }
 
         .drawer-gallery-sub a {
             padding-left: 34px !important;
@@ -833,7 +839,12 @@
 
         .drawer-gallery-sub a:hover::before { background: #63AB45 !important; }
 
-        .mobile-drawer__divider { height: 1px; background: linear-gradient(90deg,transparent,#E5E7EB,transparent); margin: 4px 18px; flex-shrink: 0; }
+        .mobile-drawer__divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #E5E7EB, transparent);
+            margin: 4px 18px;
+            flex-shrink: 0;
+        }
 
         .mobile-drawer__auth { padding: 14px 16px; flex-shrink: 0; }
 
@@ -889,18 +900,85 @@
     <!-- ==================== HEADER ==================== -->
     <header class="main-header main-header--one sticky-header sticky-header--normal">
         <div class="container-fluid">
-            <div class="main-header__inner">
+
+            <!-- ── ROW 1: Logo · Payment strip · Auth ── -->
+            <div class="main-header__row1">
 
                 <!-- Logo -->
                 <div class="main-header__logo logo-retina">
-                    <a href="{{route('home')}}" class="logo-link">
-                        <img src="{{asset('assets/images/igl.png')}}" alt="{{settings()->app_name ?? 'IGL Tour'}}" class="logo-img">
+                    <a href="{{route('home')}}">
+                        <img src="{{asset('assets/images/igl.png')}}" alt="{{settings()->app_name ?? 'IGL Tour'}}">
                     </a>
                 </div>
 
-                <!-- Nav + Auth inline (desktop only) -->
-                <div class="main-header__nav-wrapper">
-                    <nav class="main-header__nav main-menu">
+                <!-- Right side: payment + auth + hamburger -->
+                <div class="main-header__row1-right">
+
+                    <!-- Payment icons -->
+                    <div class="header-payment-strip">
+                        <img src="{{asset('assets/images/payment/pay.png')}}" alt="Payment Methods">
+                    </div>
+
+                    <!-- Auth (login button or avatar) -->
+                    <div class="header-auth-wrap" id="headerAuthWrap">
+                        @auth
+                            <div class="user-avatar" id="userAvatarBtn">
+                                @if(Auth::user()->avatar)
+                                    <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}">
+                                @else
+                                    <i class="fas fa-user"></i>
+                                @endif
+                            </div>
+                            <div class="user-dropdown-menu">
+                                <div class="dropdown-header">
+                                    <div class="user-avatar">
+                                        @if(Auth::user()->avatar)
+                                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}">
+                                        @else
+                                            <i class="fas fa-user"></i>
+                                        @endif
+                                    </div>
+                                    <div class="dropdown-user-info">
+                                        <h4>{{ Auth::user()->name }}</h4>
+                                        <p>{{ Auth::user()->email }}</p>
+                                    </div>
+                                </div>
+                                <div class="dropdown-items">
+                                    <a href="{{route('user.bookings')}}" class="dropdown-item">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        <span>My Bookings</span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{route('admin.logout')}}" class="dropdown-item logout-item">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{route('front.login')}}" class="gotur-btn main-header__btn">
+                                <span>Login</span>
+                                <i class="icon-paper-plane"></i>
+                            </a>
+                        @endauth
+                    </div>
+
+                    <!-- Mobile hamburger (visible on ≤992px) -->
+                    <button class="mobile-nav__btn" id="mobileDrawerToggle" type="button" aria-label="Open menu">
+                        <div class="hamburger-box">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- ── ROW 2: Nav menu (desktop only) ── -->
+            <div class="main-header__row2">
+                <div class="main-header__row2-inner">
+                    <nav class="main-header__nav main-menu" style="width:100%;">
                         <ul class="main-menu__list">
                             <li class="{{ request()->routeIs('home') ? 'current' : '' }}">
                                 <a href="{{route('home')}}">Home</a>
@@ -915,7 +993,7 @@
                                 <a href="{{route('front.des')}}">Tours Spot</a>
                             </li>
 
-                            {{-- ── Gallery with dropdown (FIXED) ── --}}
+                            <!-- Gallery dropdown -->
                             <li class="nav-gallery-item">
                                 <a href="javascript:void(0);">
                                     Gallery
@@ -939,72 +1017,15 @@
                             <li class="{{ request()->routeIs('front.contact') ? 'current' : '' }}">
                                 <a href="{{route('front.contact')}}">Contact</a>
                             </li>
-
-                            <!-- Auth item -->
-                            <li class="nav-auth-item">
-                                @auth
-                                    <div class="user-avatar" id="userAvatarBtn">
-                                        @if(Auth::user()->avatar)
-                                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}">
-                                        @else
-                                            <i class="fas fa-user"></i>
-                                        @endif
-                                    </div>
-                                    <div class="user-dropdown-menu">
-                                        <div class="dropdown-header">
-                                            <div class="user-avatar">
-                                                @if(Auth::user()->avatar)
-                                                    <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}">
-                                                @else
-                                                    <i class="fas fa-user"></i>
-                                                @endif
-                                            </div>
-                                            <div class="dropdown-user-info">
-                                                <h4>{{ Auth::user()->name }}</h4>
-                                                <p>{{ Auth::user()->email }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="dropdown-items">
-{{--                                            <a href="{{route('user.profile')}}" class="dropdown-item">--}}
-{{--                                                <i class="fas fa-user-circle"></i>--}}
-{{--                                                <span>My Profile</span>--}}
-{{--                                            </a>--}}
-                                            <a href="{{route('user.bookings')}}" class="dropdown-item">
-                                                <i class="fas fa-ticket-alt"></i>
-                                                <span>My Bookings</span>
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="{{route('admin.logout')}}" class="dropdown-item logout-item">
-                                                <i class="fas fa-sign-out-alt"></i>
-                                                <span>Logout</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @else
-                                    <a href="{{route('front.login')}}" class="gotur-btn main-header__btn">
-                                        <span>Login</span>
-                                        <i class="icon-paper-plane"></i>
-                                    </a>
-                                @endauth
-                            </li>
                         </ul>
                     </nav>
                 </div>
-
-                <!-- Mobile toggle -->
-                <div class="main-header__right">
-                    <button class="mobile-nav__btn" id="mobileDrawerToggle" type="button" aria-label="Open menu">
-                        <div class="hamburger-box">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </button>
-                </div>
-
             </div>
+
         </div>
     </header>
+    <!-- ==================== END HEADER ==================== -->
+
 
     <!-- ==================== MOBILE DRAWER ==================== -->
     <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
@@ -1037,7 +1058,7 @@
                     <a href="{{route('front.des')}}">Destinations</a>
                 </li>
 
-                {{-- Gallery accordion for mobile --}}
+                <!-- Gallery accordion for mobile -->
                 <li class="drawer-gallery-item" id="drawerGalleryItem">
                     <a href="javascript:void(0);" id="drawerGalleryToggle">
                         Gallery
@@ -1125,18 +1146,20 @@
         <!-- Drawer social icons -->
         <div class="mobile-drawer__social">
             <a href="{{settings()->app_facebook??'#'}}" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="{{settings()->app_twitter??'#'}}" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="{{settings()->app_twitter??'#'}}"  aria-label="Twitter"><i class="fab fa-twitter"></i></a>
             <a href="{{settings()->app_instagram??'#'}}" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="{{settings()->app_youtube??'#'}}" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="{{settings()->app_youtube??'#'}}"  aria-label="YouTube"><i class="fab fa-youtube"></i></a>
         </div>
 
     </div>
     <!-- ==================== END MOBILE DRAWER ==================== -->
 
+
     <!-- ==================== MAIN CONTENT ==================== -->
     <main class="page-main-content">
         @yield('content')
     </main>
+
 
     <!-- ==================== FOOTER ==================== -->
     <footer class="main-footer">
@@ -1240,20 +1263,22 @@
                         </div>
                     </div>
                     <div class="main-footer__copyright">
-                        <p>Copyright © {{ date('Y') }} All rights reserved by IGL Group</p>
+                        <p>Copyright &copy; {{ date('Y') }} All rights reserved by IGL Group</p>
                         <div class="main-footer__credits">
                             <span>Domain Registration by: <a href="https://iglweb.com/web/domains-services.php">IGL Web Ltd</a></span>
                             <span class="credit-sep">|</span>
                             <span>Web Hosting by: <a href="https://iglweb.com/web/domains-services.php">IGL Web Ltd</a></span>
                             <span class="credit-sep">|</span>
-                            <span>Web Design & Development by: <a href="https://iglweb.com/web/domains-services.php">IGL Web Ltd</a></span>
+                            <span>Web Design &amp; Development by: <a href="https://iglweb.com/web/domains-services.php">IGL Web Ltd</a></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-</div>
+
+</div><!-- end .page-wrapper -->
+
 
 <!-- ==================== OVERLAYS & POPUPS ==================== -->
 <div class="mobile-nav__wrapper">
@@ -1341,6 +1366,7 @@
     <span id="scroll-top-value" class="scroll-top-value"></span>
 </div>
 
+
 <!-- ==================== SCRIPTS ==================== -->
 <script src="{{asset('assets/vendors/jquery/jquery-3.7.1.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -1379,28 +1405,31 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // Desktop user dropdown
-        const authItem = document.querySelector('.nav-auth-item');
+        /* ── Sticky header scroll class ── */
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                header.classList.toggle('scrolled', window.scrollY > 40);
+            }
+        });
+
+        /* ── Desktop user dropdown ── */
+        const authWrap  = document.getElementById('headerAuthWrap');
         const avatarBtn = document.getElementById('userAvatarBtn');
 
-        if (authItem && avatarBtn) {
+        if (authWrap && avatarBtn) {
             avatarBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                authItem.classList.toggle('active');
+                authWrap.classList.toggle('active');
             });
-
             document.addEventListener('click', function (e) {
-                if (!authItem.contains(e.target)) {
-                    authItem.classList.remove('active');
+                if (!authWrap.contains(e.target)) {
+                    authWrap.classList.remove('active');
                 }
             });
         }
 
-        // Dynamic copyright year
-        const yearEl = document.querySelector('.dynamic-year');
-        if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-        // Mobile drawer logic
+        /* ── Mobile drawer ── */
         const drawerToggle  = document.getElementById('mobileDrawerToggle');
         const drawer        = document.getElementById('mobileDrawer');
         const drawerOverlay = document.getElementById('mobileDrawerOverlay');
@@ -1409,32 +1438,23 @@
         function openDrawer() {
             drawer.classList.add('active');
             drawerOverlay.classList.add('active');
-            if(drawerToggle) drawerToggle.classList.add('is-open');
+            if (drawerToggle) drawerToggle.classList.add('is-open');
             document.body.style.overflow = 'hidden';
         }
 
         function closeDrawer() {
             drawer.classList.remove('active');
             drawerOverlay.classList.remove('active');
-            if(drawerToggle) drawerToggle.classList.remove('is-open');
+            if (drawerToggle) drawerToggle.classList.remove('is-open');
             document.body.style.overflow = '';
         }
 
-        if (drawerToggle) {
-            drawerToggle.addEventListener('click', function (e) {
-                e.stopPropagation();
-                drawer.classList.contains('active') ? closeDrawer() : openDrawer();
-            });
-        }
-
-        if (drawerClose)   drawerClose.addEventListener('click', closeDrawer);
+        if (drawerToggle)  drawerToggle.addEventListener('click',  function (e) { e.stopPropagation(); drawer.classList.contains('active') ? closeDrawer() : openDrawer(); });
+        if (drawerClose)   drawerClose.addEventListener('click',   closeDrawer);
         if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeDrawer();
-        });
-
-        // Mobile Gallery accordion
+        /* ── Mobile gallery accordion ── */
         const galleryToggle = document.getElementById('drawerGalleryToggle');
         const galleryItem   = document.getElementById('drawerGalleryItem');
 
@@ -1445,37 +1465,20 @@
             });
         }
 
-        // Fix for desktop gallery dropdown: ensure dropdown stays open when moving mouse from link to dropdown
+        /* ── Desktop gallery dropdown hover fix ── */
         const galleryItemDesktop = document.querySelector('.nav-gallery-item');
-        const dropdownMenu = document.querySelector('.nav-gallery-dropdown');
+        const dropdownMenu       = document.querySelector('.nav-gallery-dropdown');
 
         if (galleryItemDesktop && dropdownMenu) {
-            // Add a small delay to prevent flickering when moving between link and dropdown
             let timeoutId;
-
-            galleryItemDesktop.addEventListener('mouseenter', function() {
-                clearTimeout(timeoutId);
+            galleryItemDesktop.addEventListener('mouseenter', function () { clearTimeout(timeoutId); });
+            galleryItemDesktop.addEventListener('mouseleave', function (e) {
+                if (dropdownMenu.contains(e.relatedTarget)) return;
+                timeoutId = setTimeout(function () {}, 100);
             });
-
-            galleryItemDesktop.addEventListener('mouseleave', function(e) {
-                // Check if the mouse is moving to the dropdown
-                const relatedTarget = e.relatedTarget;
-                if (dropdownMenu.contains(relatedTarget)) {
-                    return;
-                }
-                timeoutId = setTimeout(() => {
-                    // The dropdown will still hide via CSS, but we ensure no forced hiding
-                }, 100);
-            });
-
-            dropdownMenu.addEventListener('mouseenter', function() {
-                clearTimeout(timeoutId);
-            });
-
-            dropdownMenu.addEventListener('mouseleave', function() {
-                // Allow CSS to handle hiding naturally
-            });
+            dropdownMenu.addEventListener('mouseenter', function () { clearTimeout(timeoutId); });
         }
+
     });
 </script>
 

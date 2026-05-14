@@ -75,7 +75,6 @@ Route::controller(BusController::class)->group(function () {
 
     Route::post('bus/booking', 'booking')->name('bus.store');
 
-
     Route::prefix('bus')->group(function () {
         // OTP Routes
         Route::post('booking/otp', 'OtpForCod')->name('bus.otp.cod');

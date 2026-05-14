@@ -13,6 +13,14 @@ if(!function_exists('settings'))
                return Setting::find(1);
            });
        }
+
+       function themeImg()
+       {
+           return cache()->remember('themeImg', 3600, function () {
+               return \App\Models\Theme::find(1);
+           });
+       }
+
        function destination()
        {
            return cache()->remember('destination', 3600, function () {

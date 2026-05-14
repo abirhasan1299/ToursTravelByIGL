@@ -38,6 +38,11 @@
                                 </td>
                                 <td class="d-flex justify-content-center">
 
+                                    <a href="{{route('admin.des.edit',$d->id)}}" class="btn btn-sm btn-outline-primary" role="button">
+                                        <i class="ti ti-pencil"></i>
+                                    </a>
+
+
                                     <form class="delete-form" action="{{route('admin.des.destroy',$d->id)}}" method="post">
                                         @csrf
                                         @method('DELETE')

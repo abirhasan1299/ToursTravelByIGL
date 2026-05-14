@@ -20,21 +20,22 @@ Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
+
 /*
     |--------------------------------------------------------------------------
-    | Themes Image  Routes
+    | Themes Image  Routes                                                    |
     |--------------------------------------------------------------------------
-    |
 */
 
 Route::get('/themes/images',[ThemeController::class,'index'])->name('themes');
-Route::put('/themes/images/update',[ThemeController::class,'update'])->name('themes.update');
+Route::post('/themes/images/store',[ThemeController::class,'store'])->name('themes.store');
 
 /*
     |--------------------------------------------------------------------------
     | Albums Routes
     |--------------------------------------------------------------------------
 */
+
 Route::get('/album/showAlbum/{id}', [GalleryController::class, 'showAlbum'])->name('album.show');
 
 Route::post('/album/store', [GalleryController::class, 'storeAlbum'])->name('album.store');
